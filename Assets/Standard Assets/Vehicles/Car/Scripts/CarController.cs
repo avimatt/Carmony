@@ -55,6 +55,7 @@ namespace UnityStandardAssets.Vehicles.Car
         public float Revs { get; private set; }
         public float AccelInput { get; private set; }
 
+
         // Use this for initialization
         private void Start()
         {
@@ -69,6 +70,11 @@ namespace UnityStandardAssets.Vehicles.Car
 
             m_Rigidbody = GetComponent<Rigidbody>();
             m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl*m_FullTorqueOverAllWheels);
+        }
+
+        public float getSpeed()
+        {
+            return (int)CurrentSpeed;
         }
 
 
@@ -125,9 +131,14 @@ namespace UnityStandardAssets.Vehicles.Car
             Revs = ULerp(revsRangeMin, revsRangeMax, m_GearFactor);
         }
 
+        public void zeroSpeed()
+        {
+            m_Rigidbody.velocity = new Vector3(0, 0, 0);
+        }
 
         public void Move(float steering, float accel, float footbrake, float handbrake)
         {
+
             for (int i = 0; i < 4; i++)
             {
                 Quaternion quat;
@@ -150,6 +161,10 @@ namespace UnityStandardAssets.Vehicles.Car
             m_WheelColliders[1].steerAngle = m_SteerAngle;
 
             SteerHelper();
+            if (gameObject.GetComponentInParent<UserInteraction>().isBoosting)
+            {
+                accel = accel * 2;
+            }
             ApplyDrive(accel, footbrake);
             CapSpeed();
 
@@ -169,12 +184,16 @@ namespace UnityStandardAssets.Vehicles.Car
             AddDownForce();
             CheckForWheelSpin();
             TractionControl();
+
         }
 
 
         private void CapSpeed()
         {
             float speed = m_Rigidbody.velocity.magnitude;
+            Vector3 newVelocity = m_Rigidbody.velocity;
+            newVelocity.y = 0;
+            m_Rigidbody.velocity = newVelocity;
             switch (m_SpeedType)
             {
                 case SpeedType.MPH:
@@ -195,7 +214,6 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void ApplyDrive(float accel, float footbrake)
         {
-
             float thrustTorque;
             switch (m_CarDriveType)
             {
