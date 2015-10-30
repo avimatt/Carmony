@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GUI : MonoBehaviour {
+public class CarmonyGUI : MonoBehaviour {
 
-    static public GUI S;
+    static public CarmonyGUI S;
     public GameObject topGUI;
     public GameObject bottomGUI;
     public GameObject progressBar;

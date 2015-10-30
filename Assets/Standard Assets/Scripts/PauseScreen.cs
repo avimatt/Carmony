@@ -17,7 +17,7 @@ public class PauseScreen : MonoBehaviour {
         pauseStartTime = Time.realtimeSinceStartup;
         Time.timeScale = 0;
         text.SetActive(true);
-        GUI.S.hideGUI();
+        CarmonyGUI.S.hideGUI();
     }
 
     // Use this for initialization
@@ -30,7 +30,7 @@ public class PauseScreen : MonoBehaviour {
         gameObject.SetActive(false);
         pauseStartTime = Time.time;
         Time.timeScale = 1;
-        GUI.S.showGUI();
+        CarmonyGUI.S.showGUI();
 }
 
 // Update is called once per frame
@@ -42,7 +42,7 @@ void Update () {
             Main.S.paused = false;
             Time.timeScale = 1;
             text.SetActive(false);
-            GUI.S.showGUI();
+            CarmonyGUI.S.showGUI();
         }
     }
 }
