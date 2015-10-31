@@ -74,7 +74,10 @@ namespace UnityStandardAssets.Vehicles.Car
 
         public float getSpeed()
         {
-            return (int)CurrentSpeed;
+            if (Time.time > 1)
+                return (int)CurrentSpeed;
+            else
+                return 0;
         }
 
 
@@ -192,7 +195,8 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             float speed = m_Rigidbody.velocity.magnitude;
             Vector3 newVelocity = m_Rigidbody.velocity;
-            newVelocity.y = 0;
+            if (newVelocity.y > 0)
+                newVelocity.y = 0;
             m_Rigidbody.velocity = newVelocity;
             switch (m_SpeedType)
             {

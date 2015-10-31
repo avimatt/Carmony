@@ -4,10 +4,11 @@ using UnityStandardAssets.Vehicles.Car;
 
 public class UserInteraction : MonoBehaviour {
 
-
+    
     public bool isCarTop;
     public bool isBoosting;
     public float boostTimer;
+
 	// Use this for initialization
 	void Start () {
         isCarTop = gameObject.GetComponentInParent<CarUserControl>().isTopCar;
@@ -23,8 +24,7 @@ public class UserInteraction : MonoBehaviour {
         bool resetting = false;
         if ((Input.GetKeyDown(KeyCode.LeftShift) && !isCarTop) || (Input.GetKeyDown(KeyCode.RightShift) && isCarTop))
         {
-            isBoosting = true;
-            boostTimer = Time.time;
+            startBoost();
         }
 
 
@@ -38,12 +38,19 @@ public class UserInteraction : MonoBehaviour {
         if (resetting)
         {
             if(isCarTop)
-                gameObject.GetComponentInParent<Transform>().position = new Vector3(3438, 0, 1961);
+                gameObject.GetComponentInParent<Transform>().position = new Vector3(34, 0, 449);
             else
-                gameObject.GetComponentInParent<Transform>().position = new Vector3(3438, 0, 1965);
+                gameObject.GetComponentInParent<Transform>().position = new Vector3(34, 0, 453);
 
             //this is only lowering him to ~1-5 right now. could polish this.
             gameObject.GetComponentInParent<CarController>().zeroSpeed();
         }
+    }
+
+    public void startBoost()
+    {
+        isBoosting = true;
+        boostTimer = Time.time;
+        print("boosting!");
     }
 }

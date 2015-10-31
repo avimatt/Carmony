@@ -17,7 +17,8 @@ public class PauseScreen : MonoBehaviour {
         pauseStartTime = Time.realtimeSinceStartup;
         Time.timeScale = 0;
         text.SetActive(true);
-        CarmonyGUI.S.hideGUI();
+        if (Time.time > 1)
+            CarmonyGUI.S.hideGUI();
     }
 
     // Use this for initialization

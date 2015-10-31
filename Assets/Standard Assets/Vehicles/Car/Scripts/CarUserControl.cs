@@ -11,6 +11,26 @@ namespace UnityStandardAssets.Vehicles.Car
         private CarController m_Car; // the car controller we want to use
         public bool isTopCar;
 
+        int first = 0;
+        int second = 1;
+        int third = 2;
+        int fourth = 3;
+
+        public void playerBottomSwap()
+        {
+            int temp = first;
+            first = second;
+            second = temp;
+            print("First: " + first);
+            print("Second: " + second);
+        }
+        public void playerTopSwap()
+        {
+            int temp = third;
+            third = fourth;
+            fourth = temp;
+        }
+
         private void Awake()
         {
             // get the car controller
@@ -22,8 +42,10 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             // Use InControl
             // Hard code the mapping of device to player for now
-            var playerAInput = InputManager.Devices[0];
-            var playerBInput = InputManager.Devices[1];
+            var playerAInput = InputManager.Devices[first];
+            var playerBInput = InputManager.Devices[second];
+            //var playerCInput = InputManager.Devices[third];
+            //var playerDInput = InputManager.Devices[fourth];
 
             // Comments below are to debug the controller configuration,
             // prints out information to console for use to debug controller
@@ -39,8 +61,9 @@ namespace UnityStandardAssets.Vehicles.Car
             float accel = playerAInput.RightTrigger;
             // Player B controls footbrake, handbrake, and turning left
             float footbrake = -1f * playerBInput.LeftTrigger;
-            float handbrake = playerBInput.Action1;
-
+            //Turning off because 
+            //float handbrake = playerBInput.Action1;
+            float handbrake = 0;
             float playerA_turnRight = Math.Max(0f, playerAInput.LeftStickX);
             float playerB_turnLeft = Math.Min(0f, playerBInput.LeftStickX);
 
