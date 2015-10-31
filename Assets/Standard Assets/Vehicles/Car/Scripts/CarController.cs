@@ -166,7 +166,7 @@ namespace UnityStandardAssets.Vehicles.Car
             SteerHelper();
             if (gameObject.GetComponentInParent<UserInteraction>().isBoosting)
             {
-                accel = accel * 2;
+                accel = accel * 1.5f;
             }
             ApplyDrive(accel, footbrake);
             CapSpeed();
