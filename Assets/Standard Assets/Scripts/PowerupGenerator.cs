@@ -5,28 +5,31 @@ using System.Collections;
 using System.Collections.Generic;
 public class PowerupGenerator : MonoBehaviour {
 	public static PowerupGenerator S;
+	
+	public bool[] instantiatedSwap, instantiatedSpeed;
+	
+	public GameObject SwapArrow, Lightning;
+	private GameObject obj;
+	
+	public int numPowerups;
+	private int rand, randX, randZ, numInstantiatedSwap, numInstantiatedSpeed, curSwapLocation;
+	
 	public Vector3[] swapGeneration;
 	private Vector3 turn90, tempLocation;
-	public bool[] instantiatedSwap, instantiatedSpeed;
-	public int numPowerups;
-	private int rand, randX, randZ, numInstantiatedSwap, numInstantiatedSpeed;
-	private GameObject obj;
-	public GameObject SwapArrow, Lightning;
-	// Use this for initialization
-	public GameObject[] swapVec, speedVec;
+		// Use this for initialization
 	void Start () {
 		//init values
 		S = this;
 		numInstantiatedSwap = 0;
 		numInstantiatedSpeed = 0;
+		curSwapLocation = 0;
 		turn90 = new Vector3(0,90,0);
 		swapGeneration = new Vector3[6];
 		instantiatedSwap = new bool[numPowerups];
 		instantiatedSpeed = new bool[numPowerups];
-		speedVec = new GameObject[numPowerups];
-		swapVec = new GameObject[numPowerups];
 		for(int i = 0; i < instantiatedSwap.Length; ++i){
 			instantiatedSwap[i] = false;
+			instantiatedSpeed[i] = false;
 		}
 		swapGeneration[0] = new Vector3(162,2,319);
 		swapGeneration[1] = new Vector3(121,2,241);
@@ -57,40 +60,30 @@ public class PowerupGenerator : MonoBehaviour {
 		}
 	}
 	void createSwap(){
-		do{
-			rand = UnityEngine.Random.Range(0, swapGeneration.Length);
-			
-		}while(instantiatedSwap[rand]);
-		instantiatedSwap[rand] = true;
-		if(rand == 4 || rand == 1){
-			obj = Instantiate(SwapArrow, swapGeneration[rand], Quaternion.identity) as GameObject;
+		if(curSwapLocation == 4 || curSwapLocation == 1){
+			obj = Instantiate(SwapArrow, swapGeneration[curSwapLocation], Quaternion.identity) as GameObject;
 			obj.transform.Rotate(turn90);
-		}
-		else
+		} else {
 			obj = Instantiate(SwapArrow, swapGeneration[rand], Quaternion.identity) as GameObject;
-		swapVec[rand] = obj;
+		}
+		
 		++numInstantiatedSwap;
+		++curSwapLocation;
+		if(curSwapLocation == 5)
+			curSwapLocation = 0;
 		
 	}
 	void createSpeed(){
 		rand = UnityEngine.Random.Range(0, 1); 	//choose between 5 location area to place
-		
 		if(rand == 1) {
 			randX = UnityEngine.Random.Range(100,230);
 			randZ = UnityEngine.Random.Range(447,462);
-		}
-		else {
+		} else {
 			randX = UnityEngine.Random.Range(160,290);
 			randZ = UnityEngine.Random.Range(50,57);
 		}
 		tempLocation = new Vector3(randX,2,randZ);
 		obj = Instantiate(Lightning,tempLocation, Quaternion.identity) as GameObject;
-		for(int i = 0; i < instantiatedSpeed.Length; ++i){
-			if(instantiatedSpeed[i] == false){
-				speedVec[i] = obj;
-				break;	
-			}
-		}
 		++numInstantiatedSpeed;
 	}
 	
