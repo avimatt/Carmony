@@ -11,25 +11,27 @@ namespace UnityStandardAssets.Vehicles.Car
         private CarController m_Car; // the car controller we want to use
         public bool isTopCar;
 
-        int first = 0;
-        int second = 1;
-        int third = 2;
-        int fourth = 3;
+        public int first = 3;
+        public int second = 3;
+        public int third = 3;
+        public int fourth = 3;
 
-        public void playerBottomSwap()
+        void Start()
+        {
+            //first = 3;
+            //second = 3;
+            //third = 3;
+            //fourth = 3;
+        }
+
+
+        public void playerSwap()
         {
             int temp = first;
             first = second;
             second = temp;
-            print("First: " + first);
-            print("Second: " + second);
         }
-        public void playerTopSwap()
-        {
-            int temp = third;
-            third = fourth;
-            fourth = temp;
-        }
+
 
         private void Awake()
         {
@@ -40,9 +42,18 @@ namespace UnityStandardAssets.Vehicles.Car
         //Modify these values in order to tweak steering
         private void FixedUpdate()
         {
+
+            if (Time.realtimeSinceStartup < 1)
+                return;
+            if (first >= InputManager.Devices.Count)
+                return;
             // Use InControl
             // Hard code the mapping of device to player for now
             var playerAInput = InputManager.Devices[first];
+            //if (InputManager.Devices.Count == 1 && isTopCar)
+            //    second = first;
+            //if (InputManager.Devices.Count == 3 && !isTopCar)
+            //    second = first;
             var playerBInput = InputManager.Devices[second];
             //var playerCInput = InputManager.Devices[third];
             //var playerDInput = InputManager.Devices[fourth];
@@ -74,12 +85,27 @@ namespace UnityStandardAssets.Vehicles.Car
 
             //if (isTopCar == true)
             //{
-                // Use InControl
-                
-                //h = CrossPlatformInputManager.GetAxis("Horizontal");
-                //v = CrossPlatformInputManager.GetAxis("Vertical");
-            //}
+            // Use InControl
 
+            //h = CrossPlatformInputManager.GetAxis("Horizontal");
+            //v = CrossPlatformInputManager.GetAxis("Vertical");
+            //}
+            if (!isTopCar)
+            {
+                if (Main.S.carTopDone)
+                {
+                    m_Car.Move(0f, 0f, 0f, 0f);
+                    return;
+                }
+            }
+            else
+            {
+                if (Main.S.carBottomDone)
+                {
+                    m_Car.Move(0f, 0f, 0f, 0f);
+                    return;
+                }
+            }
 #if !MOBILE_INPUT
             //float handbrake = CrossPlatformInputManager.GetAxis("Jump");
             m_Car.Move(steering, accel, footbrake, handbrake);

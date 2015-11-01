@@ -17,8 +17,11 @@ public class Checkpoint : MonoBehaviour {
         if (tmp) {
             playerTrans = tmp.transform.parent;
         }
+        else
+        {
+            return;
+        }
         if (playerTrans && playerTrans.tag=="Player") {
-            print("player hit checkpoint");
             // other is player
             // Get a reference to the CarState script
             CarState player = playerTrans.GetComponent<CarState>();
@@ -33,6 +36,10 @@ public class Checkpoint : MonoBehaviour {
                     if (player.currCheckpoint == 0)
                     {
                         player.currLap++;
+                        if (player.currLap == Main.S.totalLaps)
+                        {
+                            Main.S.endGame(!playerTrans.GetComponent<UserInteraction>().isCarTop);
+                        }
                     }
                     player.currCheckpoint++;
                 }

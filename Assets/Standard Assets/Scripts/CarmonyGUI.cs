@@ -16,6 +16,18 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject bottomLetters;
     public List<GameObject> bottomLetterList;
 
+    public GameObject topEnd;
+    public GameObject bottomEnd;
+    public GameObject topEndPlace;
+    public GameObject topEndTime;
+    public GameObject bottomEndPlace;
+    public GameObject bottomEndTime;
+
+    public GameObject restartText;
+
+    public GameObject topMinimap;
+    public GameObject bottomMinimap;
+
     bool inLettersTop;
     bool inLettersBottom;
     int curIndex = 0;
@@ -28,7 +40,8 @@ public class CarmonyGUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        topMinimap.SetActive(false);
+        bottomMinimap.SetActive(false);
 	}
 
     float getHit(bool inLettersTop)
@@ -117,18 +130,20 @@ public class CarmonyGUI : MonoBehaviour {
     {
         topGUI.SetActive(false);
         bottomGUI.SetActive(false);
-        progressBar.SetActive(false);
         timeText.SetActive(false);
         topLetters.SetActive(false);
+        topMinimap.SetActive(false);
+        bottomMinimap.SetActive(false);
     }
 
     public void showGUI()
     {
         topGUI.SetActive(true);
         bottomGUI.SetActive(true);
-        progressBar.SetActive(true);
         timeText.SetActive(true);
         topLetters.SetActive(true);
+        topMinimap.SetActive(true);
+        bottomMinimap.SetActive(true);
     }
 
     public void setLetters(bool isTopScreen, List<string> letters)
@@ -149,6 +164,31 @@ public class CarmonyGUI : MonoBehaviour {
                 bottomLetterList[i].GetComponent<Text>().text = letters[i];
             }
             inLettersBottom = true;
+        }
+    }
+    public void endGame(bool isTop)
+    {
+        if (isTop)
+        {
+            topEnd.SetActive(true);
+            topEndTime.GetComponent<Text>().text = Timer.S.getGameTime();
+            if (!Main.S.carBottomDone)
+                topEndPlace.GetComponent<Text>().text = "1st";
+            else
+                topEndPlace.GetComponent<Text>().text = "2nd";
+        }
+        else
+        {
+            bottomEnd.SetActive(true);
+            bottomEndTime.GetComponent<Text>().text = Timer.S.getGameTime();
+            if (!Main.S.carTopDone)
+                bottomEndPlace.GetComponent<Text>().text = "1st";
+            else
+                bottomEndPlace.GetComponent<Text>().text = "2nd";
+        }
+        if (Main.S.carBottomDone && Main.S.carTopDone)
+        {
+            restartText.SetActive(true);
         }
     }
 }
