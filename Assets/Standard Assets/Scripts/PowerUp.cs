@@ -32,6 +32,7 @@ public class PowerUp : MonoBehaviour
     }
     void OnTriggerEnter(Collider coll)
     {
+//        PowerupGenerator.S.
         Destroy(gameObject);
         if (type == powerUpType.speed)
             coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().startBoost();
