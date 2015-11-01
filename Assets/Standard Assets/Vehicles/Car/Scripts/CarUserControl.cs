@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using InControl;
+using System.Collections;
 
 namespace UnityStandardAssets.Vehicles.Car
 {
@@ -11,27 +12,54 @@ namespace UnityStandardAssets.Vehicles.Car
         private CarController m_Car; // the car controller we want to use
         public bool isTopCar;
 
-        public int first = 3;
-        public int second = 3;
-        public int third = 3;
-        public int fourth = 3;
+        public int first = 3; // first - player who turns right and accelerates
+        public int second = 3; // second - player who turns left and brakes
+       
 
         void Start()
         {
-            //first = 3;
-            //second = 3;
-            //third = 3;
-            //fourth = 3;
         }
 
 
         public void playerSwap()
         {
+            print("in player swap");
+            //Start pulse vibration
+            var playerAInput = InputManager.Devices[first];
+            var playerBInput = InputManager.Devices[second];
+            playerAInput.Vibrate(1f, 1f);
+            playerBInput.Vibrate(1f, 1f);
+
+            //call co-routine
+            StartCoroutine("pulseWait");
+
+        }
+
+        IEnumerator pulseWait()
+        {
+            print("in pulse wait");
+
+            yield return new WaitForSeconds(1);
+
+            swapControls();
+        }
+
+        void swapControls()
+        {
+            print("in swap controls");
+            //turn off vibrate
+            var playerAInput = InputManager.Devices[first];
+            var playerBInput = InputManager.Devices[second];
+            playerAInput.Vibrate(0f, 0f);
+            playerBInput.Vibrate(0f, 0f);
+
+            //swap controls
             int temp = first;
             first = second;
             second = temp;
-        }
 
+            //swap images
+        }
 
         private void Awake()
         {
@@ -50,46 +78,20 @@ namespace UnityStandardAssets.Vehicles.Car
             // Use InControl
             // Hard code the mapping of device to player for now
             var playerAInput = InputManager.Devices[first];
-            //if (InputManager.Devices.Count == 1 && isTopCar)
-            //    second = first;
-            //if (InputManager.Devices.Count == 3 && !isTopCar)
-            //    second = first;
             var playerBInput = InputManager.Devices[second];
-            //var playerCInput = InputManager.Devices[third];
-            //var playerDInput = InputManager.Devices[fourth];
-
-            // Comments below are to debug the controller configuration,
-            // prints out information to console for use to debug controller
-            // setup issues
-            //int numDevices = InputManager.Devices.Count;
-            //print(numDevices);
-            //for (int i = 0; i < numDevices; ++i)
-            //{
-            //    print(InputManager.Devices[i].Name);
-            //}
 
             // Player A controls accelerator and turning right
             float accel = playerAInput.RightTrigger;
             // Player B controls footbrake, handbrake, and turning left
             float footbrake = -1f * playerBInput.LeftTrigger;
-            //Turning off because 
-            //float handbrake = playerBInput.Action1;
+            //Turning off handbrake because we are already using that button
+            // for the powerup character sequence input.
             float handbrake = 0;
             float playerA_turnRight = Math.Max(0f, playerAInput.LeftStickX);
             float playerB_turnLeft = Math.Min(0f, playerBInput.LeftStickX);
 
             float steering = playerA_turnRight + playerB_turnLeft;
             // pass the input to the car!
-            //float h = CrossPlatformInputManager.GetAxis("Horizontal2");
-            //float v = CrossPlatformInputManager.GetAxis("Vertical2");
-
-            //if (isTopCar == true)
-            //{
-            // Use InControl
-
-            //h = CrossPlatformInputManager.GetAxis("Horizontal");
-            //v = CrossPlatformInputManager.GetAxis("Vertical");
-            //}
             if (!isTopCar)
             {
                 if (Main.S.carTopDone)

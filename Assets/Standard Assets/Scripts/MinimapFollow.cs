@@ -28,8 +28,8 @@ public class MinimapFollow : MonoBehaviour {
     }
     void updateCar(float xratio,float yratio)
     {
-        float xpos = (float)Screen.width * .15f;
-        float ypos = (float)Screen.height * .3f;
+        float xpos = (float)Screen.width * .2f;
+        float ypos = (float)Screen.height * .25f;
 
         Vector3 newPos = gameObject.transform.position;
         newPos.x = xpos * xratio;
