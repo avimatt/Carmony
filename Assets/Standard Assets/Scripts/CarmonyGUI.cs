@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityStandardAssets.Vehicles.Car;
 using InControl;
 
 public class CarmonyGUI : MonoBehaviour {
@@ -12,9 +13,11 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject progressBar;
     public GameObject timeText;
     public GameObject topLetters;
+	public powerUpType topType;
     public List<GameObject> topLetterList;
     public GameObject bottomLetters;
     public List<GameObject> bottomLetterList;
+	public powerUpType bottomType;
 
     public GameObject topEnd;
     public GameObject bottomEnd;
@@ -41,13 +44,16 @@ public class CarmonyGUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         topMinimap.SetActive(false);
+		topType = powerUpType.empty;
         bottomMinimap.SetActive(false);
+		bottomType = powerUpType.empty;
 	}
 
     float getHit(bool inLettersTop)
     {
-        var playerAInput = InputManager.Devices[0];
-        var playerBInput = InputManager.Devices[1];
+		CarUserControl userContorl = inLettersTop ? Main.S.carTop.GetComponent<CarUserControl> () : Main.S.carBottom.GetComponent<CarUserControl> ();
+		var playerAInput = InputManager.Devices[userContorl.first];
+        var playerBInput = InputManager.Devices[userContorl.second];
         string letter = letterList[curIndex];
         float hit = 0;
         switch (letter)
@@ -90,6 +96,7 @@ public class CarmonyGUI : MonoBehaviour {
             {
                 topLetterList[curIndex].GetComponent<Text>().color = new Color(34, 255, 0, 255);
                 curIndex++;
+				// If they finished the sequence clean up the GUI and do the powerup.
                 if (curIndex > letterList.Count)
                 {
                     curIndex = 0;
@@ -98,8 +105,10 @@ public class CarmonyGUI : MonoBehaviour {
                     {
                         topLetterList[i].GetComponent<Text>().text = "";
                         topLetterList[i].GetComponent<Text>().color = new Color(255, 255, 255, 255);
-
                     }
+
+					PowerUp.ActivatePowerUp(true, topType);
+					topType = powerUpType.empty;
                 }
             }
         }
@@ -110,6 +119,7 @@ public class CarmonyGUI : MonoBehaviour {
             {
                 bottomLetterList[curIndex].GetComponent<Text>().color = new Color(34, 255, 0, 255);
                 curIndex++;
+				// If they finished the sequence clean up the GUI and do the powerup.
                 if (curIndex >= letterList.Count)
                 {
                     curIndex = 0;
@@ -118,11 +128,12 @@ public class CarmonyGUI : MonoBehaviour {
                     {
                         bottomLetterList[i].GetComponent<Text>().text = "";
                         bottomLetterList[i].GetComponent<Text>().color = new Color(255, 255, 255, 255);
-
                     }
+
+					PowerUp.ActivatePowerUp(false, bottomType);
+					bottomType = powerUpType.empty;
                 }
-            }
-            
+            } 
         }
 	}
 
@@ -146,7 +157,7 @@ public class CarmonyGUI : MonoBehaviour {
         bottomMinimap.SetActive(true);
     }
 
-    public void setLetters(bool isTopScreen, List<string> letters)
+    public void setLetters(bool isTopScreen, List<string> letters, powerUpType type)
     {
         letterList = letters;
         if (!isTopScreen)
@@ -156,6 +167,7 @@ public class CarmonyGUI : MonoBehaviour {
                 topLetterList[i].GetComponent<Text>().text = letters[i];
             }
             inLettersTop = true;
+			topType = type;
         }
         else
         {
@@ -164,8 +176,10 @@ public class CarmonyGUI : MonoBehaviour {
                 bottomLetterList[i].GetComponent<Text>().text = letters[i];
             }
             inLettersBottom = true;
+			bottomType = type;
         }
     }
+
     public void endGame(bool isTop)
     {
         if (isTop)

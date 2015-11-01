@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using InControl;
 using UnityStandardAssets.Vehicles.Car;
 
+public enum powerUpType
+{
+	speed,
+	letters,
+	swap,
+	empty
+}
+
 public class PowerUp : MonoBehaviour
 {
-    public enum powerUpType
-    {
-        speed,
-        letters,
-        swap
-    }
+
     List<string> xboxLetters = new List<string>();
     
     public powerUpType type;
@@ -30,6 +33,7 @@ public class PowerUp : MonoBehaviour
     {
 
     }
+
     void OnTriggerEnter(Collider coll)
     {
 //        PowerupGenerator.S.
@@ -40,7 +44,7 @@ public class PowerUp : MonoBehaviour
         {
             bool isTopScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarTop;
             List<string> letterList = getNewLetterList();
-            CarmonyGUI.S.setLetters(isTopScreen, letterList);
+            CarmonyGUI.S.setLetters(isTopScreen, letterList, type);
         }else if (type == powerUpType.swap)
         {
             coll.GetComponentInParent<Transform>().GetComponentInParent<CarUserControl>().playerSwap();
@@ -48,6 +52,7 @@ public class PowerUp : MonoBehaviour
 
         //coll.gameObject.GetComponent<UserInteraction>().startBoost();
     }
+
     List<string> getNewLetterList()
     {
         List<string> letterList = new List<string>();
@@ -60,19 +65,22 @@ public class PowerUp : MonoBehaviour
         return letterList;
     }
 
-    void OnCollisionEnter(Collision coll)
-    {
-        /*
-        print("collision");
-        GameObject collidedWith = coll.gameObject;
-        print("name: " + collidedWith.name);
-        if (collidedWith.tag == "Player")
-        {
-            print("supposed to be deleting");
-            //gameObject.GetComponent<UserInteraction>().startBoost();
-            Destroy(gameObject);
-            return;
-        }
-        */
-    }
+	public static void ActivatePowerUp(bool topPlayer, powerUpType type){
+		if (type == powerUpType.speed) {
+			if(topPlayer){
+				Main.S.carTop.GetComponent<UserInteraction>().startBoost();
+			} else {
+				Main.S.carBottom.GetComponent<UserInteraction>().startBoost();
+			}
+			PowerupGenerator.S.numInstantiatedSpeed--;
+		} else if(type == powerUpType.swap) {
+			if(topPlayer){
+				Main.S.carBottom.GetComponent<CarUserControl>().playerSwap();
+			} else {
+				Main.S.carTop.GetComponent<CarUserControl>().playerSwap();
+			}
+			PowerupGenerator.S.numInstantiatedSwap--;
+		}
+	}
+
 }

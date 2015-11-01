@@ -12,7 +12,8 @@ public class PowerupGenerator : MonoBehaviour {
 	private GameObject obj;
 	
 	public int numPowerups;
-	private int rand, randX, randZ, numInstantiatedSwap, numInstantiatedSpeed, curSwapLocation;
+	private int rand, randX, randZ, curSwapLocation;
+	public int numInstantiatedSwap, numInstantiatedSpeed;
 	
 	public Vector3[] swapGeneration;
 	private Vector3 turn90, tempLocation;
