@@ -36,20 +36,14 @@ public class PowerUp : MonoBehaviour
 
     void OnTriggerEnter(Collider coll)
     {
+        print("triggerd");
 //        PowerupGenerator.S.
         Destroy(gameObject);
-        if (type == powerUpType.speed)
-            coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().startBoost();
-        else if (type == powerUpType.letters)
-        {
-            bool isTopScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarTop;
-            List<string> letterList = getNewLetterList();
-            CarmonyGUI.S.setLetters(isTopScreen, letterList, type);
-        }else if (type == powerUpType.swap)
-        {
-            coll.GetComponentInParent<Transform>().GetComponentInParent<CarUserControl>().playerSwap();
-        }
-
+        
+        bool isTopScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarTop;
+        List<string> letterList = getNewLetterList();
+        CarmonyGUI.S.setLetters(isTopScreen, letterList, type);
+        
         //coll.gameObject.GetComponent<UserInteraction>().startBoost();
     }
 

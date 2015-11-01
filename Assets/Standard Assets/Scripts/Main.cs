@@ -17,7 +17,7 @@ public class Main : MonoBehaviour
     public bool carTopDone;
     public bool carBottomDone;
 
-    public int totalLaps = 2;
+    public int totalLaps = 3;
 
     //updates the most recent pausing interaction to now, so the player cannot do anything too soon. like spam pause
     public void updateInteractTimer()

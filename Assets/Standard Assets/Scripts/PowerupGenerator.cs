@@ -32,12 +32,12 @@ public class PowerupGenerator : MonoBehaviour {
 			instantiatedSwap[i] = false;
 			instantiatedSpeed[i] = false;
 		}
-		swapGeneration[0] = new Vector3(162,2,319);
-		swapGeneration[1] = new Vector3(121,2,241);
-		swapGeneration[2] = new Vector3(175,2,152);
-		swapGeneration[3] = new Vector3(308,2,394);
-		swapGeneration[4] = new Vector3(308,2,455);
-		swapGeneration[5] = new Vector3(381,2,334);
+		swapGeneration[0] = new Vector3(162,1,319);
+		swapGeneration[1] = new Vector3(121,1,241);
+		swapGeneration[2] = new Vector3(175,1,152);
+		swapGeneration[3] = new Vector3(308,1,394);
+		swapGeneration[4] = new Vector3(308,1,455);
+		swapGeneration[5] = new Vector3(381,1,334);
 		
 		//end init
 		for(int i = 0; i < numPowerups; ++i){
@@ -83,7 +83,7 @@ public class PowerupGenerator : MonoBehaviour {
 			randX = UnityEngine.Random.Range(160,290);
 			randZ = UnityEngine.Random.Range(50,57);
 		}
-		tempLocation = new Vector3(randX,2,randZ);
+		tempLocation = new Vector3(randX,.5f,randZ);
 		obj = Instantiate(Lightning,tempLocation, Quaternion.identity) as GameObject;
 		++numInstantiatedSpeed;
 	}

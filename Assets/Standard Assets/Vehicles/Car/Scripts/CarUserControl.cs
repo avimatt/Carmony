@@ -1,8 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
+
 using UnityStandardAssets.CrossPlatformInput;
 using InControl;
 using System.Collections;
+//using XInputDotNetPure;
 
 namespace UnityStandardAssets.Vehicles.Car
 {
@@ -10,7 +13,7 @@ namespace UnityStandardAssets.Vehicles.Car
     public class CarUserControl : MonoBehaviour
     {
         private CarController m_Car; // the car controller we want to use
-        public bool isTopCar;
+        public bool isBottomCar;
 
         public int first = 3; // first - player who turns right and accelerates
         public int second = 3; // second - player who turns left and brakes
@@ -27,9 +30,19 @@ namespace UnityStandardAssets.Vehicles.Car
             //Start pulse vibration
             var playerAInput = InputManager.Devices[first];
             var playerBInput = InputManager.Devices[second];
-            playerAInput.Vibrate(1f, 1f);
-            playerBInput.Vibrate(1f, 1f);
+            //playerAInput.Vibrate(1f, 1f);
+            //playerBInput.Vibrate(1f, 1f);
+            //GamePad.SetVibration((PlayerIndex)first, 1f, 1f);
+            //GamePad.SetVibration((PlayerIndex)second, 1f, 1f);
+            if (!isBottomCar)
+            {
+                CarmonyGUI.S.topSwapText.SetActive(true);
+            }
+            else
+            {
+                CarmonyGUI.S.bottomSwapText.SetActive(true);
 
+            }
             //call co-routine
             StartCoroutine("pulseWait");
 
@@ -48,10 +61,30 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             print("in swap controls");
             //turn off vibrate
-            var playerAInput = InputManager.Devices[first];
-            var playerBInput = InputManager.Devices[second];
-            playerAInput.Vibrate(0f, 0f);
-            playerBInput.Vibrate(0f, 0f);
+            //var playerAInput = InputManager.Devices[first];
+            //var playerBInput = InputManager.Devices[second];
+            //playerAInput.Vibrate(0f, 0f);
+            //playerBInput.Vibrate(0f, 0f);
+            //GamePad.SetVibration((PlayerIndex)first, 0f, 0f);
+            //GamePad.SetVibration((PlayerIndex)second, 0f, 0f);
+
+
+            if (!isBottomCar)
+            {
+                CarmonyGUI.S.topSwapText.SetActive(false);
+                Sprite tempImage = CarmonyGUI.S.topImageLeft.GetComponent<Image>().sprite;
+                CarmonyGUI.S.topImageLeft.GetComponent<Image>().sprite = CarmonyGUI.S.topImageRight.GetComponent<Image>().sprite;
+                CarmonyGUI.S.topImageRight.GetComponent<Image>().sprite = tempImage;
+
+            }
+            else
+            {
+                CarmonyGUI.S.bottomSwapText.SetActive(false);
+                Sprite tempImage = CarmonyGUI.S.bottomImageLeft.GetComponent<Image>().sprite;
+                CarmonyGUI.S.bottomImageLeft.GetComponent<Image>().sprite = CarmonyGUI.S.bottomImageRight.GetComponent<Image>().sprite;
+                CarmonyGUI.S.bottomImageRight.GetComponent<Image>().sprite = tempImage;
+            }
+
 
             //swap controls
             int temp = first;
@@ -59,6 +92,7 @@ namespace UnityStandardAssets.Vehicles.Car
             second = temp;
 
             //swap images
+         
         }
 
         private void Awake()
@@ -92,7 +126,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
             float steering = playerA_turnRight + playerB_turnLeft;
             // pass the input to the car!
-            if (!isTopCar)
+            if (!isBottomCar)
             {
                 if (Main.S.carTopDone)
                 {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityStandardAssets.Vehicles.Car;
+
 using InControl;
 
 public class CarmonyGUI : MonoBehaviour {
@@ -31,10 +32,21 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject topMinimap;
     public GameObject bottomMinimap;
 
+    public GameObject topSwapText;
+    public GameObject bottomSwapText;
+
+    public GameObject topImageLeft;
+    public GameObject topImageRight;
+    public GameObject bottomImageLeft;
+    public GameObject bottomImageRight;
+
     bool inLettersTop;
     bool inLettersBottom;
-    int curIndex = 0;
-    List<string> letterList;
+    int curIndexBottom = 0;
+    int curIndexTop = 0;
+    List<string> letterListTop;
+    List<string> letterListBottom;
+
     void Awake()
     {
 
@@ -49,13 +61,27 @@ public class CarmonyGUI : MonoBehaviour {
 		bottomType = powerUpType.empty;
 	}
 
+    int getCurIndex(bool isTop)
+    {
+        if (isTop)
+            return curIndexTop;
+        else
+            return curIndexBottom;
+    }
+
     float getHit(bool inLettersTop)
     {
 		CarUserControl userContorl = inLettersTop ? Main.S.carTop.GetComponent<CarUserControl> () : Main.S.carBottom.GetComponent<CarUserControl> ();
 		var playerAInput = InputManager.Devices[userContorl.first];
         var playerBInput = InputManager.Devices[userContorl.second];
-        string letter = letterList[curIndex];
+        string letter = "";
+        if (inLettersTop)
+            letter = letterListTop[curIndexTop];
+        else
+            letter = letterListBottom[curIndexBottom];
+
         float hit = 0;
+        int curIndex = getCurIndex(inLettersTop);
         switch (letter)
         {
             case "A":
@@ -88,18 +114,19 @@ public class CarmonyGUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+       // print("printing: " + inLettersBottom + " " + inLettersTop);
 	    if (inLettersTop)
         {
 
             float hit = getHit(true);
             if (hit != 0)
             {
-                topLetterList[curIndex].GetComponent<Text>().color = new Color(34, 255, 0, 255);
-                curIndex++;
+                topLetterList[curIndexTop].GetComponent<Text>().color = new Color(34, 255, 0, 255);
+                curIndexTop++;
 				// If they finished the sequence clean up the GUI and do the powerup.
-                if (curIndex > letterList.Count)
+                if (curIndexTop >= letterListTop.Count)
                 {
-                    curIndex = 0;
+                    curIndexTop = 0;
                     inLettersTop = false;
                     for (int i = 0; i < topLetterList.Count; i++)
                     {
@@ -112,17 +139,17 @@ public class CarmonyGUI : MonoBehaviour {
                 }
             }
         }
-        else if (inLettersBottom)
+        if (inLettersBottom)
         {
             float hit = getHit(false);
             if (hit != 0)
             {
-                bottomLetterList[curIndex].GetComponent<Text>().color = new Color(34, 255, 0, 255);
-                curIndex++;
+                bottomLetterList[curIndexBottom].GetComponent<Text>().color = new Color(34, 255, 0, 255);
+                curIndexBottom++;
 				// If they finished the sequence clean up the GUI and do the powerup.
-                if (curIndex >= letterList.Count)
+                if (curIndexBottom >= letterListBottom.Count)
                 {
-                    curIndex = 0;
+                    curIndexBottom = 0;
                     inLettersBottom = false;
                     for(int i = 0; i < bottomLetterList.Count; i++)
                     {
@@ -159,10 +186,10 @@ public class CarmonyGUI : MonoBehaviour {
 
     public void setLetters(bool isTopScreen, List<string> letters, powerUpType type)
     {
-        letterList = letters;
         if (!isTopScreen)
         {
-            for(int i = 0; i < topLetterList.Count; i++)
+            letterListTop = letters;
+            for (int i = 0; i < topLetterList.Count; i++)
             {
                 topLetterList[i].GetComponent<Text>().text = letters[i];
             }
@@ -171,6 +198,7 @@ public class CarmonyGUI : MonoBehaviour {
         }
         else
         {
+            letterListBottom = letters;
             for (int i = 0; i < bottomLetterList.Count; i++)
             {
                 bottomLetterList[i].GetComponent<Text>().text = letters[i];

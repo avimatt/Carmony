@@ -12,7 +12,7 @@ public class UserInteraction : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        isCarTop = gameObject.GetComponentInParent<CarUserControl>().isTopCar;
+        isCarTop = gameObject.GetComponentInParent<CarUserControl>().isBottomCar;
         boostTimer = Time.time;
 	}
 	
@@ -38,7 +38,7 @@ public class UserInteraction : MonoBehaviour {
         var playerAInput = InputManager.Devices[userControl.first];
         var playerBInput = InputManager.Devices[userControl.second];
 
-        //only resetting to beginnning right now.
+        //only resetting to beginnning right now
         //move to last checkpoint
         if (isBoosting && Time.time - boostTimer > 5)
             isBoosting = false;
