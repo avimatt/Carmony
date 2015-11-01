@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
+using InControl;
 
 public class Main : MonoBehaviour
 {
@@ -12,6 +13,11 @@ public class Main : MonoBehaviour
 
     public GameObject carTop;
     public GameObject carBottom;
+
+    public bool carTopDone;
+    public bool carBottomDone;
+
+    public int totalLaps = 2;
 
     //updates the most recent pausing interaction to now, so the player cannot do anything too soon. like spam pause
     public void updateInteractTimer()
@@ -66,6 +72,10 @@ public class Main : MonoBehaviour
         {
             if (getStartPressed())
             {
+                if (carTopDone && carBottomDone)
+                {
+                    Application.LoadLevel("NoahDevScene");
+                }
                 Main.S.paused = true;
                 PauseScreen.S.gameObject.SetActive(true);
             }
@@ -77,13 +87,24 @@ public class Main : MonoBehaviour
     {
         //this wont work with the time shit...
         //if (CrossPlatformInputManager.GetAxis("Cancel") != 0)
-        if (Input.GetKeyDown(KeyCode.Escape))
+        for (int i = 0; i < InputManager.Devices.Count; i++)
         {
-            return true;
+            var player = InputManager.Devices[i];
+            if (player.MenuWasPressed)
+            {
+                return true;
+            }
         }
+        return false;
+
+    }
+
+    public void endGame(bool isTop)
+    {
+        if (isTop)
+            carTopDone = true;
         else
-        {
-            return false;
-        }
+            carBottomDone = true;
+        CarmonyGUI.S.endGame(isTop);
     }
 }

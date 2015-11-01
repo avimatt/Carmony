@@ -43,12 +43,7 @@ public class PowerUp : MonoBehaviour
             CarmonyGUI.S.setLetters(isTopScreen, letterList);
         }else if (type == powerUpType.swap)
         {
-            bool isTopScreen = !coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarTop;
-            if (isTopScreen)
-                coll.GetComponentInParent<Transform>().GetComponentInParent<CarUserControl>().playerTopSwap();
-            else
-                coll.GetComponentInParent<Transform>().GetComponentInParent<CarUserControl>().playerBottomSwap();
-
+            coll.GetComponentInParent<Transform>().GetComponentInParent<CarUserControl>().playerSwap();
         }
 
         //coll.gameObject.GetComponent<UserInteraction>().startBoost();
