@@ -65,6 +65,30 @@ public class CarmonyGUI : MonoBehaviour {
         topImageLeft.SetActive(false);
 	}
 
+    //makes coroutine callable by other classes
+    public void raiseStartFlagText()
+    {
+        StartCoroutine("startFlagText");
+    }
+
+
+    //Co-routine to display GO when race starts then take display down
+    //This utilizes swap text. if need to stylize, must create new text
+    IEnumerator startFlagText()
+    {
+        print("here");
+        topSwapText.SetActive(true);
+        bottomSwapText.SetActive(true);
+        topSwapText.GetComponent<Text>().text = "GO!";
+        bottomSwapText.GetComponent<Text>().text = "GO!";
+
+        yield return new WaitForSeconds(1f);
+        topSwapText.GetComponent<Text>().text = "SWAP";
+        bottomSwapText.GetComponent<Text>().text = "SWAP";
+        topSwapText.SetActive(false);
+        bottomSwapText.SetActive(false);
+    }
+
     int getCurIndex(bool isTop)
     {
         if (isTop)

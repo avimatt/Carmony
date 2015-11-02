@@ -34,7 +34,7 @@ public class InstructionScreen : MonoBehaviour {
                     CarmonyGUI.S.bottomImageRight.SetActive(true);
                     CarmonyGUI.S.topImageLeft.SetActive(true);
                     CarmonyGUI.S.topImageRight.SetActive(true);
-
+                    CarmonyGUI.S.raiseStartFlagText();                    
                     GameObject.Find("MainGameObject").GetComponent<AudioSource>().enabled = true;
                 }
             }
