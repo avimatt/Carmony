@@ -9,13 +9,15 @@ using UnityStandardAssets.Vehicles.Car;
 public class StartScreen : MonoBehaviour {
 
     static public StartScreen S;
-    public GameObject text;
-    int countSet = 0;
-    public List<GameObject> buttonList;
-    public List<bool> playersSet;
-    public List<bool> buttonsSet;
 
+    public GameObject text;
+    
+    public List<GameObject> buttonList; // Player 1,2,3,4 buttons on the screen
+    public List<bool> playersSet; // Whether a given player has chosen a team
+    public List<bool> buttonsSet; // Whether Player 1,2,3 or 4 (as determined from the button list) has been taken
     public float cooldown;
+
+	int countSet = 0; // # of players who have chosen a team 
 
     void Awake()
     {
@@ -25,24 +27,28 @@ public class StartScreen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         Time.timeScale = 0;
-        playersSet.Add(false);
-        playersSet.Add(false);
-        playersSet.Add(false);
-        playersSet.Add(false);
-        buttonsSet.Add(false);
-        buttonsSet.Add(false);
-        buttonsSet.Add(false);
-        buttonsSet.Add(false);
 
+        playersSet.Add(false);
+        playersSet.Add(false);
+        playersSet.Add(false);
+        playersSet.Add(false);
+
+        buttonsSet.Add(false);
+        buttonsSet.Add(false);
+        buttonsSet.Add(false);
+        buttonsSet.Add(false);
     }
 
     // Update is called once per frame
     void Update () {
+		// If all connected devices have chosen a team
         if (countSet == InputManager.Devices.Count && Time.realtimeSinceStartup - cooldown > .25)
         {
+			// Check each device for input
             for (int i = 0; i < InputManager.Devices.Count; i++)
             {
                 var player = InputManager.Devices[i];
+				// if input then show the instruction screen
                 if (player.AnyButton)
                 {
                     gameObject.SetActive(false);
@@ -51,13 +57,17 @@ public class StartScreen : MonoBehaviour {
                 }
             }
         }
+		// Wait for input (choose player) from connected devices 
         else
         {
+			// loop through each connected device
             for (int i = 0; i < InputManager.Devices.Count; i++)
             {
+				// If player already has a team ignore input
                 if (playersSet[i])
                     continue;
                 var player = InputManager.Devices[i];
+				// If player clicked button and spot not taken
                 if ((player.Action1 && !buttonsSet[0]) || (player.Action2 && !buttonsSet[1]) || (player.Action3 && !buttonsSet[2]) || (player.Action4 && !buttonsSet[3]))
                 {
                     playersSet[i] = true;
@@ -67,6 +77,7 @@ public class StartScreen : MonoBehaviour {
         }
 	}
 
+	// Map controllers to players
     void buttonClicked(InputDevice player,int playerIndex)
     {
         if (player.Action1)
@@ -94,6 +105,7 @@ public class StartScreen : MonoBehaviour {
         }
 
         countSet++;
+		// If all connected devices have chosen a team prompt for start of game
         if (countSet == InputManager.Devices.Count)
         {
             text.GetComponent<Text>().text = "Press Any Button To Continue";

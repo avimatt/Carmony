@@ -23,11 +23,11 @@ namespace UnityStandardAssets.Vehicles.Car
         {
         }
 
-
+		// Show SwapText and start Co-Routine
         public void playerSwap()
         {
             print("in player swap");
-            //Start pulse vibration
+            // Start pulse vibration
             var playerAInput = InputManager.Devices[first];
             var playerBInput = InputManager.Devices[second];
             //playerAInput.Vibrate(1f, 1f);
@@ -57,10 +57,11 @@ namespace UnityStandardAssets.Vehicles.Car
             swapControls();
         }
 
+		// Actually Swap the players controls
         void swapControls()
         {
             print("in swap controls");
-            //turn off vibrate
+            // Turn off vibrate
             //var playerAInput = InputManager.Devices[first];
             //var playerBInput = InputManager.Devices[second];
             //playerAInput.Vibrate(0f, 0f);
@@ -69,6 +70,7 @@ namespace UnityStandardAssets.Vehicles.Car
             //GamePad.SetVibration((PlayerIndex)second, 0f, 0f);
 
 
+			// Remove SwapText and swap control images
             if (!isBottomCar)
             {
                 CarmonyGUI.S.topSwapText.SetActive(false);
@@ -85,13 +87,10 @@ namespace UnityStandardAssets.Vehicles.Car
                 CarmonyGUI.S.bottomImageRight.GetComponent<Image>().sprite = tempImage;
             }
 
-
             //swap controls
             int temp = first;
             first = second;
             second = temp;
-
-            //swap images
          
         }
 
