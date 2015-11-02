@@ -15,7 +15,7 @@ public class StartScreen : MonoBehaviour {
     public List<bool> playersSet;
     public List<bool> buttonsSet;
 
-    float cooldown;
+    public float cooldown;
 
     void Awake()
     {
@@ -45,16 +45,9 @@ public class StartScreen : MonoBehaviour {
                 var player = InputManager.Devices[i];
                 if (player.AnyButton)
                 {
-                    Time.timeScale = 1;
                     gameObject.SetActive(false);
-                    CarmonyGUI.S.bottomMinimap.SetActive(true);
-                    CarmonyGUI.S.topMinimap.SetActive(true);
-                    CarmonyGUI.S.bottomImageLeft.SetActive(true);
-                    CarmonyGUI.S.bottomImageRight.SetActive(true);
-                    CarmonyGUI.S.topImageLeft.SetActive(true);
-                    CarmonyGUI.S.topImageRight.SetActive(true);
-
-                    GameObject.Find("MainGameObject").GetComponent<AudioSource>().enabled = true;
+                    cooldown = Time.realtimeSinceStartup;
+                    InstructionScreen.S.gameObject.SetActive(true);
                 }
             }
         }
@@ -103,7 +96,7 @@ public class StartScreen : MonoBehaviour {
         countSet++;
         if (countSet == InputManager.Devices.Count)
         {
-            text.GetComponent<Text>().text = "Press Any Button To Start!";
+            text.GetComponent<Text>().text = "Press Any Button To Continue";
             for (int i = 0; i < buttonsSet.Count; i++)
             {
                 if (buttonsSet[i] == false)
