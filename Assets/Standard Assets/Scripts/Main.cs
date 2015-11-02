@@ -94,9 +94,19 @@ public class Main : MonoBehaviour
     public void endGame(bool isTop)
     {
         if (isTop)
+        {
             carTopDone = true;
+            CarmonyGUI.S.topMinimap.SetActive(false);
+            CarmonyGUI.S.topImageLeft.SetActive(false);
+            CarmonyGUI.S.topImageRight.SetActive(false);
+        }
         else
+        {
+            CarmonyGUI.S.bottomMinimap.SetActive(false);
+            CarmonyGUI.S.bottomImageLeft.SetActive(false);
+            CarmonyGUI.S.bottomImageRight.SetActive(false);
             carBottomDone = true;
+        }
         CarmonyGUI.S.endGame(isTop);
     }
 }
