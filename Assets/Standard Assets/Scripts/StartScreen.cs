@@ -49,6 +49,11 @@ public class StartScreen : MonoBehaviour {
                     gameObject.SetActive(false);
                     CarmonyGUI.S.bottomMinimap.SetActive(true);
                     CarmonyGUI.S.topMinimap.SetActive(true);
+                    CarmonyGUI.S.bottomImageLeft.SetActive(true);
+                    CarmonyGUI.S.bottomImageRight.SetActive(true);
+                    CarmonyGUI.S.topImageLeft.SetActive(true);
+                    CarmonyGUI.S.topImageRight.SetActive(true);
+
                     GameObject.Find("MainGameObject").GetComponent<AudioSource>().enabled = true;
                 }
             }

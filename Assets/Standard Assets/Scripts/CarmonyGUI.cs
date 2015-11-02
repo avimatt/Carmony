@@ -59,6 +59,10 @@ public class CarmonyGUI : MonoBehaviour {
 		topType = powerUpType.empty;
         bottomMinimap.SetActive(false);
 		bottomType = powerUpType.empty;
+        bottomImageRight.SetActive(false);
+        bottomImageLeft.SetActive(false);
+        topImageRight.SetActive(false);
+        topImageLeft.SetActive(false);
 	}
 
     int getCurIndex(bool isTop)
@@ -172,6 +176,10 @@ public class CarmonyGUI : MonoBehaviour {
         topLetters.SetActive(false);
         topMinimap.SetActive(false);
         bottomMinimap.SetActive(false);
+        bottomImageLeft.SetActive(false);
+        bottomImageRight.SetActive(false);
+        topImageLeft.SetActive(false);
+        topImageRight.SetActive(false);
     }
 
     public void showGUI()
@@ -182,6 +190,10 @@ public class CarmonyGUI : MonoBehaviour {
         topLetters.SetActive(true);
         topMinimap.SetActive(true);
         bottomMinimap.SetActive(true);
+        bottomImageLeft.SetActive(true);
+        bottomImageRight.SetActive(true);
+        topImageLeft.SetActive(true);
+        topImageRight.SetActive(true);
     }
 
     public void setLetters(bool isTopScreen, List<string> letters, powerUpType type)
