@@ -7,8 +7,6 @@ public class Main : MonoBehaviour
 {
     static public Main S;
 
-    public bool paused;
-
     public float interactTimer;
 
     public GameObject carTop;
@@ -16,6 +14,8 @@ public class Main : MonoBehaviour
 
     public bool carTopDone;
     public bool carBottomDone;
+
+	public bool paused;
 
     public int totalLaps = 3;
 
@@ -25,13 +25,14 @@ public class Main : MonoBehaviour
         interactTimer = Time.time;
     }
 
-    //Is the player allowed to pause ect?
+    //Is the player allowed to pause
     public bool canInteract()
     {
         if (paused)
         {
             return false;
-        }else if (Time.time - interactTimer < .5)
+        }
+		else if (Time.time - interactTimer < .5)
         {
             return false;
         }
@@ -41,6 +42,8 @@ public class Main : MonoBehaviour
         }
     }
 
+	// Is the player allowed to move
+	// TODO What is this meant for?
     public bool canMove()
     {
         if (paused)
@@ -72,6 +75,7 @@ public class Main : MonoBehaviour
         {
             if (getStartPressed())
             {
+           		// If both teams have finished and start has been hit restart the game
                 if (carTopDone && carBottomDone)
                 {
                     Application.LoadLevel("NoahDevScene");
@@ -82,11 +86,12 @@ public class Main : MonoBehaviour
         }
     }
 
-
+	// Return whether any player has pressed start
     public bool getStartPressed()
     {
         //this wont work with the time shit...
         //if (CrossPlatformInputManager.GetAxis("Cancel") != 0)
+
         for (int i = 0; i < InputManager.Devices.Count; i++)
         {
             var player = InputManager.Devices[i];
@@ -99,6 +104,7 @@ public class Main : MonoBehaviour
 
     }
 
+	// Display end game screen from the team that finished
     public void endGame(bool isTop)
     {
         if (isTop)

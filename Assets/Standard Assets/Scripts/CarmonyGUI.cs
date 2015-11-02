@@ -56,9 +56,11 @@ public class CarmonyGUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         topMinimap.SetActive(false);
-		topType = powerUpType.empty;
         bottomMinimap.SetActive(false);
+
+		topType = powerUpType.empty;
 		bottomType = powerUpType.empty;
+
         bottomImageRight.SetActive(false);
         bottomImageLeft.SetActive(false);
         topImageRight.SetActive(false);
@@ -89,6 +91,7 @@ public class CarmonyGUI : MonoBehaviour {
         bottomSwapText.SetActive(false);
     }
 
+	// Return the current index of which letter in the powerup sequence the player is at
     int getCurIndex(bool isTop)
     {
         if (isTop)
@@ -97,17 +100,23 @@ public class CarmonyGUI : MonoBehaviour {
             return curIndexBottom;
     }
 
+	// Returns whether a button was pressed corresponding to the sequence
+	// TODO Is there a reason this doesn't return a bool. It seems like the hit variable in update is used like a bool
     float getHit(bool inLettersTop)
     {
+		// Get device objects for the correct team
 		CarUserControl userContorl = inLettersTop ? Main.S.carTop.GetComponent<CarUserControl> () : Main.S.carBottom.GetComponent<CarUserControl> ();
 		var playerAInput = InputManager.Devices[userContorl.first];
         var playerBInput = InputManager.Devices[userContorl.second];
+
+		// Get which letter to check for
         string letter = "";
         if (inLettersTop)
             letter = letterListTop[curIndexTop];
         else
             letter = letterListBottom[curIndexBottom];
 
+		// Check for player input of the correct letter
         float hit = 0;
         int curIndex = getCurIndex(inLettersTop);
         switch (letter)
@@ -142,13 +151,14 @@ public class CarmonyGUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-       // print("printing: " + inLettersBottom + " " + inLettersTop);
+        // print("printing: " + inLettersBottom + " " + inLettersTop);
 	    if (inLettersTop)
         {
 
             float hit = getHit(true);
             if (hit != 0)
             {
+				// Show the player they correctly entered a part of the sequence
                 topLetterList[curIndexTop].GetComponent<Text>().color = new Color(34, 255, 0, 255);
                 curIndexTop++;
 				// If they finished the sequence clean up the GUI and do the powerup.
@@ -156,6 +166,7 @@ public class CarmonyGUI : MonoBehaviour {
                 {
                     curIndexTop = 0;
                     inLettersTop = false;
+					// Blank out the power up sequnce on the screen
                     for (int i = 0; i < topLetterList.Count; i++)
                     {
                         topLetterList[i].GetComponent<Text>().text = "";
@@ -172,6 +183,7 @@ public class CarmonyGUI : MonoBehaviour {
             float hit = getHit(false);
             if (hit != 0)
             {
+				// Show the player they correctly entered a part of the sequence
                 bottomLetterList[curIndexBottom].GetComponent<Text>().color = new Color(34, 255, 0, 255);
                 curIndexBottom++;
 				// If they finished the sequence clean up the GUI and do the powerup.
@@ -179,6 +191,7 @@ public class CarmonyGUI : MonoBehaviour {
                 {
                     curIndexBottom = 0;
                     inLettersBottom = false;
+					// Blank out the power up sequnce on the screen
                     for(int i = 0; i < bottomLetterList.Count; i++)
                     {
                         bottomLetterList[i].GetComponent<Text>().text = "";
@@ -220,6 +233,7 @@ public class CarmonyGUI : MonoBehaviour {
         topImageRight.SetActive(true);
     }
 
+	// Display power up sequence to the players 
     public void setLetters(bool isTopScreen, List<string> letters, powerUpType type)
     {
         if (!isTopScreen)
@@ -244,6 +258,7 @@ public class CarmonyGUI : MonoBehaviour {
         }
     }
 
+	// Display all end game scenarios
     public void endGame(bool isTop)
     {
         if (isTop)
@@ -264,6 +279,7 @@ public class CarmonyGUI : MonoBehaviour {
             else
                 bottomEndPlace.GetComponent<Text>().text = "2nd";
         }
+
         if (Main.S.carBottomDone && Main.S.carTopDone)
         {
             restartText.SetActive(true);
