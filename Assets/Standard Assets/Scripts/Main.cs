@@ -42,20 +42,6 @@ public class Main : MonoBehaviour
         }
     }
 
-	// Is the player allowed to move
-	// TODO What is this meant for?
-    public bool canMove()
-    {
-        if (paused)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
     void Awake()
     {
         S = this;

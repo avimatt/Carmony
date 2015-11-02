@@ -6,19 +6,20 @@ using InControl;
 public class UserInteraction : MonoBehaviour {
 
     
-    public bool isCarTop;
+    public bool isCarBottom;
     public bool isBoosting;
     public float boostTimer;
 
 	// Use this for initialization
 	void Start () {
-        isCarTop = gameObject.GetComponentInParent<CarUserControl>().isBottomCar;
+        isCarBottom = gameObject.GetComponentInParent<CarUserControl>().isBottomCar;
         boostTimer = Time.time;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (!isCarTop)
+        // Check if car is done and if so ignore input
+		if (!isCarBottom)
         {
             if (Main.S.carTopDone)
                 return;
@@ -29,27 +30,25 @@ public class UserInteraction : MonoBehaviour {
                 return;
         }
 
+
         CarUserControl userControl = gameObject.GetComponentInParent<CarUserControl>();
-        if (Time.time < 1)
+        // Prevent players from using reset right away
+		if (Time.time < 1)
             return;
+		// If car has no controllers attached to it
         if (userControl.first >= InputManager.Devices.Count)
             return;
 
+		// Get player controller object
         var playerAInput = InputManager.Devices[userControl.first];
         var playerBInput = InputManager.Devices[userControl.second];
 
-        //only resetting to beginnning right now
-        //move to last checkpoint
+		// Turn off boost
         if (isBoosting && Time.time - boostTimer > 5)
             isBoosting = false;
+
         bool resetting = false;
-
-
-        if ((playerAInput.RightBumper || playerBInput.RightBumper) && !isCarTop)
-        {
-            resetting = true;
-        }
-        else if ((playerAInput.RightBumper || playerBInput.RightBumper) && isCarTop)
+		if ((playerAInput.RightBumper || playerBInput.RightBumper) && gameObject.GetComponentInParent<CarState>().currLap != 0)
         {
             resetting = true;
         }
@@ -58,6 +57,7 @@ public class UserInteraction : MonoBehaviour {
             Vector3 newPos = new Vector3();
             Transform checkPoint;
             Quaternion newRotation;
+			// Find the location and rotation of the prev checkpoint
             if (gameObject.GetComponentInParent<CarState>().currCheckpoint != 0)
             {
                 checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().currCheckpoint - 1];
@@ -72,17 +72,14 @@ public class UserInteraction : MonoBehaviour {
             newPos.y = checkPoint.position.y;
             newPos.z = checkPoint.position.z;
 
+			// Adjust angle to face correct direction
             Vector3 Angles = newRotation.eulerAngles;
             Angles.y += 90;
             newRotation = Quaternion.Euler(Angles.x, Angles.y, Angles.z);
             //newRotation.y += .9f;
 
-            if (isCarTop) {
-
-                gameObject.GetComponentInParent<Transform>().position = newPos;//new Vector3(34, 0, 449);
-            }
-            else
-                gameObject.GetComponentInParent<Transform>().position = newPos;
+			// Move car to correct spot
+            gameObject.GetComponentInParent<Transform>().position = newPos;
             gameObject.GetComponentInParent<Transform>().rotation = newRotation;
             //this is only lowering him to ~1-5 right now. could polish this.
             gameObject.GetComponentInParent<CarController>().zeroSpeed();

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using InControl;
@@ -42,7 +42,7 @@ public class PowerUp : MonoBehaviour
         Destroy(gameObject); 
         
 		// Determine which car hit it
-        bool isTopScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarTop;
+        bool isTopScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
 		// Generate random activation sequence
         List<string> letterList = getNewLetterList();
 		// Show the player the sequence

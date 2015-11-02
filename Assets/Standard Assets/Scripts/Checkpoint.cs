@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Checkpoint : MonoBehaviour {
@@ -21,6 +21,7 @@ public class Checkpoint : MonoBehaviour {
         {
             return;
         }
+
         if (playerTrans && playerTrans.tag=="Player") {
             // other is player
             // Get a reference to the CarState script
@@ -36,9 +37,10 @@ public class Checkpoint : MonoBehaviour {
                     if (player.currCheckpoint == 0)
                     {
                         player.currLap++;
+						// If finished last lap
                         if (player.currLap == Main.S.totalLaps)
                         {
-                            Main.S.endGame(!playerTrans.GetComponent<UserInteraction>().isCarTop);
+                            Main.S.endGame(!playerTrans.GetComponent<UserInteraction>().isCarBottom);
                         }
                     }
                     player.currCheckpoint++;
