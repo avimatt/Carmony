@@ -10,6 +10,8 @@ public class UserInteraction : MonoBehaviour {
     public bool isBoosting;
     public float boostTimer;
 	public float shrinkingTimer;
+    public bool isShrinking;
+    public bool isGrowing;
 	// Use this for initialization
 	void Start () {
         isCarBottom = gameObject.GetComponentInParent<CarUserControl>().isBottomCar;
@@ -43,20 +45,45 @@ public class UserInteraction : MonoBehaviour {
         var playerAInput = InputManager.Devices[userControl.first];
         var playerBInput = InputManager.Devices[userControl.second];
 
-		if((playerAInput.LeftBumper || playerBInput.LeftBumper) && Time.time - shrinkingTimer > .25){
-			Vector3 newSize = gameObject.transform.localScale;
-			print ("changing size");
-			if (newSize.x == 1){
-				newSize.x = newSize.x/2;
-				newSize.y = newSize.y/2;
-				newSize.z = newSize.z/2;
-				gameObject.transform.localScale = newSize;
-			}else{
-				newSize.x = 1;
-				newSize.y = 1;
-				newSize.z = 1;
-				gameObject.transform.localScale = newSize;
+        if (isShrinking)
+        {
+            Vector3 newSize = gameObject.transform.localScale;
+            newSize.x = newSize.x  - .05f;
+            newSize.y = newSize.y - .05f;
+            newSize.z = newSize.z  -.05f;
+            if(newSize.x <= .5)
+            {
+                newSize.x = .5f;
+                newSize.y = .5f;
+                newSize.z = .5f;
+                isShrinking = false;
+            }
+            gameObject.transform.localScale = newSize;
+            
+        }
+        if (isGrowing)
+        {
+            Vector3 newSize = gameObject.transform.localScale;
+            newSize.x = newSize.x + .05f;
+            newSize.y = newSize.y + .05f;
+            newSize.z = newSize.z + .05f;
+            if (newSize.x >= 1)
+            {
+                newSize.x = 1f;
+                newSize.y = 1f;
+                newSize.z = 1f;
+                isGrowing = false;
+            }
+            gameObject.transform.localScale = newSize;
 
+        }
+
+        if ((playerAInput.LeftBumper || playerBInput.LeftBumper) && Time.time - shrinkingTimer > .25){
+			Vector3 newSize = gameObject.transform.localScale;
+			if (newSize.x == 1){
+                isShrinking = true;
+			}else{
+                isGrowing = true;
 			}
 			shrinkingTimer = Time.time;
 		}
