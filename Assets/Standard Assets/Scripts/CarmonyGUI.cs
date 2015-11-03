@@ -29,8 +29,8 @@ public class CarmonyGUI : MonoBehaviour {
 
     public GameObject restartText;
 
-    public GameObject topMinimap;
-    public GameObject bottomMinimap;
+    public GameObject topMinimapDots;
+    public GameObject bottomMinimapDots;
 
     public GameObject topSwapText;
     public GameObject bottomSwapText;
@@ -44,6 +44,9 @@ public class CarmonyGUI : MonoBehaviour {
     public Sprite bbutton;
     public Sprite xbutton;
     public Sprite ybutton;
+
+	public GameObject topMinimap;
+	public GameObject bottomMinimap;
 
     bool inLettersTop;
     bool inLettersBottom;
@@ -62,6 +65,8 @@ public class CarmonyGUI : MonoBehaviour {
 	void Start () {
         topMinimap.SetActive(false);
         bottomMinimap.SetActive(false);
+		topMinimapDots.SetActive(false);
+		bottomMinimapDots.SetActive(false);
 
 		topType = powerUpType.empty;
 		bottomType = powerUpType.empty;
@@ -223,6 +228,8 @@ public class CarmonyGUI : MonoBehaviour {
         topLetters.SetActive(false);
         topMinimap.SetActive(false);
         bottomMinimap.SetActive(false);
+		topMinimapDots.SetActive(false);
+		bottomMinimapDots.SetActive(false);
         bottomImageLeft.SetActive(false);
         bottomImageRight.SetActive(false);
         topImageLeft.SetActive(false);
@@ -236,6 +243,8 @@ public class CarmonyGUI : MonoBehaviour {
         //timeText.SetActive(true);
         topLetters.SetActive(true);
         topMinimap.SetActive(true);
+		topMinimapDots.SetActive(true);
+		bottomMinimapDots.SetActive(true);
         bottomMinimap.SetActive(true);
         bottomImageLeft.SetActive(true);
         bottomImageRight.SetActive(true);

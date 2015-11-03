@@ -55,6 +55,26 @@ namespace UnityStandardAssets.Vehicles.Car
         public float Revs { get; private set; }
         public float AccelInput { get; private set; }
 
+		public float SlipLimit 
+		{ 
+			get { return m_SlipLimit; }
+			set { m_SlipLimit = value; }
+		}
+
+		public float SteerHelperProperty 
+		{ 
+			get { return m_SteerHelper; }
+			set { 
+				if(value < 0)
+					m_SteerHelper = 0;
+				else if(value > 1)
+					m_SteerHelper = 1;
+				else 
+					m_SteerHelper = value;
+			}
+		}
+
+
 
         // Use this for initialization
         private void Start()

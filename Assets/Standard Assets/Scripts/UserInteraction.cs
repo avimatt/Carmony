@@ -9,7 +9,7 @@ public class UserInteraction : MonoBehaviour {
     public bool isCarBottom;
     public bool isBoosting;
     public float boostTimer;
-
+	public float shrinkingTimer;
 	// Use this for initialization
 	void Start () {
         isCarBottom = gameObject.GetComponentInParent<CarUserControl>().isBottomCar;
@@ -42,6 +42,24 @@ public class UserInteraction : MonoBehaviour {
 		// Get player controller object
         var playerAInput = InputManager.Devices[userControl.first];
         var playerBInput = InputManager.Devices[userControl.second];
+
+		if((playerAInput.LeftBumper || playerBInput.LeftBumper) && Time.time - shrinkingTimer > .25){
+			Vector3 newSize = gameObject.transform.localScale;
+			print ("changing size");
+			if (newSize.x == 1){
+				newSize.x = newSize.x/2;
+				newSize.y = newSize.y/2;
+				newSize.z = newSize.z/2;
+				gameObject.transform.localScale = newSize;
+			}else{
+				newSize.x = 1;
+				newSize.y = 1;
+				newSize.z = 1;
+				gameObject.transform.localScale = newSize;
+
+			}
+			shrinkingTimer = Time.time;
+		}
 
 		// Turn off boost
         if (isBoosting && Time.time - boostTimer > 5)

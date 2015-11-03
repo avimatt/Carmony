@@ -120,10 +120,20 @@ namespace UnityStandardAssets.Vehicles.Car
             //Turning off handbrake because we are already using that button
             // for the powerup character sequence input.
             float handbrake = 0;
+
             float playerA_turnRight = Math.Max(0f, playerAInput.LeftStickX);
             float playerB_turnLeft = Math.Min(0f, playerBInput.LeftStickX);
 
             float steering = playerA_turnRight + playerB_turnLeft;
+			if (gameObject.transform.localScale.x < 1) {
+				steering *= Mathf.Pow(2.718f, gameObject.GetComponent<CarController> ().getSpeed()/-60); 
+				gameObject.GetComponent<CarController> ().SlipLimit = .7f;
+				gameObject.GetComponent<CarController> ().SteerHelperProperty = 1f;
+			} else {
+				gameObject.GetComponent<CarController> ().SlipLimit = .3f;
+				gameObject.GetComponent<CarController> ().SteerHelperProperty = .644f;
+			}
+
             // pass the input to the car!
             if (!isBottomCar)
             {
