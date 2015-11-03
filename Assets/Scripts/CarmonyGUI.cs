@@ -44,6 +44,10 @@ public class CarmonyGUI : MonoBehaviour {
     public Sprite bbutton;
     public Sprite xbutton;
     public Sprite ybutton;
+    public Sprite upbutton;
+    public Sprite downbutton;
+    public Sprite leftbutton;
+    public Sprite rightbutton;
 
 	public GameObject topMinimap;
 	public GameObject bottomMinimap;

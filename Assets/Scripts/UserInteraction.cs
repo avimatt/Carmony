@@ -11,6 +11,8 @@ public class UserInteraction : MonoBehaviour {
     public float boostTimer;
 	public float shrinkingTimer;
     public bool isShrinking;
+    public bool isNormalizingUp;
+    public bool isNormalizingDown;
     public bool isGrowing;
 	// Use this for initialization
 	void Start () {
@@ -61,7 +63,7 @@ public class UserInteraction : MonoBehaviour {
             gameObject.transform.localScale = newSize;
             
         }
-        if (isGrowing)
+        if (isNormalizingUp)
         {
             Vector3 newSize = gameObject.transform.localScale;
             newSize.x = newSize.x + .05f;
@@ -72,19 +74,57 @@ public class UserInteraction : MonoBehaviour {
                 newSize.x = 1f;
                 newSize.y = 1f;
                 newSize.z = 1f;
+                isNormalizingUp = false;
+            }
+            gameObject.transform.localScale = newSize;
+
+        }
+        if (isGrowing)
+        {
+            Vector3 newSize = gameObject.transform.localScale;
+            newSize.x = newSize.x + .05f;
+            newSize.y = newSize.y + .05f;
+            newSize.z = newSize.z + .05f;
+            if (newSize.x >= 2)
+            {
+                newSize.x = 2f;
+                newSize.y = 2f;
+                newSize.z = 2f;
                 isGrowing = false;
             }
             gameObject.transform.localScale = newSize;
 
         }
+        if (isNormalizingDown)
+        {
+            Vector3 newSize = gameObject.transform.localScale;
+            newSize.x = newSize.x - .05f;
+            newSize.y = newSize.y - .05f;
+            newSize.z = newSize.z - .05f;
+            if (newSize.x <= 1)
+            {
+                newSize.x = 1f;
+                newSize.y = 1f;
+                newSize.z = 1f;
+                isNormalizingDown = false;
+            }
+            gameObject.transform.localScale = newSize;
 
-        if ((playerAInput.LeftBumper || playerBInput.LeftBumper) && Time.time - shrinkingTimer > .25){
+        }
+        if ((playerBInput.DPad.Up.WasPressed || playerBInput.DPad.Down.WasPressed)){
 			Vector3 newSize = gameObject.transform.localScale;
-			if (newSize.x == 1){
-                isShrinking = true;
-			}else{
+            if (newSize.x == 1 && (playerBInput.DPad.Up.WasPressed))
+            {
                 isGrowing = true;
-			}
+            } else if (newSize.x == 1 && (playerBInput.DPad.Down.WasPressed)) {
+                isShrinking = true;
+            }
+            else if (newSize.x == .5f && playerBInput.DPad.Up.WasPressed) {
+                isNormalizingUp = true;
+            } else if (newSize.x == 2f && playerBInput.DPad.Down.WasPressed)
+            {
+                isNormalizingDown = true;
+            }
 			shrinkingTimer = Time.time;
 		}
 
