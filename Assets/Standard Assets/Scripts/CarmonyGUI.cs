@@ -40,6 +40,11 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject bottomImageLeft;
     public GameObject bottomImageRight;
 
+    public Sprite abutton;
+    public Sprite bbutton;
+    public Sprite xbutton;
+    public Sprite ybutton;
+
     bool inLettersTop;
     bool inLettersBottom;
     int curIndexBottom = 0;
@@ -65,7 +70,12 @@ public class CarmonyGUI : MonoBehaviour {
         bottomImageLeft.SetActive(false);
         topImageRight.SetActive(false);
         topImageLeft.SetActive(false);
-	}
+
+        foreach (GameObject go in bottomLetterList)
+            go.SetActive(false);
+        foreach (GameObject go in topLetterList)
+            go.SetActive(false);
+    }
 
     //makes coroutine callable by other classes
     public void raiseStartFlagText()
@@ -159,7 +169,7 @@ public class CarmonyGUI : MonoBehaviour {
             if (hit != 0)
             {
 				// Show the player they correctly entered a part of the sequence
-                topLetterList[curIndexTop].GetComponent<Text>().color = new Color(34, 255, 0, 255);
+                topLetterList[curIndexTop].GetComponent<Image>().color = new Color32(60, 60, 60, 255);
                 curIndexTop++;
 				// If they finished the sequence clean up the GUI and do the powerup.
                 if (curIndexTop >= letterListTop.Count)
@@ -169,8 +179,8 @@ public class CarmonyGUI : MonoBehaviour {
 					// Blank out the power up sequnce on the screen
                     for (int i = 0; i < topLetterList.Count; i++)
                     {
-                        topLetterList[i].GetComponent<Text>().text = "";
-                        topLetterList[i].GetComponent<Text>().color = new Color(255, 255, 255, 255);
+                        topLetterList[i].SetActive(false);
+                        topLetterList[i].GetComponent<Image>().color = new Color(255, 255, 255, 255);
                     }
 
 					PowerUp.ActivatePowerUp(true, topType);
@@ -184,7 +194,7 @@ public class CarmonyGUI : MonoBehaviour {
             if (hit != 0)
             {
 				// Show the player they correctly entered a part of the sequence
-                bottomLetterList[curIndexBottom].GetComponent<Text>().color = new Color(34, 255, 0, 255);
+                bottomLetterList[curIndexBottom].GetComponent<Image>().color = new Color32(60, 60, 60, 255);
                 curIndexBottom++;
 				// If they finished the sequence clean up the GUI and do the powerup.
                 if (curIndexBottom >= letterListBottom.Count)
@@ -194,8 +204,8 @@ public class CarmonyGUI : MonoBehaviour {
 					// Blank out the power up sequnce on the screen
                     for(int i = 0; i < bottomLetterList.Count; i++)
                     {
-                        bottomLetterList[i].GetComponent<Text>().text = "";
-                        bottomLetterList[i].GetComponent<Text>().color = new Color(255, 255, 255, 255);
+                        bottomLetterList[i].SetActive(false);
+                        bottomLetterList[i].GetComponent<Image>().color = new Color(255, 255, 255, 255);
                     }
 
 					PowerUp.ActivatePowerUp(false, bottomType);
@@ -209,7 +219,7 @@ public class CarmonyGUI : MonoBehaviour {
     {
         topGUI.SetActive(false);
         bottomGUI.SetActive(false);
-        timeText.SetActive(false);
+        //timeText.SetActive(false);
         topLetters.SetActive(false);
         topMinimap.SetActive(false);
         bottomMinimap.SetActive(false);
@@ -223,7 +233,7 @@ public class CarmonyGUI : MonoBehaviour {
     {
         topGUI.SetActive(true);
         bottomGUI.SetActive(true);
-        timeText.SetActive(true);
+        //timeText.SetActive(true);
         topLetters.SetActive(true);
         topMinimap.SetActive(true);
         bottomMinimap.SetActive(true);
@@ -231,6 +241,20 @@ public class CarmonyGUI : MonoBehaviour {
         bottomImageRight.SetActive(true);
         topImageLeft.SetActive(true);
         topImageRight.SetActive(true);
+    }
+
+
+    //return the image of the xbox button corresponding to the letter
+    Sprite getSpriteForLetter(string letter)
+    {
+        if (letter == "A")
+            return abutton;
+        else if (letter == "B")
+            return bbutton;
+        else if (letter == "X")
+            return xbutton;
+        else
+            return ybutton;
     }
 
 	// Display power up sequence to the players 
@@ -241,7 +265,8 @@ public class CarmonyGUI : MonoBehaviour {
             letterListTop = letters;
             for (int i = 0; i < topLetterList.Count; i++)
             {
-                topLetterList[i].GetComponent<Text>().text = letters[i];
+                topLetterList[i].SetActive(true);
+                topLetterList[i].GetComponent<Image>().sprite = getSpriteForLetter(letters[i]);
             }
             inLettersTop = true;
 			topType = type;
@@ -251,7 +276,8 @@ public class CarmonyGUI : MonoBehaviour {
             letterListBottom = letters;
             for (int i = 0; i < bottomLetterList.Count; i++)
             {
-                bottomLetterList[i].GetComponent<Text>().text = letters[i];
+                bottomLetterList[i].SetActive(true);
+                bottomLetterList[i].GetComponent<Image>().sprite = getSpriteForLetter(letters[i]);
             }
             inLettersBottom = true;
 			bottomType = type;
@@ -264,7 +290,7 @@ public class CarmonyGUI : MonoBehaviour {
         if (isTop)
         {
             topEnd.SetActive(true);
-            topEndTime.GetComponent<Text>().text = Timer.S.getGameTime();
+            topEndTime.GetComponent<Text>().text = Main.S.getGameTime();
             if (!Main.S.carBottomDone)
                 topEndPlace.GetComponent<Text>().text = "1st";
             else
@@ -273,7 +299,7 @@ public class CarmonyGUI : MonoBehaviour {
         else
         {
             bottomEnd.SetActive(true);
-            bottomEndTime.GetComponent<Text>().text = Timer.S.getGameTime();
+            bottomEndTime.GetComponent<Text>().text = Main.S.getGameTime();
             if (!Main.S.carTopDone)
                 bottomEndPlace.GetComponent<Text>().text = "1st";
             else

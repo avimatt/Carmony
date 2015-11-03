@@ -28,8 +28,8 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             print("in player swap");
             // Start pulse vibration
-            var playerAInput = InputManager.Devices[first];
-            var playerBInput = InputManager.Devices[second];
+            //var playerAInput = InputManager.Devices[first];
+            //var playerBInput = InputManager.Devices[second];
             //playerAInput.Vibrate(1f, 1f);
             //playerBInput.Vibrate(1f, 1f);
             //GamePad.SetVibration((PlayerIndex)first, 1f, 1f);

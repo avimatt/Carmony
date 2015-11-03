@@ -89,8 +89,16 @@ public class Main : MonoBehaviour
         return false;
 
     }
-
-	// Display end game screen from the team that finished
+    public string getGameTime()
+    {
+        int minutes = (int)(Time.time / 60);
+        int seconds = (int)(Time.time % 60);
+        string secondString = seconds.ToString();
+        if (seconds < 10)
+            secondString = "0" + seconds.ToString();
+        return minutes + ":" + secondString;
+    }
+    // Display end game screen from the team that finished
     public void endGame(bool isTop)
     {
         if (isTop)

@@ -17,17 +17,9 @@ public class Timer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        gameObject.GetComponent<Text>().text = getGameTime();
+        gameObject.GetComponent<Text>().text = Main.S.getGameTime();
 	}
 
 
-    public string getGameTime()
-    {
-        int minutes = (int)(Time.time / 60);
-        int seconds = (int)(Time.time % 60);
-        string secondString = seconds.ToString();
-        if (seconds < 10)
-            secondString = "0" + seconds.ToString();
-        return minutes + ":" + secondString;
-    }
+
 }
