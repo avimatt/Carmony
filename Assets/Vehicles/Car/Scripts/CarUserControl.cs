@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 using InControl;
 using System.Collections;
-//using XInputDotNetPure;
+using XInputDotNetPure;
 
 namespace UnityStandardAssets.Vehicles.Car
 {
@@ -31,6 +31,8 @@ namespace UnityStandardAssets.Vehicles.Car
             var playerBInput = InputManager.Devices[second];
             playerAInput.Vibrate(1f, 1f);
             playerBInput.Vibrate(1f, 1f);
+            InputManager.ActiveDevice.Vibrate(playerAInput.LeftTrigger, playerBInput.RightTrigger);
+
             //GamePad.SetVibration((PlayerIndex)first, 1f, 1f);
             //GamePad.SetVibration((PlayerIndex)second, 1f, 1f);
             if (!isBottomCar)
@@ -61,10 +63,10 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             print("in swap controls");
             // Turn off vibrate
-            //var playerAInput = InputManager.Devices[first];
-            //var playerBInput = InputManager.Devices[second];
-           // playerAInput.Vibrate(0f, 0f);
-            //playerBInput.Vibrate(0f, 0f);
+            var playerAInput = InputManager.Devices[first];
+            var playerBInput = InputManager.Devices[second];
+            playerAInput.Vibrate(0f, 0f);
+            playerBInput.Vibrate(0f, 0f);
             //GamePad.SetVibration((PlayerIndex)first, 0f, 0f);
             //GamePad.SetVibration((PlayerIndex)second, 0f, 0f);
 
