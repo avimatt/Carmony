@@ -14,6 +14,14 @@ public class UserInteraction : MonoBehaviour {
     public bool isNormalizingUp;
     public bool isNormalizingDown;
     public bool isGrowing;
+
+    public bool goingUp;
+    public bool goingToPoint;
+    public bool goingDown;
+    public Vector3 targetLocation;
+    public Quaternion targetRotation;
+    public float carrySpeed;
+    public Quaternion initalRotation;
 	// Use this for initialization
 	void Start () {
         isCarBottom = gameObject.GetComponentInParent<CarUserControl>().isBottomCar;
@@ -33,7 +41,6 @@ public class UserInteraction : MonoBehaviour {
             if (Main.S.carBottomDone)
                 return;
         }
-
 
         CarUserControl userControl = gameObject.GetComponentInParent<CarUserControl>();
         // Prevent players from using reset right away
@@ -153,21 +160,130 @@ public class UserInteraction : MonoBehaviour {
                 checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1];
                 newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1].rotation;
             }
+
+
             newPos.x = checkPoint.position.x;
             newPos.y = checkPoint.position.y;
             newPos.z = checkPoint.position.z;
+            targetLocation = newPos;
+            targetRotation = newRotation;
+            initalRotation = gameObject.GetComponentInParent<Transform>().rotation;
 
-			// Adjust angle to face correct direction
+            // Adjust angle to face correct direction
             Vector3 Angles = newRotation.eulerAngles;
             Angles.y += 90;
             newRotation = Quaternion.Euler(Angles.x, Angles.y, Angles.z);
             //newRotation.y += .9f;
 
-			// Move car to correct spot
-            gameObject.GetComponentInParent<Transform>().position = newPos;
-            gameObject.GetComponentInParent<Transform>().rotation = newRotation;
+            // Move car to correct spot
+            //gameObject.GetComponentInParent<Transform>().position = newPos;
+            //gameObject.GetComponentInParent<Transform>().rotation = newRotation;
+            goingUp = true;
             //this is only lowering him to ~1-5 right now. could polish this.
             gameObject.GetComponentInParent<CarController>().zeroSpeed();
+        }
+    }
+
+    public void moveToLocation()
+    {
+        if (goingUp)
+        {
+            gameObject.GetComponentInParent<CarController>().zeroSpeed();
+
+            Vector3 newPos2 = gameObject.GetComponentInParent<Transform>().position;
+            newPos2.y += .2f;
+
+            gameObject.GetComponentInParent<Transform>().rotation = initalRotation;
+
+            if (newPos2.y > 10)
+                newPos2.y = 10;
+            if (newPos2.y >= 10)
+            {
+                goingUp = false;
+                goingToPoint = true;
+                newPos2.y = 10;
+                carrySpeed = (float)Vector3.Distance(gameObject.GetComponentInParent<Transform>().position,targetLocation)/75;
+            }
+            gameObject.GetComponentInParent<Transform>().position = newPos2;
+
+
+        }
+        else if (goingToPoint)
+        {
+            
+            Vector3 newPos = gameObject.GetComponentInParent<Transform>().position;
+            gameObject.GetComponentInParent<CarController>().zeroSpeed();
+            newPos.y = 10; ;
+            if ((newPos.x - targetLocation.x) > 2*carrySpeed)
+            {
+                newPos.x -= carrySpeed;
+                print("decreasing x");
+            }else if ((newPos.x - targetLocation.x ) < -2*carrySpeed)
+            {
+                newPos.x += carrySpeed;
+                print("increasing x");
+
+            }
+
+            if ((newPos.z - targetLocation.z) > 2 * carrySpeed)
+            {
+                newPos.z -= carrySpeed;
+                print("decreasing z");
+
+            }
+            else if ((newPos.z - targetLocation.z) < -2*carrySpeed)
+            {
+                newPos.z += carrySpeed;
+                print("increasing z");
+            }
+
+
+
+            print("----------");
+            print(Mathf.Abs(newPos.x - targetLocation.x) + " " + 2 * carrySpeed);
+            print(Mathf.Abs(newPos.z - targetLocation.z) + " " + 2 * carrySpeed);
+            print("----------");
+
+            Vector3 Angles = gameObject.GetComponentInParent<Transform>().rotation.eulerAngles;
+            bool rotationDone = false;
+
+            //print((Mathf.Abs(gameObject.GetComponentInParent<Transform>().rotation.eulerAngles.y % 360) + " ||| " + Mathf.Abs((targetRotation.eulerAngles.y + 90) % 360)));
+            if (Mathf.Abs(gameObject.GetComponentInParent<Transform>().rotation.eulerAngles.y % 360 - (targetRotation.eulerAngles.y + 90) % 360) > 3)
+            {
+                Angles.y += 2;
+                gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(Angles.x, Angles.y, Angles.z);
+            }
+            else
+            {
+                rotationDone = true;
+                Vector3 Angles2 = targetRotation.eulerAngles;
+                Angles2.y += 90;
+                gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(Angles2.x, Angles2.y, Angles2.z);
+
+            }
+
+            if ((Mathf.Abs(newPos.x - targetLocation.x) <= 2*carrySpeed  && Mathf.Abs(newPos.z - targetLocation.z) <= carrySpeed*2) && rotationDone)
+            {
+                newPos.x = targetLocation.x;
+                newPos.z = targetLocation.z;
+                //Vector3 Angles2 = targetRotation.eulerAngles;
+                //Angles2.y += 90;
+                //gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(Angles2.x, Angles2.y, Angles2.z);
+                goingToPoint = false;
+                goingDown = true;
+            }
+            gameObject.GetComponentInParent<Transform>().position = newPos;
+
+        }
+        else if (goingDown)
+        {
+            Vector3 Angles2 = targetRotation.eulerAngles;
+            Angles2.y += 90;
+            gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(Angles2.x, Angles2.y, Angles2.z);
+            if (gameObject.GetComponentInParent<Transform>().position.y < 1)
+            {
+                goingDown = false;
+            }
         }
     }
 

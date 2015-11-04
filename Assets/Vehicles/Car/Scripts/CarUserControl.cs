@@ -107,6 +107,9 @@ namespace UnityStandardAssets.Vehicles.Car
                 return;
             if (first >= InputManager.Devices.Count)
                 return;
+
+            gameObject.GetComponentInParent<UserInteraction>().moveToLocation();
+
             // Use InControl
             // Hard code the mapping of device to player for now
             var playerAInput = InputManager.Devices[first];
