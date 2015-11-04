@@ -146,48 +146,88 @@ public class UserInteraction : MonoBehaviour {
         }
         if (resetting)
         {
-            Vector3 newPos = new Vector3();
-            Transform checkPoint;
-            Quaternion newRotation;
-			// Find the location and rotation of the prev checkpoint
-            if (gameObject.GetComponentInParent<CarState>().currCheckpoint != 0)
-            {
-                checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().currCheckpoint - 1];
-                newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().currCheckpoint - 1].rotation;
-            }
-            else
-            {
-                checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1];
-                newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1].rotation;
-            }
-
-
-            newPos.x = checkPoint.position.x;
-            newPos.y = checkPoint.position.y;
-            newPos.z = checkPoint.position.z;
-            targetLocation = newPos;
-            targetRotation = newRotation;
-            initalRotation = gameObject.GetComponentInParent<Transform>().rotation;
-
-            // Adjust angle to face correct direction
-            Vector3 Angles = newRotation.eulerAngles;
-            Angles.y += 90;
-            newRotation = Quaternion.Euler(Angles.x, Angles.y, Angles.z);
-            //newRotation.y += .9f;
-
-            // Move car to correct spot
-            //gameObject.GetComponentInParent<Transform>().position = newPos;
-            //gameObject.GetComponentInParent<Transform>().rotation = newRotation;
-            goingUp = true;
-            //this is only lowering him to ~1-5 right now. could polish this.
-            gameObject.GetComponentInParent<CarController>().zeroSpeed();
+            startReset();
         }
     }
 
+    public void startReset()
+    {
+        Vector3 newPos = new Vector3();
+        Transform checkPoint;
+        Quaternion newRotation;
+        // Find the location and rotation of the prev checkpoint
+        if (gameObject.GetComponentInParent<CarState>().currCheckpoint != 0)
+        {
+            checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().currCheckpoint - 1];
+            newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().currCheckpoint - 1].rotation;
+        }
+        else
+        {
+            checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1];
+            newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1].rotation;
+        }
+
+
+        newPos.x = checkPoint.position.x;
+        newPos.y = checkPoint.position.y;
+        newPos.z = checkPoint.position.z;
+        targetLocation = newPos;
+        targetRotation = newRotation;
+        initalRotation = gameObject.GetComponentInParent<Transform>().rotation;
+
+        // Move car to correct spot
+        goingUp = true;
+
+        //this is only lowering him to ~1-5 right now. could polish this.
+        gameObject.GetComponentInParent<CarController>().zeroSpeed();
+    }
+
+
+    //immediatly move the car to above the last checkpoint and immediatly rotate to correct direction
+    public void hardReset()
+    {
+        Vector3 newPos = new Vector3();
+        Transform checkPoint;
+        Quaternion newRotation;
+        // Find the location and rotation of the prev checkpoint
+        if (gameObject.GetComponentInParent<CarState>().currCheckpoint != 0)
+        {
+            checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().currCheckpoint - 1];
+            newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().currCheckpoint - 1].rotation;
+        }
+        else
+        {
+            checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1];
+            newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1].rotation;
+        }
+
+
+        newPos.x = checkPoint.position.x;
+        newPos.y = checkPoint.position.y;
+        newPos.z = checkPoint.position.z;
+        targetLocation = newPos;
+        targetRotation = newRotation;
+        initalRotation = gameObject.GetComponentInParent<Transform>().rotation;
+
+        // Adjust angle to face correct direction
+        Vector3 Angles = newRotation.eulerAngles;
+        Angles.y += 90;
+        newRotation = Quaternion.Euler(Angles.x, Angles.y, Angles.z);
+
+        // Move car to correct spot
+        gameObject.GetComponentInParent<Transform>().position = newPos;
+        gameObject.GetComponentInParent<Transform>().rotation = newRotation;
+        //this is only lowering him to ~1-5 right now. could polish this.
+        gameObject.GetComponentInParent<CarController>().zeroSpeed();
+    }
+    
+    //called in update of carController
+    //moves the car, up,to the last checkpoint,then down while rotating to the correct direction
     public void moveToLocation()
     {
         if (goingUp)
         {
+            //Move up to y = 10;
             gameObject.GetComponentInParent<CarController>().zeroSpeed();
 
             Vector3 newPos2 = gameObject.GetComponentInParent<Transform>().position;
@@ -195,8 +235,6 @@ public class UserInteraction : MonoBehaviour {
 
             gameObject.GetComponentInParent<Transform>().rotation = initalRotation;
 
-            if (newPos2.y > 10)
-                newPos2.y = 10;
             if (newPos2.y >= 10)
             {
                 goingUp = false;
@@ -206,14 +244,22 @@ public class UserInteraction : MonoBehaviour {
             }
             gameObject.GetComponentInParent<Transform>().position = newPos2;
 
+            Vector3 newRotation = gameObject.GetComponentInParent<Transform>().rotation.eulerAngles;
+            gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(0, newRotation.y, 0); ;
+            gameObject.GetComponentInParent<Transform>().position = newPos2;
+
+
 
         }
         else if (goingToPoint)
         {
             
             Vector3 newPos = gameObject.GetComponentInParent<Transform>().position;
+            //stop momentum and falling
             gameObject.GetComponentInParent<CarController>().zeroSpeed();
-            newPos.y = 10; ;
+            newPos.y = 10; 
+
+            //Chose X direction to go;
             if ((newPos.x - targetLocation.x) > 2*carrySpeed)
             {
                 newPos.x -= carrySpeed;
@@ -225,6 +271,7 @@ public class UserInteraction : MonoBehaviour {
 
             }
 
+            //chose z direction to go
             if ((newPos.z - targetLocation.z) > 2 * carrySpeed)
             {
                 newPos.z -= carrySpeed;
@@ -237,28 +284,22 @@ public class UserInteraction : MonoBehaviour {
                 print("increasing z");
             }
 
-
-
-            print("----------");
-            print(Mathf.Abs(newPos.x - targetLocation.x) + " " + 2 * carrySpeed);
-            print(Mathf.Abs(newPos.z - targetLocation.z) + " " + 2 * carrySpeed);
-            print("----------");
-
             Vector3 Angles = gameObject.GetComponentInParent<Transform>().rotation.eulerAngles;
             bool rotationDone = false;
-
-            //print((Mathf.Abs(gameObject.GetComponentInParent<Transform>().rotation.eulerAngles.y % 360) + " ||| " + Mathf.Abs((targetRotation.eulerAngles.y + 90) % 360)));
+            //Chose whether to rotate or not
             if (Mathf.Abs(gameObject.GetComponentInParent<Transform>().rotation.eulerAngles.y % 360 - (targetRotation.eulerAngles.y + 90) % 360) > 3)
             {
                 Angles.y += 2;
-                gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(Angles.x, Angles.y, Angles.z);
+                gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(0, Angles.y, 0);
             }
             else
             {
+                //if rotation is done, stabalize
                 rotationDone = true;
                 Vector3 Angles2 = targetRotation.eulerAngles;
                 Angles2.y += 90;
-                gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(Angles2.x, Angles2.y, Angles2.z);
+                
+                gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(0, Angles2.y, 0);
 
             }
 
@@ -266,9 +307,6 @@ public class UserInteraction : MonoBehaviour {
             {
                 newPos.x = targetLocation.x;
                 newPos.z = targetLocation.z;
-                //Vector3 Angles2 = targetRotation.eulerAngles;
-                //Angles2.y += 90;
-                //gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(Angles2.x, Angles2.y, Angles2.z);
                 goingToPoint = false;
                 goingDown = true;
             }
@@ -277,9 +315,10 @@ public class UserInteraction : MonoBehaviour {
         }
         else if (goingDown)
         {
+            //Do not allow rotation until close to hitting the ground.
             Vector3 Angles2 = targetRotation.eulerAngles;
             Angles2.y += 90;
-            gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(Angles2.x, Angles2.y, Angles2.z);
+            gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(0, Angles2.y, 0);
             if (gameObject.GetComponentInParent<Transform>().position.y < 1)
             {
                 goingDown = false;
