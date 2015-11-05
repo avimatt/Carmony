@@ -59,6 +59,9 @@ public class CarmonyGUI : MonoBehaviour {
     List<string> letterListTop;
     List<string> letterListBottom;
 
+    public AudioClip waitClip;
+    public AudioClip goClip;
+
     void Awake()
     {
 
@@ -97,18 +100,41 @@ public class CarmonyGUI : MonoBehaviour {
     //This utilizes swap text. if need to stylize, must create new text
     IEnumerator startFlagText()
     {
-        print("here");
         topSwapText.SetActive(true);
         bottomSwapText.SetActive(true);
+        gameObject.GetComponent<AudioSource>().enabled = true;
+
+        topSwapText.GetComponent<Text>().text = "3";
+        bottomSwapText.GetComponent<Text>().text = "3";
+        gameObject.GetComponent<AudioSource>().clip = waitClip;
+        gameObject.GetComponent<AudioSource>().Play();
+        yield return new WaitForSeconds(1f);
+
+        topSwapText.GetComponent<Text>().text = "2";
+        bottomSwapText.GetComponent<Text>().text = "2";
+        gameObject.GetComponent<AudioSource>().clip = waitClip;
+        gameObject.GetComponent<AudioSource>().Play();
+        yield return new WaitForSeconds(1f);
+
+        topSwapText.GetComponent<Text>().text = "1";
+        bottomSwapText.GetComponent<Text>().text = "1";
+        gameObject.GetComponent<AudioSource>().clip = waitClip;
+        gameObject.GetComponent<AudioSource>().Play();
+        yield return new WaitForSeconds(1f);
+
+        print("here");
+        gameObject.GetComponent<AudioSource>().clip = goClip;
+        gameObject.GetComponent<AudioSource>().Play();
+
         topSwapText.GetComponent<Text>().text = "GO!";
         bottomSwapText.GetComponent<Text>().text = "GO!";
+        Main.S.setRaceStarted();
 
         yield return new WaitForSeconds(1f);
         topSwapText.GetComponent<Text>().text = "SWAP";
         bottomSwapText.GetComponent<Text>().text = "SWAP";
         topSwapText.SetActive(false);
-        bottomSwapText.SetActive(false);
-    }
+        bottomSwapText.SetActive(false);    }
 
 	// Return the current index of which letter in the powerup sequence the player is at
     int getCurIndex(bool isTop)

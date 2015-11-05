@@ -21,6 +21,17 @@ public class Main : MonoBehaviour
 
     public int totalLaps = 3;
 
+    public bool raceStarted;
+
+    public bool getRaceStarted()
+    {
+        return raceStarted;
+    }
+    public void setRaceStarted()
+    {
+        raceStarted = true;
+    }
+
     //updates the most recent pausing interaction to now, so the player cannot do anything too soon. like spam pause
     public void updateInteractTimer()
     {

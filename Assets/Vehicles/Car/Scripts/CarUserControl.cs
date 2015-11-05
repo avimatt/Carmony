@@ -105,7 +105,7 @@ namespace UnityStandardAssets.Vehicles.Car
         private void FixedUpdate()
         {
 
-            if (Time.realtimeSinceStartup < 1)
+            if (!Main.S.getRaceStarted())
                 return;
             if (first >= InputManager.Devices.Count)
                 return;

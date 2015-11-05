@@ -44,7 +44,7 @@ public class UserInteraction : MonoBehaviour {
 
         CarUserControl userControl = gameObject.GetComponentInParent<CarUserControl>();
         // Prevent players from using reset right away
-		if (Time.time < 1)
+		if (!Main.S.getRaceStarted())
             return;
 		// If car has no controllers attached to it
         if (userControl.first >= InputManager.Devices.Count)
