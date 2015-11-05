@@ -77,15 +77,31 @@ public class StartScreen : MonoBehaviour {
         }
 	}
 
-	// Map controllers to players
+    IEnumerator vibrateControllerStop(InputDevice player)
+    {
+        print("hello1");
+        float pauseEndTime = Time.realtimeSinceStartup + .2f;
+        while (Time.realtimeSinceStartup < pauseEndTime)
+        {
+            yield return 0;
+        }
+        player.Vibrate(0, 0);
+        print("hello2");
+    }
+
+
+    // Map controllers to players
     void buttonClicked(InputDevice player,int playerIndex)
     {
+        player.Vibrate(.5f, .5f);
+        StartCoroutine("vibrateControllerStop", player);
         if (player.Action1)
         {
             buttonList[0].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonsSet[0] = true;
             Main.S.carBottom.GetComponent<CarUserControl>().first = playerIndex;
-        }else if (player.Action2)
+        }
+        else if (player.Action2)
         {
             buttonList[1].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonsSet[1] = true;
