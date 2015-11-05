@@ -28,9 +28,12 @@ public class PowerUp : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-
+        Vector3 newRot = gameObject.GetComponent<Transform>().rotation.eulerAngles;
+        newRot.y += 1.5f;
+        newRot.y = newRot.y % 360;
+        gameObject.transform.rotation = Quaternion.Euler(newRot);
     }
 
 	// When Player has collided with the power up
