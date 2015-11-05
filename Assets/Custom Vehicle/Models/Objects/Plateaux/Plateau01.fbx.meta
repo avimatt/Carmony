@@ -1,0 +1,152 @@
+fileFormatVersion: 2
+guid: 7854af1428be53347a436f1bd2a9099d
+timeCreated: 1427664226
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: PlateauHeight1
+    100004: PlateauPilon1
+    100006: PlateauPilon1.001
+    100008: PlateauPilon1.002
+    100010: PlateauPilon1.003
+    100012: PlateauPilon1.004
+    100014: Plateau
+    100016: PlateauPilon2
+    100018: PlateauPilon3
+    100020: PlateauPilon4
+    100022: PlateauPilon5
+    100024: PlateauTurn90
+    100026: Plateau_col
+    100028: Plateau.002
+    100030: PlateauRot90
+    100032: PlateauTurn90_col
+    100034: Plateau.001
+    400000: //RootNode
+    400002: PlateauHeight1
+    400004: PlateauPilon1
+    400006: PlateauPilon1.001
+    400008: PlateauPilon1.002
+    400010: PlateauPilon1.003
+    400012: PlateauPilon1.004
+    400014: Plateau
+    400016: PlateauPilon2
+    400018: PlateauPilon3
+    400020: PlateauPilon4
+    400022: PlateauPilon5
+    400024: PlateauTurn90
+    400026: Plateau_col
+    400028: Plateau.002
+    400030: PlateauRot90
+    400032: PlateauTurn90_col
+    400034: Plateau.001
+    2300000: PlateauHeight1
+    2300002: PlateauPilon1
+    2300004: PlateauPilon1.001
+    2300006: PlateauPilon1.002
+    2300008: PlateauPilon1.003
+    2300010: PlateauPilon1.004
+    2300012: Plateau
+    2300014: PlateauPilon2
+    2300016: PlateauPilon3
+    2300018: PlateauPilon4
+    2300020: PlateauPilon5
+    2300022: PlateauTurn90
+    2300024: Plateau_col
+    2300026: Plateau.002
+    2300028: PlateauRot90
+    2300030: PlateauTurn90_col
+    2300032: Plateau.001
+    3300000: PlateauHeight1
+    3300002: PlateauPilon1
+    3300004: PlateauPilon1.001
+    3300006: PlateauPilon1.002
+    3300008: PlateauPilon1.003
+    3300010: PlateauPilon1.004
+    3300012: Plateau
+    3300014: PlateauPilon2
+    3300016: PlateauPilon3
+    3300018: PlateauPilon4
+    3300020: PlateauPilon5
+    3300022: PlateauTurn90
+    3300024: Plateau_col
+    3300026: Plateau.002
+    3300028: PlateauRot90
+    3300030: PlateauTurn90_col
+    3300032: Plateau.001
+    4300000: PlateauPilon1.004
+    4300002: PlateauPilon1.003
+    4300004: PlateauPilon1.002
+    4300006: PlateauPilon1.001
+    4300008: PlateauPilon1
+    4300010: PlateauHeight1
+    4300012: PlateauPilon5
+    4300014: PlateauPilon4
+    4300016: PlateauPilon3
+    4300018: PlateauPilon2
+    4300020: Plateau
+    4300022: PlateauTurn90
+    4300024: Plateau_col
+    4300026: PlateauRot90
+    4300028: Plateau.002
+    4300030: PlateauTurn90_col
+    4300032: Plateau.001
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

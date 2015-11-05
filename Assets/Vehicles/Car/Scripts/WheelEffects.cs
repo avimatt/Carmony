@@ -32,8 +32,8 @@ namespace UnityStandardAssets.Vehicles.Car
             }
 
             m_WheelCollider = GetComponent<WheelCollider>();
-            m_AudioSource = GetComponent<AudioSource>();
-            PlayingAudio = false;
+            m_AudioSource = GetComponent<AudioSource>();            
+			PlayingAudio = false;
 
             if (skidTrailsDetachedParent == null)
             {
@@ -55,14 +55,14 @@ namespace UnityStandardAssets.Vehicles.Car
 
         public void PlayAudio()
         {
-            m_AudioSource.Play();
+            //m_AudioSource.Play();
             PlayingAudio = true;
         }
 
 
         public void StopAudio()
         {
-            m_AudioSource.Stop();
+            //m_AudioSource.Stop();
             PlayingAudio = false;
         }
 

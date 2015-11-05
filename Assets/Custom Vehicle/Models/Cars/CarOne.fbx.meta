@@ -1,0 +1,392 @@
+fileFormatVersion: 2
+guid: b9e84338c27586c42ab06f2dde904a5c
+timeCreated: 1427301448
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: CarBody
+    100002: CarInterior
+    100004: //RootNode
+    100006: EmptyCenter
+    100008: FrontBumper
+    100010: InsideMesh
+    100012: RearBumper
+    100014: RearLights
+    100016: Shassi
+    100018: Tire Left
+    100020: Tire Left.001
+    100022: Tire Right
+    100024: TireArmLeft
+    100026: TireArmLeft.001
+    100028: TireArmRight
+    100030: TireArmRight.001
+    100032: TireAxeLeft
+    100034: TireAxeLeft.001
+    100036: TireAxeRight
+    100038: TireAxeRight.001
+    100040: TireBrake
+    100042: TireSpringArmLeft
+    100044: TireSpringArmLeft.001
+    100046: TireSpringArmRight
+    100048: TireSpringArmRight.001
+    100050: TireSpringLeft
+    100052: TireSpringLeft.001
+    100054: TireSpringRight
+    100056: TireSpringRight.001
+    100058: Windows
+    100060: TireArmRigh
+    100062: TireSpringArm
+    100064: FrontLights
+    100066: CarBody_MeshPart0
+    100068: CarBody_MeshPart1
+    100070: CarBody_MeshPart10
+    100072: CarBody_MeshPart11
+    100074: CarBody_MeshPart12
+    100076: CarBody_MeshPart13
+    100078: CarBody_MeshPart14
+    100080: CarBody_MeshPart15
+    100082: CarBody_MeshPart16
+    100084: CarBody_MeshPart17
+    100086: CarBody_MeshPart18
+    100088: CarBody_MeshPart19
+    100090: CarBody_MeshPart2
+    100092: CarBody_MeshPart20
+    100094: CarBody_MeshPart21
+    100096: CarBody_MeshPart22
+    100098: CarBody_MeshPart23
+    100100: CarBody_MeshPart3
+    100102: CarBody_MeshPart4
+    100104: CarBody_MeshPart5
+    100106: CarBody_MeshPart6
+    100108: CarBody_MeshPart7
+    100110: CarBody_MeshPart8
+    100112: CarBody_MeshPart9
+    100114: Tire
+    100116: Tire Rim Left
+    100118: Tire Rim Right
+    100120: Tire Rim Left.001
+    100122: Tire Rim
+    100124: Antenna
+    100126: AntennaBase
+    100128: AntennaLower
+    100130: AntennaUpper
+    400000: CarBody
+    400002: CarInterior
+    400004: //RootNode
+    400006: EmptyCenter
+    400008: FrontBumper
+    400010: InsideMesh
+    400012: RearBumper
+    400014: RearLights
+    400016: Shassi
+    400018: Tire Left
+    400020: Tire Left.001
+    400022: Tire Right
+    400024: TireArmLeft
+    400026: TireArmLeft.001
+    400028: TireArmRight
+    400030: TireArmRight.001
+    400032: TireAxeLeft
+    400034: TireAxeLeft.001
+    400036: TireAxeRight
+    400038: TireAxeRight.001
+    400040: TireBrake
+    400042: TireSpringArmLeft
+    400044: TireSpringArmLeft.001
+    400046: TireSpringArmRight
+    400048: TireSpringArmRight.001
+    400050: TireSpringLeft
+    400052: TireSpringLeft.001
+    400054: TireSpringRight
+    400056: TireSpringRight.001
+    400058: Windows
+    400060: TireArmRigh
+    400062: TireSpringArm
+    400064: FrontLights
+    400066: CarBody_MeshPart0
+    400068: CarBody_MeshPart1
+    400070: CarBody_MeshPart10
+    400072: CarBody_MeshPart11
+    400074: CarBody_MeshPart12
+    400076: CarBody_MeshPart13
+    400078: CarBody_MeshPart14
+    400080: CarBody_MeshPart15
+    400082: CarBody_MeshPart16
+    400084: CarBody_MeshPart17
+    400086: CarBody_MeshPart18
+    400088: CarBody_MeshPart19
+    400090: CarBody_MeshPart2
+    400092: CarBody_MeshPart20
+    400094: CarBody_MeshPart21
+    400096: CarBody_MeshPart22
+    400098: CarBody_MeshPart23
+    400100: CarBody_MeshPart3
+    400102: CarBody_MeshPart4
+    400104: CarBody_MeshPart5
+    400106: CarBody_MeshPart6
+    400108: CarBody_MeshPart7
+    400110: CarBody_MeshPart8
+    400112: CarBody_MeshPart9
+    400114: Tire
+    400116: Tire Rim Left
+    400118: Tire Rim Right
+    400120: Tire Rim Left.001
+    400122: Tire Rim
+    400124: Antenna
+    400126: AntennaBase
+    400128: AntennaLower
+    400130: AntennaUpper
+    2300000: CarBody
+    2300002: CarInterior
+    2300004: EmptyCenter
+    2300006: FrontBumper
+    2300008: InsideMesh
+    2300010: RearBumper
+    2300012: RearLights
+    2300014: Shassi
+    2300016: Tire Left
+    2300018: Tire Left.001
+    2300020: Tire Right
+    2300022: TireArmLeft
+    2300024: TireArmLeft.001
+    2300026: TireArmRight
+    2300028: TireArmRight.001
+    2300030: TireAxeLeft
+    2300032: TireAxeLeft.001
+    2300034: TireAxeRight
+    2300036: TireAxeRight.001
+    2300038: TireBrake
+    2300040: TireSpringArmLeft
+    2300042: TireSpringArmLeft.001
+    2300044: TireSpringArmRight
+    2300046: TireSpringArmRight.001
+    2300048: TireSpringLeft
+    2300050: TireSpringLeft.001
+    2300052: TireSpringRight
+    2300054: TireSpringRight.001
+    2300056: Windows
+    2300058: TireArmRigh
+    2300060: TireSpringArm
+    2300062: FrontLights
+    2300064: CarBody_MeshPart0
+    2300066: CarBody_MeshPart1
+    2300068: CarBody_MeshPart10
+    2300070: CarBody_MeshPart11
+    2300072: CarBody_MeshPart12
+    2300074: CarBody_MeshPart13
+    2300076: CarBody_MeshPart14
+    2300078: CarBody_MeshPart15
+    2300080: CarBody_MeshPart16
+    2300082: CarBody_MeshPart17
+    2300084: CarBody_MeshPart18
+    2300086: CarBody_MeshPart19
+    2300088: CarBody_MeshPart2
+    2300090: CarBody_MeshPart20
+    2300092: CarBody_MeshPart21
+    2300094: CarBody_MeshPart22
+    2300096: CarBody_MeshPart23
+    2300098: CarBody_MeshPart3
+    2300100: CarBody_MeshPart4
+    2300102: CarBody_MeshPart5
+    2300104: CarBody_MeshPart6
+    2300106: CarBody_MeshPart7
+    2300108: CarBody_MeshPart8
+    2300110: CarBody_MeshPart9
+    2300112: Tire
+    2300114: Tire Rim Left
+    2300116: Tire Rim Right
+    2300118: Tire Rim Left.001
+    2300120: Tire Rim
+    2300122: Antenna
+    2300124: AntennaBase
+    2300126: AntennaLower
+    2300128: AntennaUpper
+    3300000: CarBody
+    3300002: CarInterior
+    3300004: EmptyCenter
+    3300006: FrontBumper
+    3300008: InsideMesh
+    3300010: RearBumper
+    3300012: RearLights
+    3300014: Shassi
+    3300016: Tire Left
+    3300018: Tire Left.001
+    3300020: Tire Right
+    3300022: TireArmLeft
+    3300024: TireArmLeft.001
+    3300026: TireArmRight
+    3300028: TireArmRight.001
+    3300030: TireAxeLeft
+    3300032: TireAxeLeft.001
+    3300034: TireAxeRight
+    3300036: TireAxeRight.001
+    3300038: TireBrake
+    3300040: TireSpringArmLeft
+    3300042: TireSpringArmLeft.001
+    3300044: TireSpringArmRight
+    3300046: TireSpringArmRight.001
+    3300048: TireSpringLeft
+    3300050: TireSpringLeft.001
+    3300052: TireSpringRight
+    3300054: TireSpringRight.001
+    3300056: Windows
+    3300058: TireArmRigh
+    3300060: TireSpringArm
+    3300062: FrontLights
+    3300064: CarBody_MeshPart0
+    3300066: CarBody_MeshPart1
+    3300068: CarBody_MeshPart10
+    3300070: CarBody_MeshPart11
+    3300072: CarBody_MeshPart12
+    3300074: CarBody_MeshPart13
+    3300076: CarBody_MeshPart14
+    3300078: CarBody_MeshPart15
+    3300080: CarBody_MeshPart16
+    3300082: CarBody_MeshPart17
+    3300084: CarBody_MeshPart18
+    3300086: CarBody_MeshPart19
+    3300088: CarBody_MeshPart2
+    3300090: CarBody_MeshPart20
+    3300092: CarBody_MeshPart21
+    3300094: CarBody_MeshPart22
+    3300096: CarBody_MeshPart23
+    3300098: CarBody_MeshPart3
+    3300100: CarBody_MeshPart4
+    3300102: CarBody_MeshPart5
+    3300104: CarBody_MeshPart6
+    3300106: CarBody_MeshPart7
+    3300108: CarBody_MeshPart8
+    3300110: CarBody_MeshPart9
+    3300112: Tire
+    3300114: Tire Rim Left
+    3300116: Tire Rim Right
+    3300118: Tire Rim Left.001
+    3300120: Tire Rim
+    3300122: Antenna
+    3300124: AntennaBase
+    3300126: AntennaLower
+    3300128: AntennaUpper
+    4300000: TireBrake
+    4300002: Tire Left.001
+    4300004: Tire Right
+    4300006: EmptyCenter
+    4300008: FrontBumper
+    4300010: Tire Left
+    4300012: TireAxeLeft.001
+    4300014: TireArmLeft.001
+    4300016: TireSpringArmLeft.001
+    4300018: TireSpringLeft.001
+    4300020: TireAxeRight.001
+    4300022: TireSpringArmRight.001
+    4300024: TireSpringRight.001
+    4300026: TireArmRight.001
+    4300028: TireArmRight
+    4300030: TireSpringRight
+    4300032: RearBumper
+    4300034: RearLights
+    4300036: TireSpringArmRight
+    4300038: TireAxeRight
+    4300040: TireSpringLeft
+    4300042: TireSpringArmLeft
+    4300044: CarInterior
+    4300046: TireArmLeft
+    4300048: Shassi
+    4300050: TireAxeLeft
+    4300052: InsideMesh
+    4300054: Windows
+    4300056: CarBody
+    4300058: TireArmRigh
+    4300060: TireSpringArm
+    4300062: FrontLights
+    4300064: CarBody_MeshPart0
+    4300066: CarBody_MeshPart1
+    4300068: CarBody_MeshPart2
+    4300070: CarBody_MeshPart3
+    4300072: CarBody_MeshPart4
+    4300074: CarBody_MeshPart5
+    4300076: CarBody_MeshPart6
+    4300078: CarBody_MeshPart7
+    4300080: CarBody_MeshPart8
+    4300082: CarBody_MeshPart9
+    4300084: CarBody_MeshPart10
+    4300086: CarBody_MeshPart11
+    4300088: CarBody_MeshPart12
+    4300090: CarBody_MeshPart13
+    4300092: CarBody_MeshPart14
+    4300094: CarBody_MeshPart15
+    4300096: CarBody_MeshPart16
+    4300098: CarBody_MeshPart17
+    4300100: CarBody_MeshPart18
+    4300102: CarBody_MeshPart19
+    4300104: CarBody_MeshPart20
+    4300106: CarBody_MeshPart21
+    4300108: CarBody_MeshPart22
+    4300110: CarBody_MeshPart23
+    4300112: Tire Rim Right
+    4300114: Tire
+    4300116: Tire Rim Left
+    4300118: Tire Rim Left.001
+    4300120: Tire Rim
+    4300122: Antenna
+    4300124: AntennaBase
+    4300126: AntennaUpper
+    4300128: AntennaLower
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
