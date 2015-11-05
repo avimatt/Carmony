@@ -93,7 +93,7 @@ public class StartScreen : MonoBehaviour {
     // Map controllers to players
     void buttonClicked(InputDevice player,int playerIndex)
     {
-        player.Vibrate(.5f, .5f);
+        player.Vibrate(.2f, .2f);
         StartCoroutine("vibrateControllerStop", player);
         if (player.Action1)
         {

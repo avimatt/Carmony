@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using InControl;
+using System.Collections.Generic;
 
 public class Main : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Main : MonoBehaviour
 
     public GameObject carTop;
     public GameObject carBottom;
+
+    public List<GameObject> fireworkList;
 
     public bool carTopDone;
     public bool carBottomDone;
@@ -100,6 +103,10 @@ public class Main : MonoBehaviour
     // Display end game screen from the team that finished
     public void endGame(bool isTop)
     {
+        foreach(GameObject go in fireworkList)
+        {
+            go.SetActive(true);
+        }
         if (isTop)
         {
             carTopDone = true;
