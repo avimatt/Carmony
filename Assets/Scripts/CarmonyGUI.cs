@@ -111,6 +111,7 @@ public class CarmonyGUI : MonoBehaviour {
     {
         goText.SetActive(true);
         gameObject.GetComponent<AudioSource>().enabled = true;
+        //goText.GetComponent<Text>().color = new Color32(0, 0, 0, 255);
 
         goText.GetComponent<Text>().text = "3";
         gameObject.GetComponent<AudioSource>().clip = waitClip;
@@ -130,9 +131,12 @@ public class CarmonyGUI : MonoBehaviour {
         gameObject.GetComponent<AudioSource>().clip = goClip;
         gameObject.GetComponent<AudioSource>().Play();
 
-        goText.GetComponent<Text>().text = "GO!";
+        goText.GetComponent<Text>().text = "G O !";
+        goText.GetComponent<Text>().color = new Color32(56, 139, 0, 255);
+        //these two lines do nothing right now.
         goBoard.GetComponent<MeshRenderer>().materials.SetValue(goMat,0);
         goBoard.GetComponent<MeshRenderer>().material = goMat;
+
         Main.S.setRaceStarted();
         //StartCoroutine("startstartFireworks");
         showInitialUI();
