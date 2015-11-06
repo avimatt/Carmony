@@ -334,9 +334,21 @@ public class UserInteraction : MonoBehaviour {
             Vector3 Angles = gameObject.GetComponentInParent<Transform>().rotation.eulerAngles;
             bool rotationDone = false;
             //Chose whether to rotate or not
+            float rotateQuantity = 2;
+            print(initalRotation.eulerAngles.y % 360 + " " + (targetRotation.eulerAngles.y+90) % 360);
+            float initialAngle = initalRotation.eulerAngles.y % 360;
+            float targetAngle = (targetRotation.eulerAngles.y + 90) % 360;
+            if (targetAngle < 180 && initialAngle < targetAngle+180 && initialAngle > targetAngle)
+            {
+
+                rotateQuantity = -rotateQuantity;
+            }else if (targetAngle > 180 && (initialAngle > targetAngle || initialAngle < targetAngle - 180))
+            {
+                rotateQuantity = -rotateQuantity;
+            }
             if (Mathf.Abs(gameObject.GetComponentInParent<Transform>().rotation.eulerAngles.y % 360 - (targetRotation.eulerAngles.y + 90) % 360) > 3)
             {
-                Angles.y += 2;
+                Angles.y += rotateQuantity;
                 gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(0, Angles.y, 0);
             }
             else
