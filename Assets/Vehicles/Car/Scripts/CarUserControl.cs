@@ -143,10 +143,43 @@ namespace UnityStandardAssets.Vehicles.Car
 				steering *= Mathf.Pow(2.718f, gameObject.GetComponent<CarController> ().getSpeed()/-60); 
 				gameObject.GetComponent<CarController> ().SlipLimit = .7f;
 				gameObject.GetComponent<CarController> ().SteerHelperProperty = 1f;
-			} else {
+                WheelCollider[] wheels = gameObject.GetComponentsInChildren<WheelCollider>();
+                for(int i = 0; i < 4; i++)
+                {
+                    WheelFrictionCurve wheelCurve = wheels[i].sidewaysFriction;
+                    wheelCurve.asymptoteSlip = .0001f;
+                    wheelCurve.extremumSlip = .0001f;
+                    wheels[i].sidewaysFriction = wheelCurve;
+
+                    JointSpring wheelSpring = wheels[i].suspensionSpring;
+                    wheelSpring.damper = 3500;
+                    wheels[i].suspensionSpring = wheelSpring;
+                }
+			}else if (gameObject.transform.localScale.x > 1)
+            {
+                WheelCollider[] wheels = gameObject.GetComponentsInChildren<WheelCollider>();
+                for (int i = 0; i < 4; i++)
+                {
+                    JointSpring wheelSpring = wheels[i].suspensionSpring;
+                    wheelSpring.damper = 10;
+                    wheels[i].suspensionSpring = wheelSpring;
+                }
+            } else {
 				gameObject.GetComponent<CarController> ().SlipLimit = .3f;
 				gameObject.GetComponent<CarController> ().SteerHelperProperty = .644f;
-			}
+                WheelCollider[] wheels = gameObject.GetComponentsInChildren<WheelCollider>();
+                for (int i = 0; i < 4; i++)
+                {
+                    WheelFrictionCurve wheelCurve = wheels[i].sidewaysFriction;
+                    wheelCurve.asymptoteSlip = .5f;
+                    wheelCurve.extremumSlip = .2f;
+                    wheels[i].sidewaysFriction = wheelCurve;
+
+                    JointSpring wheelSpring = wheels[i].suspensionSpring;
+                    wheelSpring.damper = 3500;
+                    wheels[i].suspensionSpring = wheelSpring;
+                }
+            }
 
             // pass the input to the car!
             if (!isBottomCar)
