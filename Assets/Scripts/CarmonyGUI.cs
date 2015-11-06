@@ -61,7 +61,11 @@ public class CarmonyGUI : MonoBehaviour {
 
     public AudioClip waitClip;
     public AudioClip goClip;
-
+    public GameObject goBoard;
+    public Material waitMat;
+    public Material goMat;
+    public GameObject goText;
+    public GameObject startFireworks;
     void Awake()
     {
 
@@ -100,42 +104,50 @@ public class CarmonyGUI : MonoBehaviour {
     //This utilizes swap text. if need to stylize, must create new text
     IEnumerator startFlagText()
     {
-        topSwapText.SetActive(true);
-        bottomSwapText.SetActive(true);
+        goText.SetActive(true);
         gameObject.GetComponent<AudioSource>().enabled = true;
 
-        topSwapText.GetComponent<Text>().text = "3";
-        bottomSwapText.GetComponent<Text>().text = "3";
+        goText.GetComponent<Text>().text = "3";
         gameObject.GetComponent<AudioSource>().clip = waitClip;
         gameObject.GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(1f);
 
-        topSwapText.GetComponent<Text>().text = "2";
-        bottomSwapText.GetComponent<Text>().text = "2";
+        goText.GetComponent<Text>().text = "2";
         gameObject.GetComponent<AudioSource>().clip = waitClip;
         gameObject.GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(1f);
 
-        topSwapText.GetComponent<Text>().text = "1";
-        bottomSwapText.GetComponent<Text>().text = "1";
+        goText.GetComponent<Text>().text = "1";
         gameObject.GetComponent<AudioSource>().clip = waitClip;
         gameObject.GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(1f);
 
-        print("here");
         gameObject.GetComponent<AudioSource>().clip = goClip;
         gameObject.GetComponent<AudioSource>().Play();
 
-        topSwapText.GetComponent<Text>().text = "GO!";
-        bottomSwapText.GetComponent<Text>().text = "GO!";
+        goText.GetComponent<Text>().text = "GO!";
+        goBoard.GetComponent<MeshRenderer>().materials.SetValue(goMat,0);
+        goBoard.GetComponent<MeshRenderer>().material = goMat;
         Main.S.setRaceStarted();
-
+        StartCoroutine("startstartFireworks");
         yield return new WaitForSeconds(1f);
-        topSwapText.GetComponent<Text>().text = "SWAP";
-        bottomSwapText.GetComponent<Text>().text = "SWAP";
-        topSwapText.SetActive(false);
-        bottomSwapText.SetActive(false);    }
+        goText.SetActive(false);
+        StartCoroutine("closeStartLine");
+    }
 
+    IEnumerator startstartFireworks()
+    {
+        startFireworks.SetActive(true);
+        yield return new WaitForSeconds(5);
+        startFireworks.SetActive(false);
+
+    }
+
+    IEnumerator closeStartLine()
+    {
+        yield return new WaitForSeconds(30);
+        goBoard.SetActive(false);
+    }
 	// Return the current index of which letter in the powerup sequence the player is at
     int getCurIndex(bool isTop)
     {
