@@ -56,10 +56,10 @@ public class InstructionScreen : MonoBehaviour {
 	void switchGroups(){
 		if(controlGroups[1].transform.localPosition[0] > 0){
 			Vector3 temp = controlGroups[0].transform.position;
-			temp[0] -= 10;
+			temp[0] -= 40;
 			controlGroups[0].transform.position = temp;
 			temp = controlGroups[1].transform.position;
-			temp[0] -= 10;
+			temp[0] -= 40;
 			controlGroups[1].transform.position = temp;
 		} else {
 			switchingGroups = false;
