@@ -121,6 +121,16 @@ namespace UnityStandardAssets.Vehicles.Car
             float accel = playerAInput.RightTrigger;
             // Player B controls footbrake, handbrake, and turning left
             float footbrake = -1f * playerBInput.LeftTrigger;
+            if (accel + footbrake > 0)
+            {
+                accel = accel + footbrake;
+                footbrake = 0;
+            }
+            else
+            {
+                footbrake = accel + footbrake;
+                accel = 0;
+            }
             //Turning off handbrake because we are already using that button
             // for the powerup character sequence input.
             float handbrake = 0;
