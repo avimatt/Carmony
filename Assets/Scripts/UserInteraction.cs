@@ -22,14 +22,24 @@ public class UserInteraction : MonoBehaviour {
     public Quaternion targetRotation;
     public float carrySpeed;
     public Quaternion initalRotation;
+
+    public GameObject oilPrefab;
 	// Use this for initialization
 	void Start () {
         isCarBottom = gameObject.GetComponentInParent<CarUserControl>().isBottomCar;
         boostTimer = Time.time;
 	}
 	
-	// Update is called once per frame
-	void Update () {
+    public void placeOilSpill()
+    {
+
+        Vector3 newLocation = gameObject.GetComponentInChildren<Camera>().GetComponent<Transform>().position;
+        newLocation.y = oilPrefab.transform.position.y;
+        GameObject go = Instantiate(oilPrefab, newLocation, oilPrefab.transform.rotation) as GameObject;
+    }
+
+    // Update is called once per frame
+    void Update () {
         // Check if car is done and if so ignore input
 		if (!isCarBottom)
         {
@@ -118,6 +128,15 @@ public class UserInteraction : MonoBehaviour {
             gameObject.transform.localScale = newSize;
 
         }
+        if (playerBInput.DPad.Left.WasPressed)
+        {
+            moveToNextCheckpoint();
+        }
+        if (playerBInput.DPad.Right.WasPressed)
+        {
+            placeOilSpill();
+        }
+
         if ((playerBInput.DPad.Up.WasPressed || playerBInput.DPad.Down.WasPressed)){
 			Vector3 newSize = gameObject.transform.localScale;
             if (newSize.x == 1 && (playerBInput.DPad.Up.WasPressed))
@@ -182,6 +201,34 @@ public class UserInteraction : MonoBehaviour {
         gameObject.GetComponentInParent<CarController>().zeroSpeed();
     }
 
+    public void moveToNextCheckpoint()
+    {
+        moveToCheckpoint(gameObject.GetComponentInParent<CarState>().currCheckpoint);
+    }
+
+    public void moveToCheckpoint(int checkpointToGo)
+    {
+        Vector3 newPos = new Vector3();
+        Transform checkPoint;
+        Quaternion newRotation;
+        // Find the location and rotation of the prev checkpoint
+
+        checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[checkpointToGo];
+        newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[checkpointToGo].rotation;
+
+        newPos.x = checkPoint.position.x;
+        newPos.y = checkPoint.position.y;
+        newPos.z = checkPoint.position.z;
+        targetLocation = newPos;
+        targetRotation = newRotation;
+        initalRotation = gameObject.GetComponentInParent<Transform>().rotation;
+
+        // Move car to correct spot
+        goingUp = true;
+
+        //this is only lowering him to ~1-5 right now. could polish this.
+        gameObject.GetComponentInParent<CarController>().zeroSpeed();
+    }
 
     //immediatly move the car to above the last checkpoint and immediatly rotate to correct direction
     public void hardReset()
