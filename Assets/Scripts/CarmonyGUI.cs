@@ -61,7 +61,7 @@ public class CarmonyGUI : MonoBehaviour {
 
     public AudioClip waitClip;
     public AudioClip goClip;
-    public GameObject goBoard;
+    //public GameObject goBoard;
     public Material waitMat;
     public Material goMat;
     public GameObject goText;
@@ -134,15 +134,16 @@ public class CarmonyGUI : MonoBehaviour {
         goText.GetComponent<Text>().text = "G O !";
         goText.GetComponent<Text>().color = new Color32(56, 139, 0, 255);
         //these two lines do nothing right now.
-        goBoard.GetComponent<MeshRenderer>().materials.SetValue(goMat,0);
-        goBoard.GetComponent<MeshRenderer>().material = goMat;
+        //goBoard.GetComponent<MeshRenderer>().materials.SetValue(goMat,0);
+        //goBoard.GetComponent<MeshRenderer>().material = goMat;
 
         Main.S.setRaceStarted();
         //StartCoroutine("startstartFireworks");
         showInitialUI();
         yield return new WaitForSeconds(1f);
+		print ("here --- yay!");
         goText.SetActive(false);
-        StartCoroutine("closeStartLine");
+        //StartCoroutine("closeStartLine");
     }
 
     void showInitialUI()
@@ -162,7 +163,7 @@ public class CarmonyGUI : MonoBehaviour {
         
     }
 
-    IEnumerator startstartFireworks()
+    /*IEnumerator startstartFireworks()
     {
         startFireworks.SetActive(true);
         yield return new WaitForSeconds(5);
@@ -174,7 +175,8 @@ public class CarmonyGUI : MonoBehaviour {
     {
         yield return new WaitForSeconds(30);
         goBoard.SetActive(false);
-    }
+    }*/
+
 	// Return the current index of which letter in the powerup sequence the player is at
     int getCurIndex(bool isTop)
     {
