@@ -24,6 +24,24 @@ public class CarState : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
+
+    //Determines whether the car passed it is behind by atleast a checkpoint in the race.
+    //would like to do closer estimations but no closer meauserments than checkpoints
+    //yes avi, i used a ternary.
+    static public bool isCarBehind(bool isTop)
+    {
+        CarState topCarState = Main.S.carTop.GetComponent<CarState>();
+        CarState bottomCarState = Main.S.carBottom.GetComponent<CarState>();
+        int checkpointIndexTopAdjusted = topCarState.currCheckpoint == 0 ? topCarState.checkpoints.Count : topCarState.currCheckpoint;
+        int checkpointIndexBottomAdjusted = bottomCarState.currCheckpoint == 0 ? bottomCarState.checkpoints.Count : bottomCarState.currCheckpoint;
+        int topTotal = topCarState.currLap * topCarState.checkpoints.Count + checkpointIndexTopAdjusted;
+        int bottomTotal = bottomCarState.currLap * bottomCarState.checkpoints.Count + checkpointIndexBottomAdjusted;
+        if (isTop && bottomTotal > topTotal)
+            return true;
+        else if (!isTop && topTotal > bottomTotal)
+            return true;
+        else
+            return false;
+    }
 }

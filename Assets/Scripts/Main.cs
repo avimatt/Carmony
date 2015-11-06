@@ -70,6 +70,8 @@ public class Main : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CarState.isCarBehind(true);
+
         if (canInteract())
         {
             if (getStartPressed())

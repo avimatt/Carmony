@@ -8,7 +8,7 @@ public class PowerupGenerator : MonoBehaviour {
 	
 	public bool[] instantiatedSwap, instantiatedSpeed;
 	
-	public GameObject SwapArrow, Lightning;
+	public GameObject SwapArrow, Lightning,Box;
 	private GameObject obj;
 	
 	public int numPowerups;
@@ -16,6 +16,7 @@ public class PowerupGenerator : MonoBehaviour {
 	public int numInstantiatedSwap, numInstantiatedSpeed;
 	
 	public Vector3[] swapGeneration;
+    public List<Vector3> randomGenerations;
 	private Vector3 turn90, tempLocation;
 		// Use this for initialization
 	void Start () {
@@ -38,9 +39,16 @@ public class PowerupGenerator : MonoBehaviour {
 		swapGeneration[3] = new Vector3(308,1,394);
 		swapGeneration[4] = new Vector3(308,1,455);
 		swapGeneration[5] = new Vector3(381,1,334);
-		
-		//end init
-		for(int i = 0; i < numPowerups; ++i){
+
+        randomGenerations.Add(new Vector3(100,1,460));
+        randomGenerations.Add(new Vector3(223, 1, 455));
+        randomGenerations.Add(new Vector3(345, 1, 308));
+        randomGenerations.Add(new Vector3(345, 1, 78));
+        randomGenerations.Add(new Vector3(145, 1, 423));
+
+
+        //end init
+        for (int i = 0; i < numPowerups; ++i){
 			//swap powerUps start
 			createSwap();
 			//swap powerUps end
@@ -49,6 +57,7 @@ public class PowerupGenerator : MonoBehaviour {
 			createSpeed();
 			//speed powerUps end
 		}
+        createRandom();
 	}
 	
 	// Update is called once per frame
@@ -88,4 +97,13 @@ public class PowerupGenerator : MonoBehaviour {
 		++numInstantiatedSpeed;
 	}
 	
+    void createRandom()
+    {
+        int randInt = Random.Range(0, 4);
+        foreach(Vector3 pos in randomGenerations)
+        {
+            GameObject go = Instantiate(Box, pos, Box.transform.rotation) as GameObject; 
+        }
+    }
+
 }

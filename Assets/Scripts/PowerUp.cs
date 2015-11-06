@@ -9,6 +9,7 @@ public enum powerUpType
 	speed,
 	letters,
 	swap,
+    random,
 	empty
 }
 
@@ -45,11 +46,11 @@ public class PowerUp : MonoBehaviour
         Destroy(gameObject); 
         
 		// Determine which car hit it
-        bool isTopScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
+        bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
 		// Generate random activation sequence
         List<string> letterList = getNewLetterList();
 		// Show the player the sequence
-        CarmonyGUI.S.setLetters(isTopScreen, letterList, type);
+        CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
         
     }
 
@@ -68,8 +69,27 @@ public class PowerUp : MonoBehaviour
 
 	// Carry out the power ups action (To be called after the player has inputed the full sequence)
 	public static void ActivatePowerUp(bool topPlayer, powerUpType type){
-
-		if (type == powerUpType.speed) {
+        if (type == powerUpType.random)
+        {
+            bool isBehind = CarState.isCarBehind(topPlayer);
+            if (isBehind)
+            {
+                int randInt = Random.Range(0, 10);
+                if (randInt < 7)
+                    type = powerUpType.swap;
+                else
+                    type = powerUpType.speed;
+            }
+            else
+            {
+                int randInt = Random.Range(0, 10);
+                if (randInt < 7)
+                    type = powerUpType.speed;
+                else
+                    type = powerUpType.swap;
+            }
+        }
+        if (type == powerUpType.speed) {
 			if(topPlayer){
 				Main.S.carTop.GetComponent<UserInteraction>().startBoost();
 			} else {
