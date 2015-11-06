@@ -28,14 +28,6 @@ public class InstructionScreen : MonoBehaviour {
                 {
                     Time.timeScale = 1;
                     gameObject.SetActive(false);
-                    CarmonyGUI.S.bottomMinimap.SetActive(true);
-                    CarmonyGUI.S.topMinimap.SetActive(true);
-					CarmonyGUI.S.topMinimapDots.SetActive(true);
-					CarmonyGUI.S.bottomMinimapDots.SetActive(true);
-                    CarmonyGUI.S.bottomImageLeft.SetActive(true);
-                    CarmonyGUI.S.bottomImageRight.SetActive(true);
-                    CarmonyGUI.S.topImageLeft.SetActive(true);
-                    CarmonyGUI.S.topImageRight.SetActive(true);
                     CarmonyGUI.S.raiseStartFlagText();
                     GameObject.Find("MainGameObject").GetComponent<AudioSource>().enabled = true;
                 }

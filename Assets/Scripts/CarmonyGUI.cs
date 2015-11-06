@@ -66,6 +66,11 @@ public class CarmonyGUI : MonoBehaviour {
     public Material goMat;
     public GameObject goText;
     public GameObject startFireworks;
+
+    public GameObject topSpeed;
+    public GameObject topLap;
+    public GameObject bottomSpeed;
+    public GameObject bottomLap;
     void Awake()
     {
 
@@ -129,10 +134,28 @@ public class CarmonyGUI : MonoBehaviour {
         goBoard.GetComponent<MeshRenderer>().materials.SetValue(goMat,0);
         goBoard.GetComponent<MeshRenderer>().material = goMat;
         Main.S.setRaceStarted();
-        StartCoroutine("startstartFireworks");
+        //StartCoroutine("startstartFireworks");
+        showInitialUI();
         yield return new WaitForSeconds(1f);
         goText.SetActive(false);
         StartCoroutine("closeStartLine");
+    }
+
+    void showInitialUI()
+    {
+        CarmonyGUI.S.bottomMinimap.SetActive(true);
+        CarmonyGUI.S.topMinimap.SetActive(true);
+        CarmonyGUI.S.topMinimapDots.SetActive(true);
+        CarmonyGUI.S.bottomMinimapDots.SetActive(true);
+        CarmonyGUI.S.bottomImageLeft.SetActive(true);
+        CarmonyGUI.S.bottomImageRight.SetActive(true);
+        CarmonyGUI.S.topImageLeft.SetActive(true);
+        CarmonyGUI.S.topImageRight.SetActive(true);
+        topSpeed.SetActive(true);
+        topLap.SetActive(true);
+        bottomSpeed.SetActive(true);
+        bottomLap.SetActive(true);
+        
     }
 
     IEnumerator startstartFireworks()
