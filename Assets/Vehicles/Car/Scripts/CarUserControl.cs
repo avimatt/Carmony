@@ -105,12 +105,14 @@ namespace UnityStandardAssets.Vehicles.Car
         private void FixedUpdate()
         {
 
-            if (!Main.S.getRaceStarted())
-                return;
             if (first >= InputManager.Devices.Count)
                 return;
-
             gameObject.GetComponentInParent<UserInteraction>().moveToLocation();
+
+            if (!Main.S.getRaceStarted() && !Main.S.practicing)
+                return;
+
+
 
             // Use InControl
             // Hard code the mapping of device to player for now

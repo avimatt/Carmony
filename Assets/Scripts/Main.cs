@@ -2,6 +2,7 @@
 using System.Collections;
 using InControl;
 using System.Collections.Generic;
+using UnityStandardAssets.Vehicles.Car;
 
 public class Main : MonoBehaviour
 {
@@ -22,6 +23,22 @@ public class Main : MonoBehaviour
     public int totalLaps = 3;
 
     public bool raceStarted;
+    public bool practicing;
+
+    public GameObject Map;
+
+    public int carsReady = 0;
+
+    public float startTime;
+    public void setCarReady()
+    {
+        if (carsReady < 2)
+            carsReady++;
+        if (carsReady == 2 && !raceStarted)
+        {
+            CarmonyGUI.S.raiseStartFlagText();
+        }
+    }
 
     public bool getRaceStarted()
     {
@@ -29,7 +46,17 @@ public class Main : MonoBehaviour
     }
     public void setRaceStarted()
     {
+        startTime = Time.time;
         raceStarted = true;
+    }
+
+
+    //returns true if device is handling input for top car else it returns false
+    public bool isFromTopCar(int player)
+    {
+        if (player == Main.S.carTop.GetComponent<CarUserControl>().first || player == Main.S.carTop.GetComponent<CarUserControl>().second)
+            return true;
+        return false;
     }
 
     //updates the most recent pausing interaction to now, so the player cannot do anything too soon. like spam pause
@@ -106,8 +133,8 @@ public class Main : MonoBehaviour
     }
     public string getGameTime()
     {
-        int minutes = (int)(Time.time / 60);
-        int seconds = (int)(Time.time % 60);
+        int minutes = (int)((Time.time-startTime) / 60);
+        int seconds = (int)((Time.time-startTime) % 60);
         string secondString = seconds.ToString();
         if (seconds < 10)
             secondString = "0" + seconds.ToString();

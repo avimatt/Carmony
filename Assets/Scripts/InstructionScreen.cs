@@ -35,8 +35,8 @@ public class InstructionScreen : MonoBehaviour {
 				if (player.AnyButton && !firstGroup && controlGroups[1].transform.localPosition[0] <= 0)
 				{
 					Time.timeScale = 1;
+                    Main.S.practicing = true;
 					gameObject.SetActive(false);
-					CarmonyGUI.S.raiseStartFlagText();
 					GameObject.Find("MainGameObject").GetComponent<AudioSource>().enabled = true;
 				} 
 				// after first control group shown

@@ -21,6 +21,7 @@ public class UserInteraction : MonoBehaviour {
     public Vector3 targetLocation;
     public Quaternion targetRotation;
     public float carrySpeed;
+    public float carryHeight;
     public Quaternion initalRotation;
 
     public GameObject oilPrefab;
@@ -54,7 +55,7 @@ public class UserInteraction : MonoBehaviour {
 
         CarUserControl userControl = gameObject.GetComponentInParent<CarUserControl>();
         // Prevent players from using reset right away
-		if (!Main.S.getRaceStarted())
+		if (!Main.S.getRaceStarted() && !Main.S.practicing)
             return;
 		// If car has no controllers attached to it
         if (userControl.first >= InputManager.Devices.Count)
@@ -171,6 +172,7 @@ public class UserInteraction : MonoBehaviour {
 
     public void startReset()
     {
+        carryHeight = 10;
         Vector3 newPos = new Vector3();
         Transform checkPoint;
         Quaternion newRotation;
@@ -206,8 +208,42 @@ public class UserInteraction : MonoBehaviour {
         moveToCheckpoint(gameObject.GetComponentInParent<CarState>().currCheckpoint);
     }
 
+    public void moveToStart()
+    {
+        print("moving to start " + isCarBottom);
+        carryHeight = 30;
+        Vector3 newPos = new Vector3();
+        Transform checkPoint;
+        Quaternion newRotation;
+        // Find the location and rotation of the prev checkpoint
+        if (isCarBottom)
+        {
+            checkPoint = Main.S.Map.GetComponent<Map>().playerBottomStart.transform;
+        }
+        else
+        {
+            checkPoint = Main.S.Map.GetComponent<Map>().playerTopStart.transform;
+        }
+
+        newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[0].rotation;
+
+        newPos.x = checkPoint.position.x;
+        newPos.y = checkPoint.position.y;
+        newPos.z = checkPoint.position.z;
+        targetLocation = newPos;
+        targetRotation = newRotation;
+        initalRotation = gameObject.GetComponentInParent<Transform>().rotation;
+
+        // Move car to correct spot
+        goingUp = true;
+
+        //this is only lowering him to ~1-5 right now. could polish this.
+        gameObject.GetComponentInParent<CarController>().zeroSpeed();
+    }
+
     public void moveToCheckpoint(int checkpointToGo)
     {
+        carryHeight = 10;
         Vector3 newPos = new Vector3();
         Transform checkPoint;
         Quaternion newRotation;
@@ -282,12 +318,13 @@ public class UserInteraction : MonoBehaviour {
 
             gameObject.GetComponentInParent<Transform>().rotation = initalRotation;
 
-            if (newPos2.y >= 10)
+            if (newPos2.y >= carryHeight)
             {
                 goingUp = false;
                 goingToPoint = true;
-                newPos2.y = 10;
-                carrySpeed = (float)Vector3.Distance(gameObject.GetComponentInParent<Transform>().position,targetLocation)/75;
+                newPos2.y = carryHeight;
+                if (carrySpeed == 0)
+                    carrySpeed = (float)Vector3.Distance(gameObject.GetComponentInParent<Transform>().position,targetLocation)/75;
             }
             gameObject.GetComponentInParent<Transform>().position = newPos2;
 
@@ -304,38 +341,31 @@ public class UserInteraction : MonoBehaviour {
             Vector3 newPos = gameObject.GetComponentInParent<Transform>().position;
             //stop momentum and falling
             gameObject.GetComponentInParent<CarController>().zeroSpeed();
-            newPos.y = 10; 
+            newPos.y = carryHeight; 
 
             //Chose X direction to go;
             if ((newPos.x - targetLocation.x) > 2*carrySpeed)
             {
                 newPos.x -= carrySpeed;
-                print("decreasing x");
-            }else if ((newPos.x - targetLocation.x ) < -2*carrySpeed)
+           }else if ((newPos.x - targetLocation.x ) < -2*carrySpeed)
             {
                 newPos.x += carrySpeed;
-                print("increasing x");
-
             }
 
             //chose z direction to go
             if ((newPos.z - targetLocation.z) > 2 * carrySpeed)
             {
                 newPos.z -= carrySpeed;
-                print("decreasing z");
-
             }
             else if ((newPos.z - targetLocation.z) < -2*carrySpeed)
             {
                 newPos.z += carrySpeed;
-                print("increasing z");
             }
 
             Vector3 Angles = gameObject.GetComponentInParent<Transform>().rotation.eulerAngles;
             bool rotationDone = false;
             //Chose whether to rotate or not
             float rotateQuantity = 2;
-            print(initalRotation.eulerAngles.y % 360 + " " + (targetRotation.eulerAngles.y+90) % 360);
             float initialAngle = initalRotation.eulerAngles.y % 360;
             float targetAngle = (targetRotation.eulerAngles.y + 90) % 360;
             if (targetAngle < 180 && initialAngle < targetAngle+180 && initialAngle > targetAngle)
@@ -378,9 +408,12 @@ public class UserInteraction : MonoBehaviour {
             Vector3 Angles2 = targetRotation.eulerAngles;
             Angles2.y += 90;
             gameObject.GetComponentInParent<Transform>().rotation = Quaternion.Euler(0, Angles2.y, 0);
-            if (gameObject.GetComponentInParent<Transform>().position.y < 1)
+            if (gameObject.GetComponentInParent<Transform>().position.y < .1)
             {
                 goingDown = false;
+                carrySpeed = 0;
+                gameObject.GetComponentInParent<CarController>().zeroSpeed();
+                Main.S.setCarReady();
             }
         }
     }

@@ -10,7 +10,6 @@ public class Checkpoint : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        print("Hit checkpoint");
         //Check if it is a car that enters the checkpoint
         Transform playerTrans = null;
         Transform tmp = other.transform.parent;
