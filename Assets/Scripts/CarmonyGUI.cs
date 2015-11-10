@@ -76,11 +76,16 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject practiceText;
     public GameObject topPlate;
     public GameObject bottomPlate;
+
+    public Image powerupImageTop;
+    public Image powerupImageBottom;
     // Activation 'A' button references
     public Image topActivationButton, topActivationHighlight, topActivationSlider, bottomActivationButton, bottomActivationHighlight, bottomActivationSlider;
     public float activationTime = 2.0f;
     private bool topHasPowerup = false, bottomHasPowerup = false;
     public powerUpType topType, bottomType;
+    public Sprite swapSprite;
+    public Sprite speedSprite;
 
     void Awake()
     {
@@ -114,6 +119,7 @@ public class CarmonyGUI : MonoBehaviour {
     // Hide the new activation system
     public void HideActivationButton()
     {
+        
         this.HideTopPowerUpActivator();
         this.HideBottomPowerUpActivator();
     }
@@ -345,6 +351,7 @@ public class CarmonyGUI : MonoBehaviour {
 
     void HideTopPowerUpActivator()
     {
+        powerupImageTop.enabled = false;
         this.topActivationButton.enabled = false;
         this.topActivationHighlight.enabled = false;
         this.topActivationSlider.fillAmount = 0f;
@@ -352,66 +359,12 @@ public class CarmonyGUI : MonoBehaviour {
 
     void HideBottomPowerUpActivator()
     {
+        powerupImageBottom.enabled = false;
         this.bottomActivationButton.enabled = false;
         this.bottomActivationHighlight.enabled = false;
         this.bottomActivationSlider.fillAmount = 0f;
     }
 	
-	// Update is called once per frame
-    //void Update () {
-    //    // print("printing: " + inLettersBottom + " " + inLettersTop);
-    //    if (inLettersTop)
-    //    {
-
-    //        bool hit = getHit(true);
-    //        if (hit != false)
-    //        {
-    //            // Show the player they correctly entered a part of the sequence
-    //            topLetterList[curIndexTop].GetComponent<Image>().color = new Color32(60, 60, 60, 255);
-    //            curIndexTop++;
-    //            // If they finished the sequence clean up the GUI and do the powerup.
-    //            if (curIndexTop >= letterListTop.Count)
-    //            {
-    //                curIndexTop = 0;
-    //                inLettersTop = false;
-    //                // Blank out the power up sequnce on the screen
-    //                for (int i = 0; i < topLetterList.Count; i++)
-    //                {
-    //                    topLetterList[i].SetActive(false);
-    //                    topLetterList[i].GetComponent<Image>().color = new Color(255, 255, 255, 255);
-    //                }
-
-    //                PowerUp.ActivatePowerUp(true, topType);
-    //                topType = powerUpType.empty;
-    //            }
-    //        }
-    //    }
-    //    if (inLettersBottom)
-    //    {
-    //        bool hit = getHit(false);
-    //        if (hit != false)
-    //        {
-    //            // Show the player they correctly entered a part of the sequence
-    //            bottomLetterList[curIndexBottom].GetComponent<Image>().color = new Color32(60, 60, 60, 255);
-    //            curIndexBottom++;
-    //            // If they finished the sequence clean up the GUI and do the powerup.
-    //            if (curIndexBottom >= letterListBottom.Count)
-    //            {
-    //                curIndexBottom = 0;
-    //                inLettersBottom = false;
-    //                // Blank out the power up sequnce on the screen
-    //                for(int i = 0; i < bottomLetterList.Count; i++)
-    //                {
-    //                    bottomLetterList[i].SetActive(false);
-    //                    bottomLetterList[i].GetComponent<Image>().color = new Color(255, 255, 255, 255);
-    //                }
-
-    //                PowerUp.ActivatePowerUp(false, bottomType);
-    //                bottomType = powerUpType.empty;
-    //            }
-    //        } 
-    //    }
-    //}
 
     public void hideGUI()
     {
@@ -487,13 +440,32 @@ public class CarmonyGUI : MonoBehaviour {
             this.topHasPowerup = true;
             this.topType = type;
             this.topActivationButton.enabled = true;
+            powerupImageTop.enabled = true;
+            powerupImageTop.sprite = getPowerupImage(type);
         }
         else
         {
             this.bottomHasPowerup = true;
             this.bottomType = type;
             this.bottomActivationButton.enabled = true;
+            powerupImageBottom.enabled = true;
+            powerupImageBottom.sprite = getPowerupImage(type);
         }
+    }
+
+    //returns the image corresponding to a specific powerup
+    public Sprite getPowerupImage(powerUpType type)
+    {
+        switch (type)
+        {
+            case powerUpType.swap:
+                return swapSprite;
+            case powerUpType.speed:
+                return speedSprite;
+            default:
+                return speedSprite;
+        }
+
     }
 
 	// Display power up sequence to the players 
