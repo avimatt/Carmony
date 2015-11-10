@@ -46,11 +46,14 @@ public class PowerUp : MonoBehaviour
         Destroy(gameObject); 
         
 		// Determine which car hit it
+
+        // TODO: WHY THE FUCK do we use isTop in some places, and isBottom in others? We need to be consistent.
         bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
 		// Generate random activation sequence
-        List<string> letterList = getNewLetterList();
+        //List<string> letterList = getNewLetterList();
 		// Show the player the sequence
-        CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
+        //CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
+        CarmonyGUI.S.GiveTeamPowerup(!isBottomScreen, type);
         
     }
 

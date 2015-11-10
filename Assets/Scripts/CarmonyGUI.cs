@@ -14,11 +14,11 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject progressBar;
     public GameObject timeText;
     public GameObject topLetters;
-	public powerUpType topType;
+	//public powerUpType topType;
     public List<GameObject> topLetterList;
     public GameObject bottomLetters;
     public List<GameObject> bottomLetterList;
-	public powerUpType bottomType;
+	//public powerUpType bottomType;
 
     public GameObject topEnd;
     public GameObject bottomEnd;
@@ -71,6 +71,13 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject topLap;
     public GameObject bottomSpeed;
     public GameObject bottomLap;
+
+    // Activation 'A' button references
+    public Image topActivationButton, topActivationHighlight, topActivationSlider, bottomActivationButton, bottomActivationHighlight, bottomActivationSlider;
+    public float activationTime = 2.0f;
+    private bool topHasPowerup = false, bottomHasPowerup = false;
+    public powerUpType topType, bottomType;
+
     void Awake()
     {
 
@@ -96,6 +103,28 @@ public class CarmonyGUI : MonoBehaviour {
             go.SetActive(false);
         foreach (GameObject go in topLetterList)
             go.SetActive(false);
+        // Activation system starts hidden, until someone gets a powerup.
+        this.HideActivationButton();
+    }
+
+    // Hide the new activation system
+    public void HideActivationButton()
+    {
+        this.HideTopPowerUpActivator();
+        this.HideBottomPowerUpActivator();
+    }
+
+    // Display the power up activation button on the screen
+    public void showActivationLetter(bool isTopScreen, powerUpType pwr_t)
+    {
+        if (isTopScreen)
+        {
+            this.topActivationButton.enabled = true;
+        }
+        else
+        {
+            this.bottomActivationButton.enabled = true;
+        }
     }
 
     //makes coroutine callable by other classes
@@ -235,62 +264,142 @@ public class CarmonyGUI : MonoBehaviour {
         }
         return hit;
     }
-	
-	// Update is called once per frame
-	void Update () {
-        // print("printing: " + inLettersBottom + " " + inLettersTop);
-	    if (inLettersTop)
+
+    void Update()
+    {
+        // Get references to the control objects for both teams
+        CarUserControl topUserContorl = Main.S.carTop.GetComponent<CarUserControl> ();
+        var topPlayerAInput = InputManager.Devices[topUserContorl.first];
+        var topPlayerBInput = InputManager.Devices[topUserContorl.second];
+        CarUserControl bottomUserControl = Main.S.carBottom.GetComponent<CarUserControl> ();
+        var bottomPlayerAInput = InputManager.Devices[bottomUserControl.first];
+        var bottomPlayerBInput = InputManager.Devices[bottomUserControl.second];
+
+        // If a team has a powerup, check and see if they are hitting the buttons
+        if (this.topHasPowerup)
         {
-
-            bool hit = getHit(true);
-            if (hit != false)
+            // If only one player is pressing 'A', then highlight the 'A' button.
+            if (topPlayerAInput.Action1.IsPressed ^ topPlayerBInput.Action1.IsPressed)
             {
-				// Show the player they correctly entered a part of the sequence
-                topLetterList[curIndexTop].GetComponent<Image>().color = new Color32(60, 60, 60, 255);
-                curIndexTop++;
-				// If they finished the sequence clean up the GUI and do the powerup.
-                if (curIndexTop >= letterListTop.Count)
+                if (!this.topActivationHighlight.enabled) this.topActivationHighlight.enabled = true;
+                this.topActivationSlider.fillAmount = 0f;
+            }
+            // If both are pressing at the same time, then start building up the slider
+            else if (topPlayerAInput.Action1.IsPressed && topPlayerBInput.Action1.IsPressed)
+            {
+                if (!this.topActivationHighlight.enabled) this.topActivationHighlight.enabled = true;
+                this.topActivationSlider.fillAmount += Time.deltaTime / this.activationTime;
+                // If both have held it for long enough, activate the powerup
+                if (this.topActivationSlider.fillAmount >= 1.0f)
                 {
-                    curIndexTop = 0;
-                    inLettersTop = false;
-					// Blank out the power up sequnce on the screen
-                    for (int i = 0; i < topLetterList.Count; i++)
-                    {
-                        topLetterList[i].SetActive(false);
-                        topLetterList[i].GetComponent<Image>().color = new Color(255, 255, 255, 255);
-                    }
-
-					PowerUp.ActivatePowerUp(true, topType);
-					topType = powerUpType.empty;
+                    PowerUp.ActivatePowerUp(true, topType);
+                    topType = powerUpType.empty;
+                    this.topHasPowerup = false;
+                    this.HideTopPowerUpActivator();
                 }
             }
-        }
-        if (inLettersBottom)
-        {
-            bool hit = getHit(false);
-            if (hit != false)
+            else
             {
-				// Show the player they correctly entered a part of the sequence
-                bottomLetterList[curIndexBottom].GetComponent<Image>().color = new Color32(60, 60, 60, 255);
-                curIndexBottom++;
-				// If they finished the sequence clean up the GUI and do the powerup.
-                if (curIndexBottom >= letterListBottom.Count)
-                {
-                    curIndexBottom = 0;
-                    inLettersBottom = false;
-					// Blank out the power up sequnce on the screen
-                    for(int i = 0; i < bottomLetterList.Count; i++)
-                    {
-                        bottomLetterList[i].SetActive(false);
-                        bottomLetterList[i].GetComponent<Image>().color = new Color(255, 255, 255, 255);
-                    }
-
-					PowerUp.ActivatePowerUp(false, bottomType);
-					bottomType = powerUpType.empty;
-                }
-            } 
+                if (this.topActivationHighlight.enabled) this.topActivationHighlight.enabled = false;
+                this.topActivationSlider.fillAmount = 0f;
+            }
         }
-	}
+        if (this.bottomHasPowerup)
+        {
+            if (bottomPlayerAInput.Action1.IsPressed ^ bottomPlayerBInput.Action1.IsPressed)
+            {
+                if (!this.bottomActivationHighlight.enabled) this.bottomActivationHighlight.enabled = true;
+                this.bottomActivationSlider.fillAmount = 0f;
+            }
+            else if (bottomPlayerAInput.Action1.IsPressed && bottomPlayerBInput.Action1.IsPressed)
+            {
+                if (!this.bottomActivationHighlight.enabled) this.bottomActivationHighlight.enabled = true;
+                this.bottomActivationSlider.fillAmount += Time.deltaTime / this.activationTime;
+                if (this.bottomActivationSlider.fillAmount >= 1.0f)
+                {
+                    PowerUp.ActivatePowerUp(false, bottomType);
+                    bottomType = powerUpType.empty;
+                    this.bottomHasPowerup = false;
+                    this.HideBottomPowerUpActivator();
+                }
+            }
+            else
+            {
+                if (this.bottomActivationHighlight.enabled) this.bottomActivationHighlight.enabled = false;
+                this.bottomActivationSlider.fillAmount = 0f;
+            }
+        }
+    }
+
+    void HideTopPowerUpActivator()
+    {
+        this.topActivationButton.enabled = false;
+        this.topActivationHighlight.enabled = false;
+        this.topActivationSlider.fillAmount = 0f;
+    }
+
+    void HideBottomPowerUpActivator()
+    {
+        this.bottomActivationButton.enabled = false;
+        this.bottomActivationHighlight.enabled = false;
+        this.bottomActivationSlider.fillAmount = 0f;
+    }
+	
+	// Update is called once per frame
+    //void Update () {
+    //    // print("printing: " + inLettersBottom + " " + inLettersTop);
+    //    if (inLettersTop)
+    //    {
+
+    //        bool hit = getHit(true);
+    //        if (hit != false)
+    //        {
+    //            // Show the player they correctly entered a part of the sequence
+    //            topLetterList[curIndexTop].GetComponent<Image>().color = new Color32(60, 60, 60, 255);
+    //            curIndexTop++;
+    //            // If they finished the sequence clean up the GUI and do the powerup.
+    //            if (curIndexTop >= letterListTop.Count)
+    //            {
+    //                curIndexTop = 0;
+    //                inLettersTop = false;
+    //                // Blank out the power up sequnce on the screen
+    //                for (int i = 0; i < topLetterList.Count; i++)
+    //                {
+    //                    topLetterList[i].SetActive(false);
+    //                    topLetterList[i].GetComponent<Image>().color = new Color(255, 255, 255, 255);
+    //                }
+
+    //                PowerUp.ActivatePowerUp(true, topType);
+    //                topType = powerUpType.empty;
+    //            }
+    //        }
+    //    }
+    //    if (inLettersBottom)
+    //    {
+    //        bool hit = getHit(false);
+    //        if (hit != false)
+    //        {
+    //            // Show the player they correctly entered a part of the sequence
+    //            bottomLetterList[curIndexBottom].GetComponent<Image>().color = new Color32(60, 60, 60, 255);
+    //            curIndexBottom++;
+    //            // If they finished the sequence clean up the GUI and do the powerup.
+    //            if (curIndexBottom >= letterListBottom.Count)
+    //            {
+    //                curIndexBottom = 0;
+    //                inLettersBottom = false;
+    //                // Blank out the power up sequnce on the screen
+    //                for(int i = 0; i < bottomLetterList.Count; i++)
+    //                {
+    //                    bottomLetterList[i].SetActive(false);
+    //                    bottomLetterList[i].GetComponent<Image>().color = new Color(255, 255, 255, 255);
+    //                }
+
+    //                PowerUp.ActivatePowerUp(false, bottomType);
+    //                bottomType = powerUpType.empty;
+    //            }
+    //        } 
+    //    }
+    //}
 
     public void hideGUI()
     {
@@ -336,6 +445,23 @@ public class CarmonyGUI : MonoBehaviour {
             return xbutton;
         else
             return ybutton;
+    }
+
+    // Enable the power up for a particular team. Displays the a button for that team.
+    public void GiveTeamPowerup(bool isTopTeam, powerUpType type)
+    {
+        if (isTopTeam)
+        {
+            this.topHasPowerup = true;
+            this.topType = type;
+            this.topActivationButton.enabled = true;
+        }
+        else
+        {
+            this.bottomHasPowerup = true;
+            this.bottomType = type;
+            this.bottomActivationButton.enabled = true;
+        }
     }
 
 	// Display power up sequence to the players 
