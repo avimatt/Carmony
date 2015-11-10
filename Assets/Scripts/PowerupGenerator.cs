@@ -107,6 +107,7 @@ public class PowerupGenerator : MonoBehaviour {
         {
             GameObject go = Instantiate(Box, pos, Box.transform.rotation) as GameObject;
             go.GetComponent<PowerUp>().isRandom = true;
+            go.GetComponent<PowerUp>().type = powerUpType.random;
         }
     }
 

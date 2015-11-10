@@ -10,7 +10,8 @@ public enum powerUpType
 	letters,
 	swap,
     random,
-	empty
+    oil,
+    empty
 }
 
 public class PowerUp : MonoBehaviour
@@ -27,6 +28,7 @@ public class PowerUp : MonoBehaviour
         xboxLetters.Add("Y");
         xboxLetters.Add("B");
         xboxLetters.Add("A");
+
     }
 
     // Update is called once per frame
@@ -56,13 +58,44 @@ public class PowerUp : MonoBehaviour
             Main.S.carBottom.GetComponent<CarState>().powerupsHit++;
         // Generate random activation sequence
         //List<string> letterList = getNewLetterList();
-		// Show the player the sequence
+        // Show the player the sequence
         //CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
 
-		// Generate random activation sequence
+        // Generate random activation sequence
         //List<string> letterList = getNewLetterList();
-		// Show the player the sequence
+        // Show the player the sequence
         //CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
+
+        if (type == powerUpType.random)
+        {
+            bool isBehind = CarState.isCarBehind(!isBottomScreen);
+            if (isBehind)
+            {
+                int randInt = Random.Range(0, 10);
+                if (randInt < 6)
+                    type = powerUpType.swap;
+                else if (randInt == 7)
+                    type = powerUpType.oil;
+                else
+                    type = powerUpType.speed;
+            }
+            else
+            {
+                int randInt = Random.Range(0, 10);
+                print(randInt);
+                if (randInt < 3)
+                {
+                    type = powerUpType.speed;
+                }
+                else if (randInt < 7)
+                {
+                    type = powerUpType.oil;
+                }
+                else
+                    type = powerUpType.swap;
+            }
+        }
+
         CarmonyGUI.S.GiveTeamPowerup(!isBottomScreen, type);
         if (!isRandom)
             Destroy(gameObject);
@@ -97,26 +130,7 @@ public class PowerUp : MonoBehaviour
 
 	// Carry out the power ups action (To be called after the player has inputed the full sequence)
 	public static void ActivatePowerUp(bool topPlayer, powerUpType type){
-        if (type == powerUpType.random)
-        {
-            bool isBehind = CarState.isCarBehind(topPlayer);
-            if (isBehind)
-            {
-                int randInt = Random.Range(0, 10);
-                if (randInt < 7)
-                    type = powerUpType.swap;
-                else
-                    type = powerUpType.speed;
-            }
-            else
-            {
-                int randInt = Random.Range(0, 10);
-                if (randInt < 7)
-                    type = powerUpType.speed;
-                else
-                    type = powerUpType.swap;
-            }
-        }
+
         if (type == powerUpType.speed) {
 			if(topPlayer){
 				Main.S.carTop.GetComponent<UserInteraction>().startBoost();
@@ -131,7 +145,17 @@ public class PowerUp : MonoBehaviour
 				Main.S.carTop.GetComponent<CarUserControl>().playerSwap();
 			}
 			PowerupGenerator.S.numInstantiatedSwap--;
-		}
+		}else if (type == powerUpType.oil)
+        {
+            if (topPlayer)
+            {
+                Main.S.carTop.GetComponent<UserInteraction>().placeOilSpill(); 
+            }
+            else
+            {
+                Main.S.carBottom.GetComponent<UserInteraction>().placeOilSpill();
+            }
+        }
         Logger.S.writeFile(topPlayer, "Activated Powerup " + type + " at: " + Main.S.getGameTime());
         if (topPlayer)
             Main.S.carTop.GetComponent<CarState>().powerupsActivated++;

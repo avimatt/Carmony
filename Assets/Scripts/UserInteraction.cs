@@ -444,7 +444,15 @@ public class UserInteraction : MonoBehaviour {
 
     public void startBoost()
     {
-        isBoosting = true;
-        boostTimer = Time.time;
+        //isBoosting = true;
+        //boostTimer = Time.time;
+        StartCoroutine("boostPowerup");
+    }
+
+    IEnumerator boostPowerup()
+    {
+        isShrinking = true;
+        yield return new WaitForSeconds(5f);
+        isNormalizingUp = true;
     }
 }
