@@ -46,6 +46,8 @@ public class PowerUp : MonoBehaviour
 		// Remove it from the scene
         
 		// Determine which car hit it
+
+        // TODO: WHY THE FUCK do we use isTop in some places, and isBottom in others? We need to be consistent.
         bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
         Logger.S.writeFile(!isBottomScreen, "Picked Up Powerup at " + Main.S.getGameTime());
         if (!isBottomScreen)
@@ -53,13 +55,20 @@ public class PowerUp : MonoBehaviour
         else
             Main.S.carBottom.GetComponent<CarState>().powerupsHit++;
         // Generate random activation sequence
-        List<string> letterList = getNewLetterList();
+        //List<string> letterList = getNewLetterList();
 		// Show the player the sequence
-        CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
+        //CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
+
+		// Generate random activation sequence
+        //List<string> letterList = getNewLetterList();
+		// Show the player the sequence
+        //CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
+        CarmonyGUI.S.GiveTeamPowerup(!isBottomScreen, type);
         if (!isRandom)
             Destroy(gameObject);
         else
             StartCoroutine("destroyObject");
+
     }
 
     IEnumerator destroyObject()
