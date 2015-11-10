@@ -33,7 +33,7 @@ public class UserInteraction : MonoBehaviour {
 	
     public void placeOilSpill()
     {
-
+        print("hello");
         Vector3 newLocation = gameObject.GetComponentInChildren<Camera>().GetComponent<Transform>().position;
         newLocation.y = oilPrefab.transform.position.y;
         GameObject go = Instantiate(oilPrefab, newLocation, oilPrefab.transform.rotation) as GameObject;
@@ -160,12 +160,22 @@ public class UserInteraction : MonoBehaviour {
             isBoosting = false;
 
         bool resetting = false;
-		if ((playerAInput.RightBumper || playerBInput.RightBumper) && gameObject.GetComponentInParent<CarState>().currLap != 0)
+		if ((playerAInput.RightBumper.WasPressed || playerBInput.RightBumper.WasPressed) && gameObject.GetComponentInParent<CarState>().currLap != 0)
         {
             resetting = true;
         }
         if (resetting)
         {
+            if (!isCarBottom)
+            {
+                Main.S.carTop.GetComponent<CarState>().resets++;
+            }
+            else
+            {
+                Main.S.carBottom.GetComponent<CarState>().resets++;
+            }
+            Logger.S.writeFile(!isCarBottom, "Reset To Before " + gameObject.GetComponentInParent<CarState>().currCheckpoint + " at: " + Main.S.getGameTime());
+
             startReset();
         }
     }
@@ -177,21 +187,35 @@ public class UserInteraction : MonoBehaviour {
         Transform checkPoint;
         Quaternion newRotation;
         // Find the location and rotation of the prev checkpoint
+        int index = 0;
         if (gameObject.GetComponentInParent<CarState>().currCheckpoint != 0)
         {
+            index = gameObject.GetComponentInParent<CarState>().currCheckpoint - 1;
             checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().currCheckpoint - 1];
             newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().currCheckpoint - 1].rotation;
         }
         else
         {
+            index = gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1;
             checkPoint = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1];
             newRotation = gameObject.GetComponentInParent<CarState>().checkpoints[gameObject.GetComponentInParent<CarState>().checkpoints.Count - 1].rotation;
         }
 
-
         newPos.x = checkPoint.position.x;
         newPos.y = checkPoint.position.y;
         newPos.z = checkPoint.position.z;
+
+        if (gameObject.GetComponentInParent<UserInteraction>().isCarBottom)
+        {
+            newPos.x = gameObject.GetComponentInParent<CarState>().bottomResetLocation[index].position.x;
+            newPos.z = gameObject.GetComponentInParent<CarState>().bottomResetLocation[index].position.z;
+        }
+        else
+        {
+            newPos.x = gameObject.GetComponentInParent<CarState>().topResetLocation[index].position.x;
+            newPos.z = gameObject.GetComponentInParent<CarState>().topResetLocation[index].position.z;
+        }
+
         targetLocation = newPos;
         targetRotation = newRotation;
         initalRotation = gameObject.GetComponentInParent<Transform>().rotation;

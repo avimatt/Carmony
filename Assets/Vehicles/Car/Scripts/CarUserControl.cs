@@ -31,7 +31,6 @@ namespace UnityStandardAssets.Vehicles.Car
             var playerBInput = InputManager.Devices[second];
             playerAInput.Vibrate(1f, 1f);
             playerBInput.Vibrate(1f, 1f);
-            InputManager.ActiveDevice.Vibrate(playerAInput.LeftTrigger, playerBInput.RightTrigger);
 
             //GamePad.SetVibration((PlayerIndex)first, 1f, 1f);
             //GamePad.SetVibration((PlayerIndex)second, 1f, 1f);
@@ -104,10 +103,10 @@ namespace UnityStandardAssets.Vehicles.Car
         //Modify these values in order to tweak steering
         private void FixedUpdate()
         {
+            gameObject.GetComponentInParent<UserInteraction>().moveToLocation();
 
             if (first >= InputManager.Devices.Count)
                 return;
-            gameObject.GetComponentInParent<UserInteraction>().moveToLocation();
 
             if (!Main.S.getRaceStarted() && !Main.S.practicing)
                 return;

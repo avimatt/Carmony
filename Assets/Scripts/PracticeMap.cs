@@ -2,8 +2,11 @@
 using UnityEngine.UI;
 using System.Collections;
 using InControl;
+using UnityStandardAssets.Vehicles.Car;
+
 public class PracticeMap : MonoBehaviour {
 
+    static public PracticeMap S;
 
     public bool carTopDone;
     public bool carBottomDone;
@@ -12,13 +15,43 @@ public class PracticeMap : MonoBehaviour {
     public GameObject topPlate;
     public GameObject bottomPlate;
 
+    public bool carTopActive;
+    public bool carBottomActive;
+
+    void Awake()
+    {
+        S = this;
+    }
+
 	// Use this for initialization
 	void Start () {
-	
+        gameObject.SetActive(false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (Main.S.carTop.GetComponent<CarUserControl>().first == 3 && Main.S.carTop.GetComponent<CarUserControl>().second == 3)
+        {
+            carTopActive = false;
+        }
+        else
+        {
+            carTopActive = true;
+        }
+        if (Main.S.carBottom.GetComponent<CarUserControl>().first == 3 && Main.S.carBottom.GetComponent<CarUserControl>().second == 3)
+        {
+            carBottomActive = false;
+        }
+        else
+        {
+            carBottomActive = true;
+        }
+        if (!PauseScreen.S.isActiveAndEnabled)
+        {
+            practiceText.SetActive(true);
+            topPlate.SetActive(true);
+            bottomPlate.SetActive(true);
+        }
         for(int i = 0; i < InputManager.Devices.Count;i++)
         {
             InputDevice player = InputManager.Devices[i];
@@ -29,10 +62,21 @@ public class PracticeMap : MonoBehaviour {
                 {
                     carTopDone = true;
                     topPlate.GetComponentInChildren<Text>().text = "READY";
+                    if (!carBottomActive)
+                    {
+                        bottomPlate.GetComponentInChildren<Text>().text = "READY";
+                        carBottomDone = true;
+                    }
+                    
                 }else if (!isFromTop && !carBottomDone)
                 {
                     carBottomDone = true;
                     bottomPlate.GetComponentInChildren<Text>().text = "READY";
+                    if (!carTopActive)
+                    {
+                        topPlate.GetComponentInChildren<Text>().text = "READY";
+                        carTopDone = true;
+                    }
                 }
             }
                 

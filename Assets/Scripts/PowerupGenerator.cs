@@ -75,9 +75,11 @@ public class PowerupGenerator : MonoBehaviour {
 			obj.transform.Rotate(turn90);
 		} else {
 			obj = Instantiate(SwapArrow, swapGeneration[rand], Quaternion.identity) as GameObject;
-		}
-		
-		++numInstantiatedSwap;
+        }
+        obj.GetComponent<PowerUp>().isRandom = false;
+
+
+        ++numInstantiatedSwap;
 		++curSwapLocation;
 		if(curSwapLocation == 5)
 			curSwapLocation = 0;
@@ -94,6 +96,7 @@ public class PowerupGenerator : MonoBehaviour {
 		}
 		tempLocation = new Vector3(randX,.5f,randZ);
 		obj = Instantiate(Lightning,tempLocation, Quaternion.identity) as GameObject;
+        obj.GetComponent<PowerUp>().isRandom = false;
 		++numInstantiatedSpeed;
 	}
 	
@@ -102,7 +105,8 @@ public class PowerupGenerator : MonoBehaviour {
         int randInt = Random.Range(0, 4);
         foreach(Vector3 pos in randomGenerations)
         {
-            GameObject go = Instantiate(Box, pos, Box.transform.rotation) as GameObject; 
+            GameObject go = Instantiate(Box, pos, Box.transform.rotation) as GameObject;
+            go.GetComponent<PowerUp>().isRandom = true;
         }
     }
 

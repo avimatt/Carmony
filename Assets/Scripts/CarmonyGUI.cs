@@ -71,6 +71,9 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject topLap;
     public GameObject bottomSpeed;
     public GameObject bottomLap;
+
+    public GameObject topPerfect;
+    public GameObject bottomPerfect;
     void Awake()
     {
 
@@ -292,36 +295,60 @@ public class CarmonyGUI : MonoBehaviour {
         }
 	}
 
+    public GameObject practiceText;
+    public GameObject topPlate;
+    public GameObject bottomPlate;
     public void hideGUI()
     {
-        topGUI.SetActive(false);
-        bottomGUI.SetActive(false);
-        //timeText.SetActive(false);
-        topLetters.SetActive(false);
-        topMinimap.SetActive(false);
-        bottomMinimap.SetActive(false);
-		topMinimapDots.SetActive(false);
-		bottomMinimapDots.SetActive(false);
-        bottomImageLeft.SetActive(false);
-        bottomImageRight.SetActive(false);
-        topImageLeft.SetActive(false);
-        topImageRight.SetActive(false);
+        print("here idk where you are?");
+        if (Main.S.practicing)
+        {
+            print("here idk where you are2?");
+            PracticeMap.S.practiceText.SetActive(false);
+            PracticeMap.S.topPlate.SetActive(false);
+            PracticeMap.S.bottomPlate.SetActive(false);
+        }
+        else
+        {
+            topGUI.SetActive(false);
+            bottomGUI.SetActive(false);
+            //timeText.SetActive(false);
+            topLetters.SetActive(false);
+            topMinimap.SetActive(false);
+            bottomMinimap.SetActive(false);
+            topMinimapDots.SetActive(false);
+            bottomMinimapDots.SetActive(false);
+            bottomImageLeft.SetActive(false);
+            bottomImageRight.SetActive(false);
+            topImageLeft.SetActive(false);
+            topImageRight.SetActive(false);
+        }
     }
 
     public void showGUI()
     {
-        topGUI.SetActive(true);
-        bottomGUI.SetActive(true);
-        //timeText.SetActive(true);
-        topLetters.SetActive(true);
-        topMinimap.SetActive(true);
-		topMinimapDots.SetActive(true);
-		bottomMinimapDots.SetActive(true);
-        bottomMinimap.SetActive(true);
-        bottomImageLeft.SetActive(true);
-        bottomImageRight.SetActive(true);
-        topImageLeft.SetActive(true);
-        topImageRight.SetActive(true);
+
+        if (Main.S.practicing)
+        {
+            PracticeMap.S.practiceText.SetActive(true);
+            PracticeMap.S.topPlate.SetActive(true);
+            PracticeMap.S.bottomPlate.SetActive(true);
+        }
+        else
+        {
+            topGUI.SetActive(true);
+            bottomGUI.SetActive(true);
+            //timeText.SetActive(true);
+            topLetters.SetActive(true);
+            topMinimap.SetActive(true);
+            topMinimapDots.SetActive(true);
+            bottomMinimapDots.SetActive(true);
+            bottomMinimap.SetActive(true);
+            bottomImageLeft.SetActive(true);
+            bottomImageRight.SetActive(true);
+            topImageLeft.SetActive(true);
+            topImageRight.SetActive(true);
+        }
     }
 
 
@@ -392,4 +419,6 @@ public class CarmonyGUI : MonoBehaviour {
             restartText.SetActive(true);
         }
     }
+
+
 }

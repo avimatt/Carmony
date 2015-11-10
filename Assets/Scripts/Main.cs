@@ -101,7 +101,7 @@ public class Main : MonoBehaviour
 
         if (canInteract())
         {
-            if (getStartPressed())
+            if (getStartPressed() && (practicing || raceStarted))
             {
            		// If both teams have finished and start has been hit restart the game
                 if (carTopDone && carBottomDone)
@@ -154,6 +154,7 @@ public class Main : MonoBehaviour
 			CarmonyGUI.S.topMinimapDots.SetActive(false);
             CarmonyGUI.S.topImageLeft.SetActive(false);
             CarmonyGUI.S.topImageRight.SetActive(false);
+            carTop.GetComponent<CarState>().totalTime = getGameTime();
         }
         else
         {
@@ -161,8 +162,10 @@ public class Main : MonoBehaviour
 			CarmonyGUI.S.bottomMinimapDots.SetActive(false);
             CarmonyGUI.S.bottomImageLeft.SetActive(false);
             CarmonyGUI.S.bottomImageRight.SetActive(false);
+            carBottom.GetComponent<CarState>().totalTime = getGameTime();
             carBottomDone = true;
         }
+        Logger.S.printSummary(isTop);
         CarmonyGUI.S.endGame(isTop);
     }
 }

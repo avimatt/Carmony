@@ -26,8 +26,6 @@ public class StartScreen : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Time.timeScale = 0;
-
         playersSet.Add(false);
         playersSet.Add(false);
         playersSet.Add(false);
@@ -37,6 +35,7 @@ public class StartScreen : MonoBehaviour {
         buttonsSet.Add(false);
         buttonsSet.Add(false);
         buttonsSet.Add(false);
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,7 +48,7 @@ public class StartScreen : MonoBehaviour {
             {
                 var player = InputManager.Devices[i];
 				// if input then show the instruction screen
-                if (player.AnyButton)
+                if (player.AnyButton.WasPressed)
                 {
                     gameObject.SetActive(false);
                     cooldown = Time.realtimeSinceStartup;
@@ -68,7 +67,7 @@ public class StartScreen : MonoBehaviour {
                     continue;
                 var player = InputManager.Devices[i];
 				// If player clicked button and spot not taken
-                if ((player.Action1 && !buttonsSet[0]) || (player.Action2 && !buttonsSet[1]) || (player.Action3 && !buttonsSet[2]) || (player.Action4 && !buttonsSet[3]))
+                if ((player.Action1.WasPressed && !buttonsSet[0]) || (player.Action2.WasPressed && !buttonsSet[1]) || (player.Action3.WasPressed && !buttonsSet[2]) || (player.Action4.WasPressed && !buttonsSet[3]))
                 {
                     playersSet[i] = true;
                     buttonClicked(player,i);
@@ -95,25 +94,25 @@ public class StartScreen : MonoBehaviour {
     {
         player.Vibrate(.2f, .2f);
         StartCoroutine("vibrateControllerStop", player);
-        if (player.Action1)
+        if (player.Action1.WasPressed)
         {
             buttonList[0].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonsSet[0] = true;
             Main.S.carTop.GetComponent<CarUserControl>().first = playerIndex;
         }
-        else if (player.Action2)
+        else if (player.Action2.WasPressed)
         {
             buttonList[1].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonsSet[1] = true;
             Main.S.carTop.GetComponent<CarUserControl>().second = playerIndex;
         }
-        else if (player.Action3)
+        else if (player.Action3.WasPressed)
         {
             buttonList[2].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonsSet[2] = true;
             Main.S.carBottom.GetComponent<CarUserControl>().first = playerIndex;
         }
-        else if (player.Action4)
+        else if (player.Action4.WasPressed)
         {
             buttonList[3].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonsSet[3] = true;

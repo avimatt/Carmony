@@ -37,6 +37,8 @@ public class InstructionScreen : MonoBehaviour {
 					Time.timeScale = 1;
                     Main.S.practicing = true;
 					gameObject.SetActive(false);
+                    PracticeMap.S.gameObject.SetActive(true);
+                    CarmonyMenuSystem.S.gameObject.SetActive(false);
 					GameObject.Find("MainGameObject").GetComponent<AudioSource>().enabled = true;
 				} 
 				// after first control group shown

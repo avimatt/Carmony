@@ -19,6 +19,7 @@ public class PowerUp : MonoBehaviour
     List<string> xboxLetters = new List<string>(); // List of XBox controller letters
     
     public powerUpType type;
+    public bool isRandom;
     // Use this for initialization
     void Start()
     {
@@ -43,18 +44,36 @@ public class PowerUp : MonoBehaviour
 
 		print("triggerd");
 		// Remove it from the scene
-        Destroy(gameObject); 
         
 		// Determine which car hit it
         bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
-		// Generate random activation sequence
+        Logger.S.writeFile(!isBottomScreen, "Picked Up Powerup at " + Main.S.getGameTime());
+        if (!isBottomScreen)
+            Main.S.carTop.GetComponent<CarState>().powerupsHit++;
+        else
+            Main.S.carBottom.GetComponent<CarState>().powerupsHit++;
+        // Generate random activation sequence
         List<string> letterList = getNewLetterList();
 		// Show the player the sequence
         CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
-        
+        if (!isRandom)
+            Destroy(gameObject);
+        else
+            StartCoroutine("destroyObject");
     }
 
-	// Generate random list of 4 letters
+    IEnumerator destroyObject()
+    {
+        print("destroying object");
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+        yield return new WaitForSeconds(4f);
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
+        gameObject.GetComponent<BoxCollider>().enabled = true;
+        print("reactive");
+    }
+
+    // Generate random list of 4 letters
     List<string> getNewLetterList()
     {
         List<string> letterList = new List<string>();
@@ -104,7 +123,12 @@ public class PowerUp : MonoBehaviour
 			}
 			PowerupGenerator.S.numInstantiatedSwap--;
 		}
+        Logger.S.writeFile(topPlayer, "Activated Powerup " + type + " at: " + Main.S.getGameTime());
+        if (topPlayer)
+            Main.S.carTop.GetComponent<CarState>().powerupsActivated++;
+        else
+            Main.S.carBottom.GetComponent<CarState>().powerupsActivated++;
 
-	}
+    }
 
 }
