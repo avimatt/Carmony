@@ -106,7 +106,7 @@ public class Main : MonoBehaviour
            		// If both teams have finished and start has been hit restart the game
                 if (carTopDone && carBottomDone)
                 {
-                    Application.LoadLevel("NoahDevScene");
+                    Application.LoadLevel("AviDevScene");
                 }
                 Main.S.paused = true;
                 PauseScreen.S.gameObject.SetActive(true);

@@ -11,6 +11,7 @@ public enum powerUpType
 	swap,
     random,
     oil,
+	portal,
     empty
 }
 
@@ -72,9 +73,11 @@ public class PowerUp : MonoBehaviour
             if (isBehind)
             {
                 int randInt = Random.Range(0, 10);
-                if (randInt < 6)
+                if (randInt < 5)
                     type = powerUpType.swap;
-                else if (randInt == 7)
+				else if(randInt < 8)
+					type = powerUpType.portal;
+                else if (randInt == 8)
                     type = powerUpType.oil;
                 else
                     type = powerUpType.speed;
@@ -132,30 +135,32 @@ public class PowerUp : MonoBehaviour
 	public static void ActivatePowerUp(bool topPlayer, powerUpType type){
 
         if (type == powerUpType.speed) {
-			if(topPlayer){
-				Main.S.carTop.GetComponent<UserInteraction>().startBoost();
+			if (topPlayer) {
+				Main.S.carTop.GetComponent<UserInteraction> ().startBoost ();
 			} else {
-				Main.S.carBottom.GetComponent<UserInteraction>().startBoost();
+				Main.S.carBottom.GetComponent<UserInteraction> ().startBoost ();
 			}
 			PowerupGenerator.S.numInstantiatedSpeed--;
-		} else if(type == powerUpType.swap) {
-			if(topPlayer){
-				Main.S.carBottom.GetComponent<CarUserControl>().playerSwap();
+		} else if (type == powerUpType.swap) {
+			if (topPlayer) {
+				Main.S.carBottom.GetComponent<CarUserControl> ().playerSwap ();
 			} else {
-				Main.S.carTop.GetComponent<CarUserControl>().playerSwap();
+				Main.S.carTop.GetComponent<CarUserControl> ().playerSwap ();
 			}
 			PowerupGenerator.S.numInstantiatedSwap--;
-		}else if (type == powerUpType.oil)
-        {
-            if (topPlayer)
-            {
-                Main.S.carTop.GetComponent<UserInteraction>().placeOilSpill(); 
-            }
-            else
-            {
-                Main.S.carBottom.GetComponent<UserInteraction>().placeOilSpill();
-            }
-        }
+		} else if (type == powerUpType.oil) {
+			if (topPlayer) {
+				Main.S.carTop.GetComponent<UserInteraction> ().placeOilSpill (); 
+			} else {
+				Main.S.carBottom.GetComponent<UserInteraction> ().placeOilSpill ();
+			}
+		} else if (type == powerUpType.portal) {
+			if (topPlayer) {
+				Main.S.carTop.GetComponent<UserInteraction> ().moveToNextCheckpoint (); 
+			} else {
+				Main.S.carBottom.GetComponent<UserInteraction> ().moveToNextCheckpoint ();
+			}
+		}
         Logger.S.writeFile(topPlayer, "Activated Powerup " + type + " at: " + Main.S.getGameTime());
         if (topPlayer)
             Main.S.carTop.GetComponent<CarState>().powerupsActivated++;

@@ -33,7 +33,6 @@ public class UserInteraction : MonoBehaviour {
 	
     public void placeOilSpill()
     {
-        print("hello");
         Vector3 newLocation = gameObject.GetComponentInChildren<Camera>().GetComponent<Transform>().position;
         newLocation.y = oilPrefab.transform.position.y;
         GameObject go = Instantiate(oilPrefab, newLocation, oilPrefab.transform.rotation) as GameObject;
@@ -128,14 +127,6 @@ public class UserInteraction : MonoBehaviour {
             }
             gameObject.transform.localScale = newSize;
 
-        }
-        if (playerBInput.DPad.Left.WasPressed)
-        {
-            moveToNextCheckpoint();
-        }
-        if (playerBInput.DPad.Right.WasPressed)
-        {
-            placeOilSpill();
         }
 
         if ((playerBInput.DPad.Up.WasPressed || playerBInput.DPad.Down.WasPressed)){

@@ -62,6 +62,8 @@ public class Logger : MonoBehaviour {
 
     void OnDestroy()
     {
+		if (noPrint) return;
+
         swTop.Close();
         swBottom.Close();
     }

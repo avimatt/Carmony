@@ -87,6 +87,7 @@ public class CarmonyGUI : MonoBehaviour {
     public Sprite swapSprite;
     public Sprite speedSprite;
     public Sprite oilSprite;
+	public Sprite portalSprite;
 
     void Awake()
     {
@@ -465,6 +466,8 @@ public class CarmonyGUI : MonoBehaviour {
                 return speedSprite;
             case powerUpType.oil:
                 return oilSprite;
+			case powerUpType.portal:
+				return portalSprite;
             default:
                 return speedSprite;
         }
