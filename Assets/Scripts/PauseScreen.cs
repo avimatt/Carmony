@@ -30,6 +30,7 @@ public class PauseScreen : MonoBehaviour {
         Time.timeScale = 0;
         image.SetActive(true);
         text.SetActive(true);
+		CarmonyGUI.S.goText.SetActive(false);
         foreach (GameObject go in menuObjects)
             go.SetActive(true);
         if (Time.time > 1 && (CarmonyGUI.S.topGUI || Main.S.practicing))
@@ -116,7 +117,7 @@ public class PauseScreen : MonoBehaviour {
         }
         if (YesNoMenu.S.result)
         {
-            Application.LoadLevel("NoahDevScene");
+            Application.LoadLevel("AviDevScene");
         }
     }
 
