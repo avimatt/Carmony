@@ -109,8 +109,10 @@ namespace UnityStandardAssets.Vehicles.Car
                 return;
 
             if (!Main.S.getRaceStarted() && !Main.S.practicing)
+            {
+                gameObject.GetComponentInParent<CarController>().zeroXYSpeed();
                 return;
-
+            }
 
 
             // Use InControl

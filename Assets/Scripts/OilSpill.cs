@@ -19,7 +19,7 @@ public class OilSpill : MonoBehaviour {
     // When Player has collided with the power up
     void OnTriggerEnter(Collider coll)
     {
-        if (Time.time - startime < 1)
+        if (Time.time - startime < .2)
             return;
         print("triggerd");
         //Check if it is a car that enters the checkpoint

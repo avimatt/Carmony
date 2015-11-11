@@ -159,6 +159,12 @@ namespace UnityStandardAssets.Vehicles.Car
             m_Rigidbody.velocity = new Vector3(0, 0, 0);
         }
 
+        public void zeroXYSpeed()
+        {
+            m_Rigidbody.velocity = new Vector3(0, m_Rigidbody.velocity.y, 0);
+
+        }
+
         public void Move(float steering, float accel, float footbrake, float handbrake)
         {
 

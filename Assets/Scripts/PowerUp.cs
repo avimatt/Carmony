@@ -112,6 +112,7 @@ public class PowerUp : MonoBehaviour
         print("destroying object");
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         gameObject.GetComponent<BoxCollider>().enabled = false;
+        type = powerUpType.random;
         yield return new WaitForSeconds(4f);
         gameObject.GetComponent<MeshRenderer>().enabled = true;
         gameObject.GetComponent<BoxCollider>().enabled = true;
