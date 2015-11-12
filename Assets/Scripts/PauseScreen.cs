@@ -123,6 +123,7 @@ public class PauseScreen : MonoBehaviour {
 
     void resumeGame()
     {
+        print("resuming game");
         gameObject.SetActive(false);
         Main.S.updateInteractTimer();
         Main.S.paused = false;

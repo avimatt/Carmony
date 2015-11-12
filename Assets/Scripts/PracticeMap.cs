@@ -99,6 +99,7 @@ public class PracticeMap : MonoBehaviour {
         topPlate.SetActive(false);
         bottomPlate.SetActive(false);
         CarmonyGUI.S.HideActivationButton();
+        CarmonyGUI.S.movingToPractice.SetActive(true);
         Destroy(gameObject);
     }
 

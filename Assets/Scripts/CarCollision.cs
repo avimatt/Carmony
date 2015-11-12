@@ -20,25 +20,28 @@ public class CarCollision : MonoBehaviour {
 
     void OnCollisionEnter(Collision coll)
     {
-        if (coll.gameObject.layer == 0)
+        if (coll.gameObject.layer == 8)
         {
-            coll.gameObject.GetComponentInParent<CarState>().perfectRace = false;
-            coll.gameObject.gameObject.GetComponentInParent<CarState>().perfectLap = false;
-            coll.gameObject.gameObject.GetComponentInParent<CarState>().perfectCheckpoint = false;
+            gameObject.GetComponentInParent<CarState>().perfectRace = false;
+            gameObject.GetComponentInParent<CarState>().perfectLap = false;
+            gameObject.GetComponentInParent<CarState>().perfectCheckpoint = false;
 
-            printCollisionData(coll);
-            StartCoroutine("vibrateOnCollision", coll);
-
+            printCollisionData();
+        }else if (coll.gameObject.layer == 0)
+        {
+            print("hit car");
         }
+        StartCoroutine("vibrateOnCollision");
+
     }
 
-    IEnumerator vibrateOnCollision(Collision coll)
+    IEnumerator vibrateOnCollision()
     {
         if (Time.time - lastCollisionVibrate > 1)
         {
             lastCollisionVibrate = Time.time;
-            int first = coll.gameObject.gameObject.GetComponentInParent<CarUserControl>().first;
-            int second = coll.gameObject.gameObject.GetComponentInParent<CarUserControl>().second;
+            int first = gameObject.GetComponentInParent<CarUserControl>().first;
+            int second = gameObject.GetComponentInParent<CarUserControl>().second;
             var playerAInput = InputManager.Devices[first];
             var playerBInput = InputManager.Devices[second];
             playerAInput.Vibrate(1f, 1f);
@@ -53,12 +56,12 @@ public class CarCollision : MonoBehaviour {
 
     }
 
-    void printCollisionData(Collision coll)
+    void printCollisionData()
     {
-        bool isBottomCar = coll.gameObject.gameObject.GetComponentInParent<CarUserControl>().isBottomCar;
+        bool isBottomCar = gameObject.GetComponentInParent<CarUserControl>().isBottomCar;
         string carStr = isBottomCar ? "Bottom Car" : "Top Car";
-        float xPos = coll.gameObject.gameObject.GetComponentInParent<Transform>().position.x;
-        float zPos = coll.gameObject.gameObject.GetComponentInParent<Transform>().position.z;
+        float xPos = gameObject.GetComponentInParent<Transform>().position.x;
+        float zPos = gameObject.GetComponentInParent<Transform>().position.z;
         print(carStr + " hit at x=" + xPos + ",z=" + zPos + "   At " + Main.S.getGameTime());
         if (!isBottomCar)
             Logger.S.writeFile(true,carStr + " hit at x=" + xPos + ",z=" + zPos + "   At " + Main.S.getGameTime());

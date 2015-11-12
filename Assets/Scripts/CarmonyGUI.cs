@@ -92,6 +92,8 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject topPerfect;
     public GameObject bottomPerfect;
 
+
+    public GameObject movingToPractice;
     void Awake()
     {
 

@@ -38,6 +38,7 @@ public class Main : MonoBehaviour
             carsReady++;
         if (carsReady == 2 && !raceStarted)
         {
+            CarmonyGUI.S.movingToPractice.SetActive(false);
             CarmonyGUI.S.raiseStartFlagText();
         }
     }
@@ -108,7 +109,7 @@ public class Main : MonoBehaviour
            		// If both teams have finished and start has been hit restart the game
                 if (carTopDone && carBottomDone)
                 {
-                    Application.LoadLevel("AviDevScene");
+                    Application.LoadLevel("NoahDevScene");
                 }
                 Main.S.paused = true;
                 PauseScreen.S.gameObject.SetActive(true);
