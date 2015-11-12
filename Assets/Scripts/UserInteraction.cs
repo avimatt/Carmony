@@ -25,7 +25,9 @@ public class UserInteraction : MonoBehaviour {
     public Quaternion initalRotation;
 
     public GameObject oilPrefab;
-	// Use this for initialization
+    public Camera backCamera;
+    public Camera frontCamera;
+    // Use this for initialization
 	void Start () {
         isCarBottom = gameObject.GetComponentInParent<CarUserControl>().isBottomCar;
         boostTimer = Time.time;
@@ -51,7 +53,6 @@ public class UserInteraction : MonoBehaviour {
             if (Main.S.carBottomDone)
                 return;
         }
-
         CarUserControl userControl = gameObject.GetComponentInParent<CarUserControl>();
         // Prevent players from using reset right away
 		if (!Main.S.getRaceStarted() && !Main.S.practicing)
@@ -60,10 +61,30 @@ public class UserInteraction : MonoBehaviour {
         if (userControl.first >= InputManager.Devices.Count)
             return;
 
+
 		// Get player controller object
         var playerAInput = InputManager.Devices[userControl.first];
         var playerBInput = InputManager.Devices[userControl.second];
 
+        if (playerAInput.RightStickY < 0 || playerBInput.RightStickY < 0)
+        {
+            backCamera.enabled = true;
+        }
+        else
+        {
+            backCamera.enabled = false;
+        }
+        if (playerAInput.RightStickButton.WasPressed || playerBInput.RightStickButton.WasPressed)
+        {
+            if (frontCamera.isActiveAndEnabled)
+            {
+                frontCamera.enabled = false;
+            }
+            else
+            {
+                frontCamera.enabled = true;
+            }
+        }
         if (isShrinking)
         {
             Vector3 newSize = gameObject.transform.localScale;
