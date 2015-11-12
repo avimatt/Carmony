@@ -120,10 +120,20 @@ namespace UnityStandardAssets.Vehicles.Car
             var playerAInput = InputManager.Devices[first];
             var playerBInput = InputManager.Devices[second];
 
+            float accel;
+            float footbrake;
             // Player A controls accelerator and turning right
-            float accel = playerAInput.RightTrigger;
-            // Player B controls footbrake, handbrake, and turning left
-            float footbrake = -1f * playerBInput.LeftTrigger;
+            if (Main.S.normalControls)
+            {
+                accel = playerAInput.RightTrigger;
+                // Player B controls footbrake, handbrake, and turning left
+                footbrake = -1f * playerBInput.LeftTrigger;
+            }
+            else
+            {
+                accel = playerAInput.RightTrigger;
+                footbrake = -1f * playerAInput.LeftTrigger;
+            }
             if (accel + footbrake > 0)
             {
                 accel = accel + footbrake;
@@ -137,10 +147,17 @@ namespace UnityStandardAssets.Vehicles.Car
             //Turning off handbrake because we are already using that button
             // for the powerup character sequence input.
             float handbrake = 0;
-
-            float playerA_turnRight = Math.Max(0f, playerAInput.LeftStickX);
-            float playerB_turnLeft = Math.Min(0f, playerBInput.LeftStickX);
-
+            float playerA_turnRight;
+            float playerB_turnLeft;
+            if (Main.S.normalControls)
+            {
+                playerA_turnRight = Math.Max(0f, playerAInput.LeftStickX);
+                playerB_turnLeft = Math.Min(0f, playerBInput.LeftStickX);
+            }
+            else{
+                playerA_turnRight = Math.Max(0f, playerBInput.LeftStickX);
+                playerB_turnLeft = Math.Min(0f, playerBInput.LeftStickX);
+            }
             float steering = playerA_turnRight + playerB_turnLeft;
 			if (gameObject.transform.localScale.x < 1) {
 				steering *= Mathf.Pow(2.718f, gameObject.GetComponent<CarController> ().getSpeed()/-60); 

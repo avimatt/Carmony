@@ -89,6 +89,9 @@ public class CarmonyGUI : MonoBehaviour {
     public Sprite oilSprite;
 	public Sprite portalSprite;
 
+    public GameObject topPerfect;
+    public GameObject bottomPerfect;
+
     void Awake()
     {
 
@@ -109,11 +112,6 @@ public class CarmonyGUI : MonoBehaviour {
         bottomImageLeft.SetActive(false);
         topImageRight.SetActive(false);
         topImageLeft.SetActive(false);
-
-        foreach (GameObject go in bottomLetterList)
-            go.SetActive(false);
-        foreach (GameObject go in topLetterList)
-            go.SetActive(false);
         // Activation system starts hidden, until someone gets a powerup.
         this.HideActivationButton();
     }
@@ -472,33 +470,6 @@ public class CarmonyGUI : MonoBehaviour {
                 return speedSprite;
         }
 
-    }
-
-	// Display power up sequence to the players 
-    public void setLetters(bool isTopScreen, List<string> letters, powerUpType type)
-    {
-        if (!isTopScreen)
-        {
-            letterListTop = letters;
-            for (int i = 0; i < topLetterList.Count; i++)
-            {
-                topLetterList[i].SetActive(true);
-                topLetterList[i].GetComponent<Image>().sprite = getSpriteForLetter(letters[i]);
-            }
-            inLettersTop = true;
-			topType = type;
-        }
-        else
-        {
-            letterListBottom = letters;
-            for (int i = 0; i < bottomLetterList.Count; i++)
-            {
-                bottomLetterList[i].SetActive(true);
-                bottomLetterList[i].GetComponent<Image>().sprite = getSpriteForLetter(letters[i]);
-            }
-            inLettersBottom = true;
-			bottomType = type;
-        }
     }
 
 	// Display all end game scenarios

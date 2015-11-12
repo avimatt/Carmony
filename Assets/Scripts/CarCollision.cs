@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.Vehicles.Car;
-
+using InControl;
 
 public class CarCollision : MonoBehaviour {
 
-
+    float lastCollisionVibrate;
+    public AudioClip crashClip;
     // Use this for initialization
     void Start () {
 
@@ -15,7 +16,7 @@ public class CarCollision : MonoBehaviour {
     void Update () {
 	
 	}
-
+    
 
     void OnCollisionEnter(Collision coll)
     {
@@ -26,8 +27,30 @@ public class CarCollision : MonoBehaviour {
             coll.gameObject.gameObject.GetComponentInParent<CarState>().perfectCheckpoint = false;
 
             printCollisionData(coll);
+            StartCoroutine("vibrateOnCollision", coll);
 
         }
+    }
+
+    IEnumerator vibrateOnCollision(Collision coll)
+    {
+        if (Time.time - lastCollisionVibrate > 1)
+        {
+            lastCollisionVibrate = Time.time;
+            int first = coll.gameObject.gameObject.GetComponentInParent<CarUserControl>().first;
+            int second = coll.gameObject.gameObject.GetComponentInParent<CarUserControl>().second;
+            var playerAInput = InputManager.Devices[first];
+            var playerBInput = InputManager.Devices[second];
+            playerAInput.Vibrate(1f, 1f);
+            playerBInput.Vibrate(1f, 1f);
+            gameObject.GetComponent<AudioSource>().clip = crashClip;
+            gameObject.GetComponent<AudioSource>().Play();
+            yield return new WaitForSeconds(.5f);
+            playerAInput.Vibrate(0f, 0f);
+            playerBInput.Vibrate(0f, 0f);
+        }
+
+
     }
 
     void printCollisionData(Collision coll)

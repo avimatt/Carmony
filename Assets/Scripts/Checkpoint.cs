@@ -99,23 +99,23 @@ public class Checkpoint : MonoBehaviour {
     IEnumerator printPerfectTop(string message)
     {
 
-        //CarmonyGUI.S.topPerfect.SetActive(true);
-        //CarmonyGUI.S.topPerfect.GetComponent<Text>().text = message;
+        CarmonyGUI.S.topPerfect.SetActive(true);
+        CarmonyGUI.S.topPerfect.GetComponent<Text>().text = message;
 
         yield return new WaitForSeconds(2f);
 
-        //CarmonyGUI.S.topPerfect.SetActive(false);
+        CarmonyGUI.S.topPerfect.SetActive(false);
 
     }
     IEnumerator printPerfectBottom(string message)
     {
 
-        //CarmonyGUI.S.bottomPerfect.SetActive(true);
-        //CarmonyGUI.S.bottomPerfect.GetComponent<Text>().text = message;
+        CarmonyGUI.S.bottomPerfect.SetActive(true);
+        CarmonyGUI.S.bottomPerfect.GetComponent<Text>().text = message;
 
         yield return new WaitForSeconds(2f);
 
-        //CarmonyGUI.S.bottomPerfect.SetActive(false);
+        CarmonyGUI.S.bottomPerfect.SetActive(false);
     }
 
     // Update is called once per frame

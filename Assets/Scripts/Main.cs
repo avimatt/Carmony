@@ -30,6 +30,8 @@ public class Main : MonoBehaviour
     public int carsReady = 0;
 
     public float startTime;
+
+    public bool normalControls;
     public void setCarReady()
     {
         if (carsReady < 2)
