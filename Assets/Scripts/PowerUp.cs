@@ -52,20 +52,16 @@ public class PowerUp : MonoBehaviour
 
         // TODO: WHY THE FUCK do we use isTop in some places, and isBottom in others? We need to be consistent.
         bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
-        Logger.S.writeFile(!isBottomScreen, "Picked Up Powerup at " + Main.S.getGameTime());
         if (!isBottomScreen)
+        {
             Main.S.carTop.GetComponent<CarState>().powerupsHit++;
+        }
         else
+        {
             Main.S.carBottom.GetComponent<CarState>().powerupsHit++;
-        // Generate random activation sequence
-        //List<string> letterList = getNewLetterList();
-        // Show the player the sequence
-        //CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
-
-        // Generate random activation sequence
-        //List<string> letterList = getNewLetterList();
-        // Show the player the sequence
-        //CarmonyGUI.S.setLetters(isBottomScreen, letterList, type);
+            
+        }
+        Logger.S.writeFile(!isBottomScreen, "Picked Up Powerup at " + Main.S.getGameTime());
 
         if (type == powerUpType.random)
         {
@@ -99,7 +95,14 @@ public class PowerUp : MonoBehaviour
             }
         }
 
-        CarmonyGUI.S.GiveTeamPowerup(!isBottomScreen, type);
+        if ((isBottomScreen && Main.S.carBottomDone) || (!isBottomScreen && Main.S.carTopDone))
+        {
+            print("cant pick up item now");
+        }
+        else
+        {
+            CarmonyGUI.S.GiveTeamPowerup(!isBottomScreen, type);
+        }
         if (!isRandom)
             Destroy(gameObject);
         else

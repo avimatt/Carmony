@@ -157,6 +157,7 @@ public class Main : MonoBehaviour
             CarmonyGUI.S.topImageLeft.SetActive(false);
             CarmonyGUI.S.topImageRight.SetActive(false);
             carTop.GetComponent<CarState>().totalTime = getGameTime();
+            CarmonyGUI.S.HideTopPowerUpActivator();
         }
         else
         {
@@ -166,6 +167,7 @@ public class Main : MonoBehaviour
             CarmonyGUI.S.bottomImageRight.SetActive(false);
             carBottom.GetComponent<CarState>().totalTime = getGameTime();
             carBottomDone = true;
+            CarmonyGUI.S.HideBottomPowerUpActivator();
         }
         Logger.S.printSummary(isTop);
         CarmonyGUI.S.endGame(isTop);

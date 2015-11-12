@@ -349,7 +349,7 @@ public class CarmonyGUI : MonoBehaviour {
         }
     }
 
-    void HideTopPowerUpActivator()
+    public void HideTopPowerUpActivator()
     {
         powerupImageTop.enabled = false;
         this.topActivationButton.enabled = false;
@@ -357,7 +357,7 @@ public class CarmonyGUI : MonoBehaviour {
         this.topActivationSlider.fillAmount = 0f;
     }
 
-    void HideBottomPowerUpActivator()
+    public void HideBottomPowerUpActivator()
     {
         powerupImageBottom.enabled = false;
         this.bottomActivationButton.enabled = false;
