@@ -18,18 +18,15 @@ public enum powerUpType
 public class PowerUp : MonoBehaviour
 {
 
-    List<string> xboxLetters = new List<string>(); // List of XBox controller letters
-    
+    private MeshRenderer m_meshRenderer;
+    private BoxCollider m_boxCollider;
     public powerUpType type;
     public bool isRandom;
     // Use this for initialization
     void Start()
     {
-        xboxLetters.Add("X");
-        xboxLetters.Add("Y");
-        xboxLetters.Add("B");
-        xboxLetters.Add("A");
-
+        m_meshRenderer = gameObject.GetComponent<MeshRenderer>();
+        m_boxCollider = gameObject.GetComponent<BoxCollider>();
     }
 
     // Update is called once per frame
@@ -44,12 +41,6 @@ public class PowerUp : MonoBehaviour
 	// When Player has collided with the power up
     void OnTriggerEnter(Collider coll)
     {
-
-		print("triggerd");
-		// Remove it from the scene
-        
-		// Determine which car hit it
-
         // TODO: WHY THE FUCK do we use isTop in some places, and isBottom in others? We need to be consistent.
         bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
         if (!isBottomScreen)
@@ -112,27 +103,12 @@ public class PowerUp : MonoBehaviour
 
     IEnumerator destroyObject()
     {
-        print("destroying object");
-        gameObject.GetComponent<MeshRenderer>().enabled = false;
-        gameObject.GetComponent<BoxCollider>().enabled = false;
+        m_meshRenderer.enabled = false;
+        m_boxCollider.enabled = false;
         type = powerUpType.random;
         yield return new WaitForSeconds(4f);
-        gameObject.GetComponent<MeshRenderer>().enabled = true;
-        gameObject.GetComponent<BoxCollider>().enabled = true;
-        print("reactive");
-    }
-
-    // Generate random list of 4 letters
-    List<string> getNewLetterList()
-    {
-        List<string> letterList = new List<string>();
-        int numLetters = 4;
-        for (int i = 0; i < numLetters; i++)
-        {
-            int randInt = Random.Range(0, 4);
-            letterList.Add(xboxLetters[randInt]);
-        }
-        return letterList;
+        m_meshRenderer.enabled = true;
+        m_boxCollider.enabled = true;
     }
 
 	// Carry out the power ups action (To be called after the player has inputed the full sequence)

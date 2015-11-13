@@ -7,6 +7,8 @@ using InControl;
 
 public class PauseScreen : MonoBehaviour {
 
+
+    private Image m_pauseImage;
     static public PauseScreen S;
     public GameObject text;
     public GameObject image;
@@ -40,7 +42,7 @@ public class PauseScreen : MonoBehaviour {
     void Start () {
 
         gameObject.SetActive(false);
-
+        m_pauseImage = GetComponent<Image>();
         pauseStartTime = Time.time;
         Time.timeScale = 1;
         CarmonyGUI.S.showGUI();
@@ -65,9 +67,9 @@ public class PauseScreen : MonoBehaviour {
 		CarmonyGUI.S.goText.SetActive (false);
         if (YesNoMenu.S.isActiveAndEnabled)
             return;
-        Color newColor = GetComponent<Image>().color;
+        Color newColor = m_pauseImage.color;
         newColor.a = 230;
-        GetComponent<Image>().color = newColor;
+        m_pauseImage.color = newColor;
         foreach (InputDevice player in InputManager.Devices)
         {
             if (player.LeftStick.Left.WasPressed)

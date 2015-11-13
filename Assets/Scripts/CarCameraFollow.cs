@@ -5,6 +5,7 @@ using UnityStandardAssets.Vehicles.Car;
 public class CarCameraFollow : MonoBehaviour
 {
     public GameObject carObject;
+    private CarController m_car;
     public Transform cameraSets;
 
     public Transform targetLookat;
@@ -16,6 +17,11 @@ public class CarCameraFollow : MonoBehaviour
 
     public LayerMask layerMasks;
 
+    void Awake()
+    {
+         m_car = carObject.GetComponent<CarController>();
+    }
+
     void Start()
     {
 
@@ -26,7 +32,7 @@ public class CarCameraFollow : MonoBehaviour
     {
         cameraSets.position = carObject.transform.position;
 
-        float rotSmooth = 1f + (carObject.GetComponent<CarController>().getSpeed() / 10) * rotateSmoothness;
+        float rotSmooth = 1f + (m_car.getSpeed() / 10) * rotateSmoothness;
 
 
         cameraSets.rotation = Quaternion.Lerp(cameraSets.rotation, carObject.transform.rotation, rotSmooth * Time.deltaTime);

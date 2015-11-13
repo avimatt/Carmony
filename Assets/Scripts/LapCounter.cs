@@ -4,20 +4,25 @@ using UnityEngine.UI;
 
 public class LapCounter : MonoBehaviour {
     public bool isTop;
+
+    private Text m_text;
+    private CarState m_carstate;
+
 	// Use this for initialization
 	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
         if (this.isTop)
         {
-            gameObject.GetComponent<Text>().text = "Lap: " + Main.S.carTop.GetComponent<CarState>().currLap.ToString();
+            m_carstate = Main.S.carTop.GetComponent<CarState>();
         }
         else
         {
-            gameObject.GetComponent<Text>().text = "Lap: " + Main.S.carBottom.GetComponent<CarState>().currLap.ToString();
+            m_carstate = Main.S.carBottom.GetComponent<CarState>();
         }
+        m_text = gameObject.GetComponent<Text>();
+    }
+	
+	// Update is called once per frame
+	void Update () {
+        m_text.text = "Lap: " + m_carstate.currLap.ToString();
 	}
 }

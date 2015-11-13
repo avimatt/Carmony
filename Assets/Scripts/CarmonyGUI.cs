@@ -8,17 +8,14 @@ using InControl;
 
 public class CarmonyGUI : MonoBehaviour {
 
+    private AudioSource m_audiosource;
+    private Text m_goText;
+    private CarUserControl m_carTopUserControl;
+    private CarUserControl m_carBottomUserControl;
     static public CarmonyGUI S;
     public GameObject topGUI;
     public GameObject bottomGUI;
-    public GameObject progressBar;
-    public GameObject timeText;
     public GameObject topLetters;
-	//public powerUpType topType;
-    public List<GameObject> topLetterList;
-    public GameObject bottomLetters;
-    public List<GameObject> bottomLetterList;
-	//public powerUpType bottomType;
 
     public GameObject topEnd;
     public GameObject bottomEnd;
@@ -57,7 +54,7 @@ public class CarmonyGUI : MonoBehaviour {
 
     public AudioClip waitClip;
     public AudioClip goClip;
-    //public GameObject goBoard;
+
     public Material waitMat;
     public Material goMat;
     public GameObject goText;
@@ -89,6 +86,10 @@ public class CarmonyGUI : MonoBehaviour {
     {
 
         S = this;
+        m_audiosource = gameObject.GetComponent<AudioSource>();
+        m_carTopUserControl =  Main.S.carTop.GetComponent<CarUserControl>();
+        m_carBottomUserControl =  Main.S.carBottom.GetComponent<CarUserControl>();
+        m_goText = goText.GetComponent<Text>();
     }
 
 	// Use this for initialization
@@ -142,51 +143,47 @@ public class CarmonyGUI : MonoBehaviour {
     IEnumerator startFlagText()
     {
         goText.SetActive(true);
-        gameObject.GetComponent<AudioSource>().enabled = true;
+        m_audiosource.enabled = true;
         //goText.GetComponent<Text>().color = new Color32(0, 0, 0, 255);
 
-        goText.GetComponent<Text>().text = "3";
-        gameObject.GetComponent<AudioSource>().clip = waitClip;
-        gameObject.GetComponent<AudioSource>().Play();
+        m_goText.text = "3";
+        m_audiosource.clip = waitClip;
+        m_audiosource.Play();
         yield return new WaitForSeconds(1f);
 
-        goText.GetComponent<Text>().text = "2";
-        gameObject.GetComponent<AudioSource>().clip = waitClip;
-        gameObject.GetComponent<AudioSource>().Play();
+        m_goText.text = "2";
+        m_audiosource.clip = waitClip;
+        m_audiosource.Play();
         yield return new WaitForSeconds(1f);
 
-        goText.GetComponent<Text>().text = "1";
-        gameObject.GetComponent<AudioSource>().clip = waitClip;
-        gameObject.GetComponent<AudioSource>().Play();
+        m_goText.text = "1";
+        m_audiosource.clip = waitClip;
+        m_audiosource.Play();
         yield return new WaitForSeconds(1f);
 
-        gameObject.GetComponent<AudioSource>().clip = goClip;
-        gameObject.GetComponent<AudioSource>().Play();
+        m_audiosource.clip = goClip;
+        m_audiosource.Play();
 
-        goText.GetComponent<Text>().text = "G O !";
-        goText.GetComponent<Text>().color = new Color32(56, 139, 0, 255);
-        //these two lines do nothing right now.
-        //goBoard.GetComponent<MeshRenderer>().materials.SetValue(goMat,0);
-        //goBoard.GetComponent<MeshRenderer>().material = goMat;
+        m_goText.text = "G O !";
+        m_goText.color = new Color32(56, 139, 0, 255);
 
         Main.S.setRaceStarted();
-        //StartCoroutine("startstartFireworks");
+
         showInitialUI();
         yield return new WaitForSeconds(1f);
         goText.SetActive(false);
-        //StartCoroutine("closeStartLine");
     }
 
     void showInitialUI()
     {
-        CarmonyGUI.S.bottomMinimap.SetActive(true);
-        CarmonyGUI.S.topMinimap.SetActive(true);
-        CarmonyGUI.S.topMinimapDots.SetActive(true);
-        CarmonyGUI.S.bottomMinimapDots.SetActive(true);
-        CarmonyGUI.S.bottomImageLeft.SetActive(true);
-        CarmonyGUI.S.bottomImageRight.SetActive(true);
-        CarmonyGUI.S.topImageLeft.SetActive(true);
-        CarmonyGUI.S.topImageRight.SetActive(true);
+        bottomMinimap.SetActive(true);
+        topMinimap.SetActive(true);
+        topMinimapDots.SetActive(true);
+        bottomMinimapDots.SetActive(true);
+        bottomImageLeft.SetActive(true);
+        bottomImageRight.SetActive(true);
+        topImageLeft.SetActive(true);
+        topImageRight.SetActive(true);
         topSpeed.SetActive(true);
         topLap.SetActive(true);
         bottomSpeed.SetActive(true);
@@ -200,17 +197,17 @@ public class CarmonyGUI : MonoBehaviour {
         if (!Main.S.practicing && !Main.S.raceStarted)
             return;
         // Get references to the control objects for both teams
-        CarUserControl topUserContorl = Main.S.carTop.GetComponent<CarUserControl> ();
-        var topPlayerAInput = InputManager.Devices[topUserContorl.first];
-        var topPlayerBInput = InputManager.Devices[topUserContorl.second];
-        CarUserControl bottomUserControl = Main.S.carBottom.GetComponent<CarUserControl> ();
+
+        var topPlayerAInput = InputManager.Devices[m_carTopUserControl.first];
+        var topPlayerBInput = InputManager.Devices[m_carTopUserControl.second];
+
         var bottomPlayerAInput = InputManager.Devices[0];
         var bottomPlayerBInput = InputManager.Devices[0];
 
-        if (bottomUserControl.first < InputManager.Devices.Count)
+        if (m_carBottomUserControl.first < InputManager.Devices.Count)
         {
-            bottomPlayerAInput = InputManager.Devices[bottomUserControl.first];
-            bottomPlayerBInput = InputManager.Devices[bottomUserControl.second];
+            bottomPlayerAInput = InputManager.Devices[m_carBottomUserControl.first];
+            bottomPlayerBInput = InputManager.Devices[m_carBottomUserControl.second];
         }
 
         // If a team has a powerup, check and see if they are hitting the buttons
@@ -290,7 +287,6 @@ public class CarmonyGUI : MonoBehaviour {
     {
         if (Main.S.practicing)
         {
-            print("here idk where you are2?");
             PracticeMap.S.practiceText.SetActive(false);
             PracticeMap.S.practiceText2.SetActive(false);
             PracticeMap.S.topPlate.SetActive(false);
@@ -300,7 +296,6 @@ public class CarmonyGUI : MonoBehaviour {
         {
             topGUI.SetActive(false);
             bottomGUI.SetActive(false);
-            //timeText.SetActive(false);
             topLetters.SetActive(false);
             topMinimap.SetActive(false);
             bottomMinimap.SetActive(false);
@@ -327,7 +322,6 @@ public class CarmonyGUI : MonoBehaviour {
         {
             topGUI.SetActive(true);
             bottomGUI.SetActive(true);
-            //timeText.SetActive(true);
             topLetters.SetActive(true);
             topMinimap.SetActive(true);
             topMinimapDots.SetActive(true);

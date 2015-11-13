@@ -5,20 +5,23 @@ using UnityStandardAssets.Vehicles.Car;
 
 public class Speed : MonoBehaviour {
     public bool isTop;
+    public Text m_text;
+    public CarController m_car;
 	// Use this for initialization
 	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    if (isTop)
+        m_text = gameObject.GetComponent<Text>();
+        if (isTop)
         {
-            gameObject.GetComponent<Text>().text = Main.S.carTop.GetComponent<CarController>().getSpeed().ToString() + " MPH";
+            m_car = Main.S.carTop.GetComponent<CarController>();
         }
         else
         {
-            gameObject.GetComponent<Text>().text = Main.S.carBottom.GetComponent<CarController>().getSpeed().ToString() + " MPH";
+            m_car = Main.S.carBottom.GetComponent<CarController>();
         }
+    }
+	
+	// Update is called once per frame
+	void Update () {
+        m_text.text = m_car.getSpeed().ToString() + " MPH";
     }
 }
