@@ -12,6 +12,13 @@ public class Map : MonoBehaviour {
     public List<Vector3> randomPowerupLocations;
     public GameObject checkpointSystem;
     public List<GameObject> fireworkList;
+
+    public int numLaps;
+
+    public Sprite miniMapImage;
+    public int x;
+    public int z;
+
 	// Use this for initialization
 	void Start () {
 	

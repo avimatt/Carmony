@@ -16,13 +16,13 @@ public class MinimapFollow : MonoBehaviour {
         float yratio;
         if (!isTop)
         {
-            xratio = Main.S.carBottom.transform.position.x / 500f;
-            yratio = Main.S.carBottom.transform.position.z / 500f;
+            xratio = (Main.S.carBottom.transform.position.x - Main.S.Map.GetComponent<Map>().x) / 500f;
+            yratio = (Main.S.carBottom.transform.position.z - Main.S.Map.GetComponent<Map>().z) / 500f;
         }
         else
         {
-            xratio = Main.S.carTop.transform.position.x / 500f;
-            yratio = Main.S.carTop.transform.position.z / 500f;
+            xratio = (Main.S.carTop.transform.position.x - Main.S.Map.GetComponent<Map>().x) / 500f;
+            yratio = (Main.S.carTop.transform.position.z - Main.S.Map.GetComponent<Map>().z) / 500f;
         }
         updateCar(xratio, yratio);
     }

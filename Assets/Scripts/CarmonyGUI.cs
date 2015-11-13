@@ -178,6 +178,8 @@ public class CarmonyGUI : MonoBehaviour {
         bottomMinimap.SetActive(true);
         topMinimap.SetActive(true);
         topMinimapDots.SetActive(true);
+        topMinimap.GetComponent<Image>().sprite = Main.S.Map.GetComponent<Map>().miniMapImage;
+        bottomMinimap.GetComponent<Image>().sprite = Main.S.Map.GetComponent<Map>().miniMapImage;
         bottomMinimapDots.SetActive(true);
         bottomImageLeft.SetActive(true);
         bottomImageRight.SetActive(true);

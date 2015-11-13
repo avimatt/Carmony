@@ -18,8 +18,6 @@ public class Main : MonoBehaviour
 
 	public bool paused;
 
-    public int totalLaps = 3;
-
     public bool raceStarted;
     public bool practicing;
 

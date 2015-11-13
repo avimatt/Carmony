@@ -60,7 +60,7 @@ public class Checkpoint : MonoBehaviour {
                         }
                         player.currLap++;
 						// If finished last lap
-                        if (player.currLap == Main.S.totalLaps)
+                        if (player.currLap == (Main.S.Map.GetComponent<Map>().numLaps + 1))
                         {
                             if (player.perfectRace)
                             {
