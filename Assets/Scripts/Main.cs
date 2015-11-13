@@ -13,8 +13,6 @@ public class Main : MonoBehaviour
     public GameObject carTop;
     public GameObject carBottom;
 
-    public List<GameObject> fireworkList;
-
     public bool carTopDone;
     public bool carBottomDone;
 
@@ -26,6 +24,8 @@ public class Main : MonoBehaviour
     public bool practicing;
 
     public GameObject Map;
+
+    public List<GameObject> MapList;
 
     public int carsReady = 0;
 
@@ -95,6 +95,7 @@ public class Main : MonoBehaviour
     {
         S = this;
         interactTimer = Time.time;
+        Map = MapList[1];
     }
 
     // Update is called once per frame
@@ -146,7 +147,7 @@ public class Main : MonoBehaviour
     // Display end game screen from the team that finished
     public void endGame(bool isTop)
     {
-        foreach(GameObject go in fireworkList)
+        foreach(GameObject go in Map.GetComponent<Map>().fireworkList)
         {
             go.SetActive(true);
         }

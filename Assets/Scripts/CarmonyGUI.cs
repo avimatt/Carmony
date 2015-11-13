@@ -58,7 +58,6 @@ public class CarmonyGUI : MonoBehaviour {
     public Material waitMat;
     public Material goMat;
     public GameObject goText;
-    public GameObject startFireworks;
 
     public GameObject topSpeed;
     public GameObject topLap;

@@ -14,6 +14,7 @@ public class Checkpoint : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
+        print("hit checkpoint");
         //Check if it is a car that enters the checkpoint
         Transform playerTrans = null;
         Transform tmp = other.transform.parent;
@@ -26,6 +27,7 @@ public class Checkpoint : MonoBehaviour {
         }
 
         if (playerTrans && playerTrans.tag=="Player") {// && Time.time -lastCheckpointTime  > .5f) {
+            print("player hit checkpoint");
             lastCheckpointTime = Time.time;
             // other is player
             // Get a reference to the CarState script

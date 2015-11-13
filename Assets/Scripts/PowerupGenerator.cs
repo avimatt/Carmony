@@ -40,12 +40,10 @@ public class PowerupGenerator : MonoBehaviour {
 		swapGeneration[4] = new Vector3(308,1,455);
 		swapGeneration[5] = new Vector3(381,1,334);
 
-        randomGenerations.Add(new Vector3(100,1,460));
-        randomGenerations.Add(new Vector3(223, 1, 455));
-        randomGenerations.Add(new Vector3(345, 1, 308));
-        randomGenerations.Add(new Vector3(345, 1, 78));
-        randomGenerations.Add(new Vector3(145, 1, 423));
-
+        foreach (Vector3 newPos in Main.S.Map.GetComponent<Map>().randomPowerupLocations)
+        {
+            randomGenerations.Add(newPos);
+        }
 
         //end init
         for (int i = 0; i < numPowerups; ++i){

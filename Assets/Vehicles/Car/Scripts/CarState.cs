@@ -21,12 +21,27 @@ public class CarState : MonoBehaviour {
     public int powerupsActivated;
     public int resets;
 
+    bool set;
+
 	// Use this for initialization
 	void Start () {
+
+	}
+	
+	// Update is called once per frame
+	void Update () {
+        if (!set && Main.S.practicing)
+        {
+            setCheckpoints();
+        }
+	}
+
+    void setCheckpoints()
+    {
         // Populate the checkpoints array with all the checkpoints
         // Iterates through the children of the Checkpoints object and adds
         // them to the checkpoints list.
-        foreach (Transform child in GameObject.Find("Checkpoints").transform)
+        foreach (Transform child in Main.S.Map.GetComponent<Map>().checkpointSystem.transform)
         {
             checkpoints.Add(child);
             topResetLocation.Add(child.Find("Top").transform);
@@ -36,11 +51,8 @@ public class CarState : MonoBehaviour {
         this.currCheckpoint = 0;
         // Start laps at 0
         this.currLap = 0;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	}
+        set = true;
+    }
 
     //Determines whether the car passed it is behind by atleast a checkpoint in the race.
     //would like to do closer estimations but no closer meauserments than checkpoints
