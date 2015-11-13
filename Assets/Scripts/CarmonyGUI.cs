@@ -44,10 +44,6 @@ public class CarmonyGUI : MonoBehaviour {
     public Sprite bbutton;
     public Sprite xbutton;
     public Sprite ybutton;
-    public Sprite upbutton;
-    public Sprite downbutton;
-    public Sprite leftbutton;
-    public Sprite rightbutton;
 
 	public GameObject topMinimap;
 	public GameObject bottomMinimap;
@@ -71,11 +67,6 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject topLap;
     public GameObject bottomSpeed;
     public GameObject bottomLap;
-
-
-    public GameObject practiceText;
-    public GameObject topPlate;
-    public GameObject bottomPlate;
 
     public Image powerupImageTop;
     public Image powerupImageBottom;
@@ -182,7 +173,6 @@ public class CarmonyGUI : MonoBehaviour {
         //StartCoroutine("startstartFireworks");
         showInitialUI();
         yield return new WaitForSeconds(1f);
-		print ("here --- yay!");
         goText.SetActive(false);
         //StartCoroutine("closeStartLine");
     }
@@ -204,78 +194,6 @@ public class CarmonyGUI : MonoBehaviour {
         
     }
 
-    /*IEnumerator startstartFireworks()
-    {
-        startFireworks.SetActive(true);
-        yield return new WaitForSeconds(5);
-        startFireworks.SetActive(false);
-
-    }
-
-    IEnumerator closeStartLine()
-    {
-        yield return new WaitForSeconds(30);
-        goBoard.SetActive(false);
-    }*/
-
-	// Return the current index of which letter in the powerup sequence the player is at
-    int getCurIndex(bool isTop)
-    {
-        if (isTop)
-            return curIndexTop;
-        else
-            return curIndexBottom;
-    }
-
-	// Returns whether a button was pressed corresponding to the sequence
-	// TODO Is there a reason this doesn't return a bool. It seems like the hit variable in update is used like a bool
-    bool getHit(bool inLettersTop)
-    {
-		// Get device objects for the correct team
-		CarUserControl userContorl = inLettersTop ? Main.S.carTop.GetComponent<CarUserControl> () : Main.S.carBottom.GetComponent<CarUserControl> ();
-		var playerAInput = InputManager.Devices[userContorl.first];
-        var playerBInput = InputManager.Devices[userContorl.second];
-
-		// Get which letter to check for
-        string letter = "";
-        if (inLettersTop)
-            letter = letterListTop[curIndexTop];
-        else
-            letter = letterListBottom[curIndexBottom];
-
-		// Check for player input of the correct letter
-        bool hit = false;
-        int curIndex = getCurIndex(inLettersTop);
-        
-        switch (letter)
-        {
-            case "A":
-                if (curIndex % 2 == 0)
-                    hit = playerAInput.Action1.WasPressed;
-                else
-                    hit = playerBInput.Action1.WasPressed;
-                break;
-            case "B":
-                if (curIndex % 2 == 0)
-                    hit = playerAInput.Action2.WasPressed;
-                else
-                    hit = playerBInput.Action2.WasPressed;
-                break;
-            case "X":
-                if (curIndex % 2 == 0)
-                    hit = playerAInput.Action3.WasPressed;
-                else
-                    hit = playerBInput.Action3.WasPressed;
-                break;
-            case "Y":
-                if (curIndex % 2 == 0)
-                    hit = playerAInput.Action4.WasPressed;
-                else
-                    hit = playerBInput.Action4.WasPressed;
-                break;
-        }
-        return hit;
-    }
 
     void Update()
     {
@@ -374,6 +292,7 @@ public class CarmonyGUI : MonoBehaviour {
         {
             print("here idk where you are2?");
             PracticeMap.S.practiceText.SetActive(false);
+            PracticeMap.S.practiceText2.SetActive(false);
             PracticeMap.S.topPlate.SetActive(false);
             PracticeMap.S.bottomPlate.SetActive(false);
         }
@@ -400,6 +319,7 @@ public class CarmonyGUI : MonoBehaviour {
         if (Main.S.practicing)
         {
             PracticeMap.S.practiceText.SetActive(true);
+            PracticeMap.S.practiceText2.SetActive(true);
             PracticeMap.S.topPlate.SetActive(true);
             PracticeMap.S.bottomPlate.SetActive(true);
         }

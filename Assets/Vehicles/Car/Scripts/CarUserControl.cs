@@ -14,26 +14,38 @@ namespace UnityStandardAssets.Vehicles.Car
         private CarController m_Car; // the car controller we want to use
         public bool isBottomCar;
 
+        private UserInteraction m_userInteract;
+        private WheelCollider[] m_wheels;// the wheel colliders of the car
         public int first = 3; // first - player who turns right and accelerates
         public int second = 3; // second - player who turns left and brakes
        
+
 
         void Start()
         {
         }
 
-		// Show SwapText and start Co-Routine
-        public void playerSwap()
+        public void startVibration()
         {
-            print("in player swap");
-            // Start pulse vibration
             var playerAInput = InputManager.Devices[first];
             var playerBInput = InputManager.Devices[second];
             playerAInput.Vibrate(1f, 1f);
             playerBInput.Vibrate(1f, 1f);
+        }
+        public void endVibration()
+        {
+            var playerAInput = InputManager.Devices[first];
+            var playerBInput = InputManager.Devices[second];
+            playerAInput.Vibrate(0f, 0f);
+            playerBInput.Vibrate(0f, 0f);
+        }
 
-            //GamePad.SetVibration((PlayerIndex)first, 1f, 1f);
-            //GamePad.SetVibration((PlayerIndex)second, 1f, 1f);
+		// Show SwapText and start Co-Routine
+        public void playerSwap()
+        {
+            // Start pulse vibration
+            startVibration();
+
             if (!isBottomCar)
             {
                 CarmonyGUI.S.topSwapText.SetActive(true);
@@ -62,13 +74,7 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             print("in swap controls");
             // Turn off vibrate
-            var playerAInput = InputManager.Devices[first];
-            var playerBInput = InputManager.Devices[second];
-            playerAInput.Vibrate(0f, 0f);
-            playerBInput.Vibrate(0f, 0f);
-            //GamePad.SetVibration((PlayerIndex)first, 0f, 0f);
-            //GamePad.SetVibration((PlayerIndex)second, 0f, 0f);
-
+            endVibration();
 
 			// Remove SwapText and swap control images
             if (!isBottomCar)
@@ -98,19 +104,22 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             // get the car controller
             m_Car = GetComponent<CarController>();
+            m_wheels = gameObject.GetComponentsInChildren<WheelCollider>();
+            m_userInteract = gameObject.GetComponentInParent<UserInteraction>();
+
         }
 
         //Modify these values in order to tweak steering
         private void FixedUpdate()
         {
-            gameObject.GetComponentInParent<UserInteraction>().moveToLocation();
+            m_userInteract.moveToLocation();
 
             if (first >= InputManager.Devices.Count)
                 return;
 
             if (!Main.S.getRaceStarted() && !Main.S.practicing)
             {
-                gameObject.GetComponentInParent<CarController>().zeroXYSpeed();
+                m_Car.zeroXYSpeed();
                 return;
             }
 
@@ -160,44 +169,41 @@ namespace UnityStandardAssets.Vehicles.Car
             }
             float steering = playerA_turnRight + playerB_turnLeft;
 			if (gameObject.transform.localScale.x < 1) {
-				steering *= Mathf.Pow(2.718f, gameObject.GetComponent<CarController> ().getSpeed()/-60); 
-				gameObject.GetComponent<CarController> ().SlipLimit = .7f;
-				gameObject.GetComponent<CarController> ().SteerHelperProperty = 1f;
-                WheelCollider[] wheels = gameObject.GetComponentsInChildren<WheelCollider>();
+				steering *= Mathf.Pow(2.718f, m_Car.getSpeed()/-60);
+                m_Car.SlipLimit = .7f;
+                m_Car.SteerHelperProperty = 1f;
                 for(int i = 0; i < 4; i++)
                 {
-                    WheelFrictionCurve wheelCurve = wheels[i].sidewaysFriction;
+                    WheelFrictionCurve wheelCurve = m_wheels[i].sidewaysFriction;
                     wheelCurve.asymptoteSlip = .0001f;
                     wheelCurve.extremumSlip = .0001f;
-                    wheels[i].sidewaysFriction = wheelCurve;
+                    m_wheels[i].sidewaysFriction = wheelCurve;
 
-                    JointSpring wheelSpring = wheels[i].suspensionSpring;
+                    JointSpring wheelSpring = m_wheels[i].suspensionSpring;
                     wheelSpring.damper = 3500;
-                    wheels[i].suspensionSpring = wheelSpring;
+                    m_wheels[i].suspensionSpring = wheelSpring;
                 }
 			}else if (gameObject.transform.localScale.x > 1)
             {
-                WheelCollider[] wheels = gameObject.GetComponentsInChildren<WheelCollider>();
                 for (int i = 0; i < 4; i++)
                 {
-                    JointSpring wheelSpring = wheels[i].suspensionSpring;
+                    JointSpring wheelSpring = m_wheels[i].suspensionSpring;
                     wheelSpring.damper = 10;
-                    wheels[i].suspensionSpring = wheelSpring;
+                    m_wheels[i].suspensionSpring = wheelSpring;
                 }
             } else {
-				gameObject.GetComponent<CarController> ().SlipLimit = .3f;
-				gameObject.GetComponent<CarController> ().SteerHelperProperty = .644f;
-                WheelCollider[] wheels = gameObject.GetComponentsInChildren<WheelCollider>();
+                m_Car.SlipLimit = .3f;
+                m_Car.SteerHelperProperty = .644f;
                 for (int i = 0; i < 4; i++)
                 {
-                    WheelFrictionCurve wheelCurve = wheels[i].sidewaysFriction;
+                    WheelFrictionCurve wheelCurve = m_wheels[i].sidewaysFriction;
                     wheelCurve.asymptoteSlip = .5f;
                     wheelCurve.extremumSlip = .2f;
-                    wheels[i].sidewaysFriction = wheelCurve;
+                    m_wheels[i].sidewaysFriction = wheelCurve;
 
-                    JointSpring wheelSpring = wheels[i].suspensionSpring;
+                    JointSpring wheelSpring = m_wheels[i].suspensionSpring;
                     wheelSpring.damper = 3500;
-                    wheels[i].suspensionSpring = wheelSpring;
+                    m_wheels[i].suspensionSpring = wheelSpring;
                 }
             }
 

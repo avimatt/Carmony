@@ -12,6 +12,8 @@ public class PracticeMap : MonoBehaviour {
     public bool carBottomDone;
 
     public GameObject practiceText;
+    public GameObject practiceText2;
+
     public GameObject topPlate;
     public GameObject bottomPlate;
 
@@ -49,6 +51,8 @@ public class PracticeMap : MonoBehaviour {
         if (!PauseScreen.S.isActiveAndEnabled)
         {
             practiceText.SetActive(true);
+            practiceText2.SetActive(true);
+
             topPlate.SetActive(true);
             bottomPlate.SetActive(true);
         }
@@ -96,6 +100,7 @@ public class PracticeMap : MonoBehaviour {
         Main.S.carBottom.GetComponent<UserInteraction>().moveToStart();
         Main.S.practicing = false;
         practiceText.SetActive(false);
+        practiceText2.SetActive(false);
         topPlate.SetActive(false);
         bottomPlate.SetActive(false);
         CarmonyGUI.S.HideActivationButton();

@@ -7,6 +7,7 @@ public class CarCollision : MonoBehaviour {
 
     float lastCollisionVibrate;
     public AudioClip crashClip;
+    public AudioSource collisonAudioSource;
     // Use this for initialization
     void Start () {
 
@@ -46,8 +47,8 @@ public class CarCollision : MonoBehaviour {
             var playerBInput = InputManager.Devices[second];
             playerAInput.Vibrate(1f, 1f);
             playerBInput.Vibrate(1f, 1f);
-            gameObject.GetComponent<AudioSource>().clip = crashClip;
-            gameObject.GetComponent<AudioSource>().Play();
+            collisonAudioSource.clip = crashClip;
+            collisonAudioSource.Play();
             yield return new WaitForSeconds(.5f);
             playerAInput.Vibrate(0f, 0f);
             playerBInput.Vibrate(0f, 0f);
