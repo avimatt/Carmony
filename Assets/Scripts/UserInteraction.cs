@@ -31,6 +31,8 @@ public class UserInteraction : MonoBehaviour {
     public Camera backCamera;
     public Camera frontCamera;
 
+    public bool quickStart;
+
     void Awake()
     {
         m_carUser = gameObject.GetComponentInParent<CarUserControl>();
@@ -44,6 +46,7 @@ public class UserInteraction : MonoBehaviour {
     void Start () {
         isCarBottom = m_carUser.isBottomCar;
         boostTimer = Time.time;
+        quickStart = true;
 	}
 	
     public void placeOilSpill()
@@ -206,7 +209,7 @@ public class UserInteraction : MonoBehaviour {
 
     public void startReset()
     {
-        carryHeight = 10;
+        carryHeight = 15;
         Vector3 newPos = new Vector3();
         Transform checkPoint;
         Quaternion newRotation;
@@ -350,6 +353,8 @@ public class UserInteraction : MonoBehaviour {
     {
         if (goingUp)
         {
+            if (Main.S.carsReady != 2 && quickStart)
+                CarmonyGUI.S.fadeOut();
             //Move up to y = 10;
             m_car.zeroSpeed();
 
@@ -374,7 +379,19 @@ public class UserInteraction : MonoBehaviour {
         }
         else if (goingToPoint)
         {
-            
+            if (Main.S.carsReady != 2 && quickStart)
+            {
+                Vector3 newLoc = targetLocation;
+                newLoc.y += 30;
+                m_transform.position = newLoc;
+
+                m_transform.rotation = Quaternion.Euler(0,targetRotation.y + 90,0);
+                goingToPoint = false;
+                goingDown = true;
+                return;
+            }
+
+
             Vector3 newPos = m_transform.position;
             //stop momentum and falling
             m_car.zeroSpeed();
@@ -442,6 +459,9 @@ public class UserInteraction : MonoBehaviour {
         }
         else if (goingDown)
         {
+            if (Main.S.carsReady != 2 && quickStart)
+                CarmonyGUI.S.fadeIn();
+
             //Do not allow rotation until close to hitting the ground.
             Vector3 Angles2 = targetRotation.eulerAngles;
             Angles2.y += 90;

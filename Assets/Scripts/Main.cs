@@ -93,7 +93,7 @@ public class Main : MonoBehaviour
     {
         S = this;
         interactTimer = Time.time;
-        Map = MapList[1];
+        Map = MapList[0];
     }
 
     // Update is called once per frame

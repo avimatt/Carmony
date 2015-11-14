@@ -79,6 +79,22 @@ public class CarmonyGUI : MonoBehaviour {
     public GameObject topPerfect;
     public GameObject bottomPerfect;
 
+    public Image fader;
+
+    public void fadeOut()
+    {
+        Color newColor = fader.color;
+        newColor.a += .005f;
+        fader.color = newColor;
+        print(fader.color);
+    }
+    
+    public void fadeIn()
+    {
+        Color newColor = fader.color;
+        newColor.a -= .01f;
+        fader.color = newColor;
+    }
 
     public GameObject movingToPractice;
     void Awake()
