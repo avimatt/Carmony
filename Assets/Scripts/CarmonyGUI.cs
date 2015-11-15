@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityStandardAssets.Vehicles.Car;
 
 using InControl;
+using System;
 
 public class CarmonyGUI : MonoBehaviour {
 
@@ -81,6 +82,8 @@ public class CarmonyGUI : MonoBehaviour {
 
     public Image fader;
 
+    public Text negativeTimeTop;
+    public Text negativeTimeBottom;
     public void fadeOut()
     {
         Color newColor = fader.color;
@@ -414,7 +417,16 @@ public class CarmonyGUI : MonoBehaviour {
             if (!Main.S.carBottomDone)
                 topEndPlace.GetComponent<Text>().text = "1st";
             else
+            {
                 topEndPlace.GetComponent<Text>().text = "2nd";
+                string TopTime = Main.S.getGameTime();
+                string BottomTime = bottomEndTime.GetComponent<Text>().text;
+                int TopMinutes = Int32.Parse(TopTime.Substring(0, 1));
+                int BottomMinutes = Int32.Parse(BottomTime.Substring(0, 1));
+                int TopSeconds = Int32.Parse(TopTime.Substring(2, 2));
+                int BottomSeconds = Int32.Parse(BottomTime.Substring(2, 2));
+                negativeTimeTop.text = Main.S.getTimeDifference(TopMinutes, BottomMinutes, TopSeconds, BottomSeconds);
+            }
         }
         else
         {
@@ -423,7 +435,16 @@ public class CarmonyGUI : MonoBehaviour {
             if (!Main.S.carTopDone)
                 bottomEndPlace.GetComponent<Text>().text = "1st";
             else
+            {
                 bottomEndPlace.GetComponent<Text>().text = "2nd";
+                string BottomTime = Main.S.getGameTime();
+                string TopTime = topEndTime.GetComponent<Text>().text;
+                int BottomMinutes = Int32.Parse(BottomTime.Substring(0, 1));
+                int TopMinutes = Int32.Parse(TopTime.Substring(0, 1));
+                int BottomSeconds = Int32.Parse(BottomTime.Substring(2, 2));
+                int TopSeconds = Int32.Parse(TopTime.Substring(2, 2));
+                negativeTimeBottom.text = Main.S.getTimeDifference(BottomMinutes, TopMinutes, BottomSeconds, TopSeconds);
+            }
         }
 
         if (Main.S.carBottomDone && Main.S.carTopDone)

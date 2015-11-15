@@ -151,6 +151,30 @@ public class Main : MonoBehaviour
             secondString = "0" + seconds.ToString();
         return minutes + ":" + secondString;
     }
+
+    public string getTimeDifference(int minutesA,int minutesB, int secondsA, int secondsB)
+    {
+        int totalA = 60 * minutesA + secondsA;
+        int totalB = 60 * minutesB + secondsB;
+
+        int totalDiff = totalA - totalB;
+        int newMin = totalDiff / 60;
+        int newSec = totalDiff % 60;
+
+        string final = "+" + newMin;
+        if (newSec < 10)
+        {
+            final += ":0";
+        }
+        else
+        {
+            final += ":";
+        }
+        final += newSec;
+        print("final");
+        return final;
+    }
+
     // Display end game screen from the team that finished
     public void endGame(bool isTop)
     {
