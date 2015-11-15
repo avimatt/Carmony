@@ -185,6 +185,10 @@ public class UserInteraction : MonoBehaviour {
 		// Turn off boost
         if (isBoosting && Time.time - boostTimer > 5)
             isBoosting = false;
+        if (playerAInput.LeftBumper && playerBInput.LeftBumper && (playerAInput.LeftBumper.WasPressed || playerBInput.LeftBumper.WasPressed) &&  Main.S.practicing)
+        {
+            m_carUser.playerSwap();
+        }
 
         bool resetting = false;
 		if ((playerAInput.RightBumper.WasPressed || playerBInput.RightBumper.WasPressed) && m_carstate.currLap != 0)
