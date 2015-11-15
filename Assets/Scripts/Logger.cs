@@ -76,18 +76,18 @@ public class Logger : MonoBehaviour {
         int i = 1;
         while (File.Exists(fileNameTop))
         {
-            print(File.Exists(fileNameTop) + "   " + fileNameTop);
             fileNameTop = "trackRecordTop" + i + ".txt";
             i++;
         }
+        Main.S.carTop.GetComponent<CarState>().name =  "CarTop" + (i-1).ToString();
         swTop = File.CreateText(fileNameTop);
         i = 1;
         while (File.Exists(fileNameBottom))
         {
-            print(File.Exists(fileNameBottom) + "   " + fileNameBottom);
             fileNameBottom = "trackRecordBottom" + i + ".txt";
             i++;
         }
+        Main.S.carBottom.GetComponent<CarState>().name = "CarBottom" + (i-1).ToString();
         swBottom = File.CreateText(fileNameBottom);
     }
 	

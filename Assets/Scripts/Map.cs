@@ -5,7 +5,7 @@ using System.Collections.Generic;
 //Map object to hold data for game in the case of multiple maps
 public class Map : MonoBehaviour {
 
-
+    public string name;
     public GameObject playerTopStart;
     public GameObject playerBottomStart;
 

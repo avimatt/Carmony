@@ -3,6 +3,7 @@ using System.Collections;
 using InControl;
 using System.Collections.Generic;
 using UnityStandardAssets.Vehicles.Car;
+using System;
 
 public class Main : MonoBehaviour
 {
@@ -101,14 +102,22 @@ public class Main : MonoBehaviour
     {
         CarState.isCarBehind(true);
 
-        if (canInteract())
+        if (canInteract() && !HighScores.S.isActiveAndEnabled)
         {
             if (getStartPressed() && (practicing || raceStarted))
             {
            		// If both teams have finished and start has been hit restart the game
                 if (carTopDone && carBottomDone)
                 {
-                    Application.LoadLevel("NoahDevScene");
+                    if (HighScores.S.recordBeaten)
+                    {
+                        print("turning on highscores");
+                        HighScores.S.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        Application.LoadLevel("NoahDevScene");
+                    }
                 }
                 Main.S.paused = true;
                 PauseScreen.S.gameObject.SetActive(true);
@@ -149,8 +158,10 @@ public class Main : MonoBehaviour
         {
             go.SetActive(true);
         }
+        scoreRow newRow = new scoreRow();
         if (isTop)
         {
+            newRow.setName(carTop.GetComponent<CarState>().name);
             carTopDone = true;
             CarmonyGUI.S.topMinimap.SetActive(false);
 			CarmonyGUI.S.topMinimapDots.SetActive(false);
@@ -161,6 +172,7 @@ public class Main : MonoBehaviour
         }
         else
         {
+            newRow.setName(carBottom.GetComponent<CarState>().name);
             CarmonyGUI.S.bottomMinimap.SetActive(false);
 			CarmonyGUI.S.bottomMinimapDots.SetActive(false);
             CarmonyGUI.S.bottomImageLeft.SetActive(false);
@@ -171,5 +183,11 @@ public class Main : MonoBehaviour
         }
         Logger.S.printSummary(isTop);
         CarmonyGUI.S.endGame(isTop);
+
+
+        int minutes = Int32.Parse(getGameTime().Substring(0, 1));
+        int seconds = Int32.Parse(getGameTime().Substring(2, 2));
+        newRow.setTime(minutes, seconds);
+        HighScores.S.updateList(newRow);
     }
 }

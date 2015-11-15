@@ -86,7 +86,6 @@ public class CarmonyGUI : MonoBehaviour {
         Color newColor = fader.color;
         newColor.a += .005f;
         fader.color = newColor;
-        print(fader.color);
     }
     
     public void fadeIn()

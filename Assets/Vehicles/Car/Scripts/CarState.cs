@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityStandardAssets.Vehicles.Car;
 
 public class CarState : MonoBehaviour {
     // Array of checkpoints in the track
@@ -20,13 +21,13 @@ public class CarState : MonoBehaviour {
     public int powerupsHit;
     public int powerupsActivated;
     public int resets;
-
+    public string name;
     bool set;
 
 	// Use this for initialization
 	void Start () {
 
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
