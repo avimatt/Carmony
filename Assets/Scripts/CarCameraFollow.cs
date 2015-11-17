@@ -38,7 +38,23 @@ public class CarCameraFollow : MonoBehaviour
         cameraSets.rotation = Quaternion.Lerp(cameraSets.rotation, carObject.transform.rotation, rotSmooth * Time.deltaTime);
 
         float yPosition = Mathf.Lerp(transform.position.y, targetPosition.position.y, moveSmoothness * Time.deltaTime);
-        Vector3 newPosition = new Vector3(targetPosition.position.x, yPosition, targetPosition.position.z);
+        float xdiff;
+        float zdiff;
+
+        Vector3 forward = targetPosition.TransformDirection(Vector3.forward);
+        //print(forward);
+        if (!Main.S.practicing && !Main.S.raceStarted)
+        {
+            xdiff = Mathf.Lerp(transform.position.x, targetPosition.position.x, moveSmoothness * Time.deltaTime);
+            zdiff = Mathf.Lerp(transform.position.z, targetPosition.position.z, moveSmoothness * Time.deltaTime);
+        }
+        else
+        {
+            xdiff = targetPosition.position.x;
+            zdiff = targetPosition.position.z;
+        }
+        //Vector3 newPosition = new Vector3(targetPosition.position.x, yPosition, targetPosition.position.z);
+        Vector3 newPosition = new Vector3(xdiff, yPosition, zdiff);
 
         RaycastHit wallHit = new RaycastHit();
 
@@ -54,4 +70,6 @@ public class CarCameraFollow : MonoBehaviour
         var quaterion = Quaternion.LookRotation(targetLookat.position - transform.position);
         transform.rotation = quaterion;
     }
+
+
 }
