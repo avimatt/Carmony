@@ -11,11 +11,19 @@ public class CarCollision : MonoBehaviour {
     float lastCollisionVibrate;
     public AudioClip crashClip;
     public AudioSource collisonAudioSource;
+
+	public GameObject collisionZonePrefab;
+
+	bool m_topInCollisionZone;
+	bool m_bottomInCollisionZone;
+
     // Use this for initialization
     void Start () {
         m_carUserControl = gameObject.GetComponentInParent<CarUserControl>();
         m_carstate  = gameObject.GetComponentInParent<CarState>();
         m_transform  = gameObject.GetComponentInParent<Transform>();
+		m_topInCollisionZone = false;
+		m_bottomInCollisionZone = false;
     }
 
     // Update is called once per frame
@@ -32,7 +40,13 @@ public class CarCollision : MonoBehaviour {
             m_carstate.perfectLap = false;
             m_carstate.perfectCheckpoint = false;
 
-            printCollisionData();
+			if(!inCollisionZone(m_carUserControl.isBottomCar)){
+				//printCollisionData();
+			
+				var collisionZone = Instantiate(collisionZonePrefab);
+				collisionZone.transform.position = gameObject.transform.position;
+			}
+
         }else if (coll.gameObject.layer == 0)
         {
             print("hit car");
@@ -75,4 +89,8 @@ public class CarCollision : MonoBehaviour {
             Logger.S.writeFile(false, carStr + " hit at x=" + xPos + ",z=" + zPos + "   At " + Main.S.getGameTime());
 
     }
+
+	bool inCollisionZone(bool bottomCar){
+		return bottomCar ? Main.S.bottomInCollisionZone : Main.S.topInCollisionZone;
+	}
 }

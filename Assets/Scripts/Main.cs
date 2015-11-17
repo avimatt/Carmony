@@ -30,6 +30,9 @@ public class Main : MonoBehaviour
 
     public float startTime;
 
+	public bool topInCollisionZone;
+	public bool bottomInCollisionZone;
+
     public bool normalControls;
     public void setCarReady()
     {
@@ -94,6 +97,8 @@ public class Main : MonoBehaviour
     {
         S = this;
         interactTimer = Time.time;
+		topInCollisionZone = false;
+		bottomInCollisionZone = false;
         Map = MapList[0];
     }
 
