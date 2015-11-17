@@ -1,0 +1,117 @@
+fileFormatVersion: 2
+guid: 08cb9198e986947c68e431e97e3bdbf3
+timeCreated: 1447736945
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Car_Body
+    100002: Car_Body_001
+    100004: Car_Pipes
+    100006: Empty
+    100008: //RootNode
+    100010: Steering_Wheel
+    100012: Tire_Back_Left
+    100014: Tire_Back_Right
+    100016: Tire_Front_Left
+    100018: Tire_Front_Right
+    400000: Car_Body
+    400002: Car_Body_001
+    400004: Car_Pipes
+    400006: Empty
+    400008: //RootNode
+    400010: Steering_Wheel
+    400012: Tire_Back_Left
+    400014: Tire_Back_Right
+    400016: Tire_Front_Left
+    400018: Tire_Front_Right
+    2300000: Car_Body
+    2300002: Car_Body_001
+    2300004: Car_Pipes
+    2300006: Steering_Wheel
+    2300008: Tire_Back_Left
+    2300010: Tire_Back_Right
+    2300012: Tire_Front_Left
+    2300014: Tire_Front_Right
+    3300000: Car_Body
+    3300002: Car_Body_001
+    3300004: Car_Pipes
+    3300006: Steering_Wheel
+    3300008: Tire_Back_Left
+    3300010: Tire_Back_Right
+    3300012: Tire_Front_Left
+    3300014: Tire_Front_Right
+    4300000: Car_Body
+    4300002: Car_Body_001
+    4300004: Tire_Front_Right
+    4300006: Tire_Front_Left
+    4300008: Tire_Back_Left
+    4300010: Tire_Back_Right
+    4300012: Steering_Wheel
+    4300014: Car_Pipes
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
