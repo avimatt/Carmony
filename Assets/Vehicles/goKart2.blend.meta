@@ -1,59 +1,57 @@
 fileFormatVersion: 2
-guid: 08cb9198e986947c68e431e97e3bdbf3
-timeCreated: 1447736945
+guid: b76e66aefeb5a4f92a7ff04b0fef6ae5
+timeCreated: 1447880988
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: Car_Body
-    100002: Car_Body_001
-    100004: Car_Pipes
-    100006: Empty
-    100008: //RootNode
-    100010: Steering_Wheel
+    100002: ExhaustPipes
+    100004: //RootNode
+    100006: Seat
+    100008: Steering_Wheel
+    100010: SteeringColumn
     100012: Tire_Back_Left
     100014: Tire_Back_Right
     100016: Tire_Front_Left
     100018: Tire_Front_Right
-    100020: Seat
     400000: Car_Body
-    400002: Car_Body_001
-    400004: Car_Pipes
-    400006: Empty
-    400008: //RootNode
-    400010: Steering_Wheel
+    400002: ExhaustPipes
+    400004: //RootNode
+    400006: Seat
+    400008: Steering_Wheel
+    400010: SteeringColumn
     400012: Tire_Back_Left
     400014: Tire_Back_Right
     400016: Tire_Front_Left
     400018: Tire_Front_Right
-    400020: Seat
     2300000: Car_Body
-    2300002: Car_Body_001
-    2300004: Car_Pipes
+    2300002: ExhaustPipes
+    2300004: Seat
     2300006: Steering_Wheel
-    2300008: Tire_Back_Left
-    2300010: Tire_Back_Right
-    2300012: Tire_Front_Left
-    2300014: Tire_Front_Right
-    2300016: Seat
+    2300008: SteeringColumn
+    2300010: Tire_Back_Left
+    2300012: Tire_Back_Right
+    2300014: Tire_Front_Left
+    2300016: Tire_Front_Right
     3300000: Car_Body
-    3300002: Car_Body_001
-    3300004: Car_Pipes
+    3300002: ExhaustPipes
+    3300004: Seat
     3300006: Steering_Wheel
-    3300008: Tire_Back_Left
-    3300010: Tire_Back_Right
-    3300012: Tire_Front_Left
-    3300014: Tire_Front_Right
-    3300016: Seat
-    4300000: Car_Body
-    4300002: Car_Body_001
-    4300004: Tire_Front_Right
-    4300006: Tire_Front_Left
-    4300008: Tire_Back_Left
-    4300010: Tire_Back_Right
-    4300012: Steering_Wheel
-    4300014: Car_Pipes
-    4300016: Seat
+    3300008: SteeringColumn
+    3300010: Tire_Back_Left
+    3300012: Tire_Back_Right
+    3300014: Tire_Front_Left
+    3300016: Tire_Front_Right
+    4300000: ExhaustPipes
+    4300002: Car_Body
+    4300004: Steering_Wheel
+    4300006: Seat
+    4300008: SteeringColumn
+    4300010: Tire_Front_Right
+    4300012: Tire_Front_Left
+    4300014: Tire_Back_Right
+    4300016: Tire_Back_Left
     7400000: Default Take
     9500000: //RootNode
   materials:
