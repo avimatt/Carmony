@@ -7,8 +7,8 @@ public class Logger : MonoBehaviour {
 
     static public Logger S;
 
-    string fileNameTop = "trackRecordTop.txt";
-    string fileNameBottom = "trackRecordBottom.txt";
+    string fileNameTop = "Logger/log_trackRecordTop.txt";
+    string fileNameBottom = "Logger/log_trackRecordBottom.txt";
     StreamWriter swTop;
     StreamWriter swBottom;
     public bool noPrint;
@@ -76,7 +76,7 @@ public class Logger : MonoBehaviour {
         int i = 1;
         while (File.Exists(fileNameTop))
         {
-            fileNameTop = "trackRecordTop" + i + ".txt";
+            fileNameTop = "Logger/log_trackRecordTop" + i + ".txt";
             i++;
         }
         Main.S.carTop.GetComponent<CarState>().name =  "CarTop" + (i-1).ToString();
@@ -84,7 +84,7 @@ public class Logger : MonoBehaviour {
         i = 1;
         while (File.Exists(fileNameBottom))
         {
-            fileNameBottom = "trackRecordBottom" + i + ".txt";
+            fileNameBottom = "Logger/log_trackRecordBottom" + i + ".txt";
             i++;
         }
         Main.S.carBottom.GetComponent<CarState>().name = "CarBottom" + (i-1).ToString();
