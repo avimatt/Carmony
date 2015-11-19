@@ -73,7 +73,6 @@ namespace UnityStandardAssets.Vehicles.Car
                     Color newColor = CarmonyGUI.S.topSwapText.GetComponent<Text>().color;
                     newColor.a -= .03f;
                     CarmonyGUI.S.topSwapText.GetComponent<Text>().color = newColor;
-
                 }
                 else
                 {
@@ -87,17 +86,17 @@ namespace UnityStandardAssets.Vehicles.Car
             print("Swap text closed");
             if (!isBottomCar)
             {
-                CarmonyGUI.S.topSwapText.GetComponent<Text>().fontSize = 16;
+                CarmonyGUI.S.topSwapText.GetComponent<Text>().fontSize = 64;
                 Color newColor = CarmonyGUI.S.topSwapText.GetComponent<Text>().color;
-                newColor.a = 255;
+                newColor.a = 1;
                 CarmonyGUI.S.topSwapText.GetComponent<Text>().color = newColor;
                 CarmonyGUI.S.topSwapText.SetActive(false);
             }
             else
             {
-                CarmonyGUI.S.bottomSwapText.GetComponent<Text>().fontSize = 16;
+                CarmonyGUI.S.bottomSwapText.GetComponent<Text>().fontSize = 64;
                 Color newColor = CarmonyGUI.S.bottomSwapText.GetComponent<Text>().color;
-                newColor.a = 255;
+                newColor.a = 1;
                 CarmonyGUI.S.bottomSwapText.GetComponent<Text>().color = newColor;
                 CarmonyGUI.S.bottomSwapText.SetActive(false);
             }
