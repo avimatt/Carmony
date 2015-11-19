@@ -156,7 +156,6 @@ public class CarmonyGUI : MonoBehaviour {
 
 
     //Co-routine to display GO when race starts then take display down
-    //This utilizes swap text. if need to stylize, must create new text
     IEnumerator startFlagText()
     {
         goText.SetActive(true);
@@ -230,7 +229,7 @@ public class CarmonyGUI : MonoBehaviour {
         }
 
         // If a team has a powerup, check and see if they are hitting the buttons
-        if (this.topHasPowerup)
+        if (this.topHasPowerup && !Main.S.carTopDone)
         {
             // If only one player is pressing 'A', then highlight the 'A' button.
             if (topPlayerAInput.Action1.IsPressed ^ topPlayerBInput.Action1.IsPressed)
@@ -258,7 +257,7 @@ public class CarmonyGUI : MonoBehaviour {
                 this.topActivationSlider.fillAmount = 0f;
             }
         }
-        if (this.bottomHasPowerup)
+        if (this.bottomHasPowerup && !Main.S.carBottomDone)
         {
             if (bottomPlayerAInput.Action1.IsPressed ^ bottomPlayerBInput.Action1.IsPressed)
             {
