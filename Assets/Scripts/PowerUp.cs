@@ -115,6 +115,9 @@ public class PowerUp : MonoBehaviour
 	public static void ActivatePowerUp(bool topPlayer, powerUpType type){
 
         if (type == powerUpType.speed) {
+            // Play the speedboost sound
+            AudioSource speedSound = GameObject.Find("SpeedBoostSound").GetComponent<AudioSource>();
+            speedSound.Play();
 			if (topPlayer) {
 				Main.S.carTop.GetComponent<UserInteraction> ().startBoost ();
 			} else {
@@ -122,6 +125,9 @@ public class PowerUp : MonoBehaviour
 			}
 			PowerupGenerator.S.numInstantiatedSpeed--;
 		} else if (type == powerUpType.swap) {
+            // Play the portal sound
+            AudioSource swapSound = GameObject.Find("SwapSound").GetComponent<AudioSource>();
+            swapSound.Play();
 			if (topPlayer) {
 				Main.S.carBottom.GetComponent<CarUserControl> ().playerSwap ();
 			} else {
@@ -129,12 +135,18 @@ public class PowerUp : MonoBehaviour
 			}
 			PowerupGenerator.S.numInstantiatedSwap--;
 		} else if (type == powerUpType.oil) {
+            // Play the portal sound
+            AudioSource oilSound = GameObject.Find("OilSound").GetComponent<AudioSource>();
+            oilSound.Play();
 			if (topPlayer) {
 				Main.S.carTop.GetComponent<UserInteraction> ().placeOilSpill (); 
 			} else {
 				Main.S.carBottom.GetComponent<UserInteraction> ().placeOilSpill ();
 			}
 		} else if (type == powerUpType.portal) {
+            // Play the portal sound
+            AudioSource portalSound = GameObject.Find("PortalSound").GetComponent<AudioSource>();
+            portalSound.Play();
 			if (topPlayer) {
 				Main.S.carTop.GetComponent<UserInteraction> ().moveToNextCheckpoint (); 
 			} else {
