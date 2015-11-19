@@ -55,9 +55,51 @@ namespace UnityStandardAssets.Vehicles.Car
                 CarmonyGUI.S.bottomSwapText.SetActive(true);
 
             }
+            StartCoroutine("swapGrow");
             //call co-routine
             StartCoroutine("pulseWait");
 
+        }
+
+        IEnumerator swapGrow()
+        {
+            yield return new WaitForSeconds(2);
+            float savedTime = Time.time;
+            while (Time.time - savedTime < 2)
+            {
+                if (!isBottomCar)
+                {
+                    CarmonyGUI.S.topSwapText.GetComponent<Text>().fontSize += 4;
+                    Color newColor = CarmonyGUI.S.topSwapText.GetComponent<Text>().color;
+                    newColor.a -= .03f;
+                    CarmonyGUI.S.topSwapText.GetComponent<Text>().color = newColor;
+                }
+                else
+                {
+                    Color newColor = CarmonyGUI.S.bottomSwapText.GetComponent<Text>().color;
+                    newColor.a -= .03f;
+                    CarmonyGUI.S.bottomSwapText.GetComponent<Text>().color = newColor;
+                    CarmonyGUI.S.bottomSwapText.GetComponent<Text>().fontSize += 4;
+                }
+                yield return 0;
+            }
+            print("Swap text closed");
+            if (!isBottomCar)
+            {
+                CarmonyGUI.S.topSwapText.GetComponent<Text>().fontSize = 64;
+                Color newColor = CarmonyGUI.S.topSwapText.GetComponent<Text>().color;
+                newColor.a = 1;
+                CarmonyGUI.S.topSwapText.GetComponent<Text>().color = newColor;
+                CarmonyGUI.S.topSwapText.SetActive(false);
+            }
+            else
+            {
+                CarmonyGUI.S.bottomSwapText.GetComponent<Text>().fontSize = 64;
+                Color newColor = CarmonyGUI.S.bottomSwapText.GetComponent<Text>().color;
+                newColor.a = 1;
+                CarmonyGUI.S.bottomSwapText.GetComponent<Text>().color = newColor;
+                CarmonyGUI.S.bottomSwapText.SetActive(false);
+            }
         }
 
         IEnumerator pulseWait()
@@ -79,7 +121,7 @@ namespace UnityStandardAssets.Vehicles.Car
 			// Remove SwapText and swap control images
             if (!isBottomCar)
             {
-                CarmonyGUI.S.topSwapText.SetActive(false);
+                //CarmonyGUI.S.topSwapText.SetActive(false);
                 Sprite tempImage = CarmonyGUI.S.topImageLeft.GetComponent<Image>().sprite;
                 CarmonyGUI.S.topImageLeft.GetComponent<Image>().sprite = CarmonyGUI.S.topImageRight.GetComponent<Image>().sprite;
                 CarmonyGUI.S.topImageRight.GetComponent<Image>().sprite = tempImage;
@@ -87,7 +129,7 @@ namespace UnityStandardAssets.Vehicles.Car
             }
             else
             {
-                CarmonyGUI.S.bottomSwapText.SetActive(false);
+                //CarmonyGUI.S.bottomSwapText.SetActive(false);
                 Sprite tempImage = CarmonyGUI.S.bottomImageLeft.GetComponent<Image>().sprite;
                 CarmonyGUI.S.bottomImageLeft.GetComponent<Image>().sprite = CarmonyGUI.S.bottomImageRight.GetComponent<Image>().sprite;
                 CarmonyGUI.S.bottomImageRight.GetComponent<Image>().sprite = tempImage;

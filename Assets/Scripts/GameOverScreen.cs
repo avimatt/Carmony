@@ -83,7 +83,7 @@ public class GameOverScreen : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (Time.time - timer > 15)
+	    if (Time.time - timer > 10)
         {
             timer = Time.time;
             if (summaryShowing)

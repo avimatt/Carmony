@@ -36,6 +36,10 @@ public class PauseScreen : MonoBehaviour {
             go.SetActive(true);
         if (Time.time > 1 && (CarmonyGUI.S.topGUI || Main.S.practicing))
             CarmonyGUI.S.hideGUI();
+        foreach(InputDevice player in InputManager.Devices)
+        {
+            player.Vibrate(0f, 0f);
+        }
     }
 
     // Use this for initialization
