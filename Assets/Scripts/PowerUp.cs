@@ -21,6 +21,7 @@ public class PowerUp : MonoBehaviour
     private MeshRenderer m_meshRenderer;
     private BoxCollider m_boxCollider;
     public GameObject m_partialSystem;
+
     public powerUpType type;
     public bool isRandom;
     // Use this for initialization
@@ -34,6 +35,7 @@ public class PowerUp : MonoBehaviour
         }
         if (m_partialSystem)
             m_partialSystem.gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame

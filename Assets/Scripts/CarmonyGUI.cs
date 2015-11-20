@@ -68,8 +68,10 @@ public class CarmonyGUI : MonoBehaviour {
     public Image powerupImageTop;
     public Image powerupImageBottom;
     // Activation 'A' button references
-    public Image topActivationButton, topActivationHighlight, topActivationSlider, bottomActivationButton, bottomActivationHighlight, bottomActivationSlider;
-    public Image topActivationButton2, topActivationHighlight2, topActivationSlider2, bottomActivationButton2, bottomActivationHighlight2, bottomActivationSlider2;
+    public Color activatorGreen;
+    public Color activatorRed;
+    public Image topActivationButton, topActivationSlider, bottomActivationButton, bottomActivationSlider;
+    public Image topActivationButton2, topActivationSlider2, bottomActivationButton2, bottomActivationSlider2;
 
     public float activationTime = 2.0f;
     private bool topHasPowerup = false, bottomHasPowerup = false;
@@ -125,6 +127,9 @@ public class CarmonyGUI : MonoBehaviour {
         bottomImageLeft.SetActive(false);
         topImageRight.SetActive(false);
         topImageLeft.SetActive(false);
+
+        activatorGreen = new Color32(57, 204, 11,255);
+        activatorRed = new Color32(255, 139, 139,255);
         // Activation system starts hidden, until someone gets a powerup.
         this.HideActivationButton();
     }
@@ -234,93 +239,32 @@ public class CarmonyGUI : MonoBehaviour {
             bottomPlayerBInput = InputManager.Devices[m_carBottomUserControl.second];
         }
 
-        // If a team has a powerup, check and see if they are hitting the buttons
         if (this.topHasPowerup && !Main.S.carTopDone)
         {
-            // If both are pressing at the same time, then start building up the slider
+            // If a player is pressing the A button, turn the indicator green.
+            this.topActivationSlider.color = topPlayerAInput.Action1.IsPressed ? this.activatorGreen : this.activatorRed;
+            this.topActivationSlider2.color = topPlayerBInput.Action1.IsPressed ? this.activatorGreen : this.activatorRed;
+            // If both pressing it, activate the powerup
             if (topPlayerAInput.Action1.IsPressed && topPlayerBInput.Action1.IsPressed)
             {
-                if (!this.topActivationHighlight.enabled) this.topActivationHighlight.enabled = true;
-                this.topActivationSlider.fillAmount += Time.deltaTime / this.activationTime;
-                if (!this.topActivationHighlight2.enabled) this.topActivationHighlight2.enabled = true;
-                this.topActivationSlider2.fillAmount += Time.deltaTime / this.activationTime;
-                // If both have held it for long enough, activate the powerup
-                if (this.topActivationSlider.fillAmount >= 1.0f)
-                {
-                    PowerUp.ActivatePowerUp(true, topType);
-                    topType = powerUpType.empty;
-                    this.topHasPowerup = false;
-                    this.HideTopPowerUpActivator();
-                }
-            }
-            // If only one player is pressing 'A', then highlight the 'A' button.
-            else if (topPlayerAInput.Action1.IsPressed || topPlayerBInput.Action1.IsPressed)
-            {
-                if (topPlayerAInput.Action1.IsPressed)
-                {
-                    if (!this.topActivationHighlight.enabled) this.topActivationHighlight.enabled = true;
-                    this.topActivationSlider.fillAmount = 0f;
-                }
-                if (topPlayerBInput.Action1.IsPressed)
-                {
-                    if (!this.topActivationHighlight2.enabled) this.topActivationHighlight2.enabled = true;
-                    this.topActivationSlider2.fillAmount = 0f;
-                }
-            }
-
-            if (!topPlayerAInput.Action1.IsPressed)
-            {
-                if (this.topActivationHighlight.enabled) this.topActivationHighlight.enabled = false;
-                this.topActivationSlider.fillAmount = 0f;
-            }
-            if (!topPlayerBInput.Action1.IsPressed)
-            {
-                if (this.topActivationHighlight2.enabled) this.topActivationHighlight2.enabled = false;
-                this.topActivationSlider2.fillAmount = 0f;
+                PowerUp.ActivatePowerUp(true, topType);
+                topType = powerUpType.empty;
+                this.topHasPowerup = false;
+                this.HideTopPowerUpActivator();
             }
         }
         if (this.bottomHasPowerup && !Main.S.carBottomDone)
         {
-            // If both are pressing at the same time, then start building up the slider
+            // If a player is pressing the A button, turn the indicator green.
+            this.bottomActivationSlider.color = bottomPlayerAInput.Action1.IsPressed ? this.activatorGreen : this.activatorRed;
+            this.bottomActivationSlider2.color = bottomPlayerBInput.Action1.IsPressed ? this.activatorGreen : this.activatorRed;
+            // If both pressing it, activate the powerup
             if (bottomPlayerAInput.Action1.IsPressed && bottomPlayerBInput.Action1.IsPressed)
             {
-                if (!this.bottomActivationHighlight.enabled) this.bottomActivationHighlight.enabled = true;
-                this.bottomActivationSlider.fillAmount += Time.deltaTime / this.activationTime;
-                if (!this.bottomActivationHighlight2.enabled) this.bottomActivationHighlight2.enabled = true;
-                this.bottomActivationSlider2.fillAmount += Time.deltaTime / this.activationTime;
-                // If both have held it for long enough, activate the powerup
-                if (this.bottomActivationSlider.fillAmount >= 1.0f)
-                {
-                    PowerUp.ActivatePowerUp(true, bottomType);
-                    bottomType = powerUpType.empty;
-                    this.bottomHasPowerup = false;
-                    this.HideBottomPowerUpActivator();
-                }
-            }
-            // If only one player is pressing 'A', then highlight the 'A' button.
-            else if (bottomPlayerAInput.Action1.IsPressed || bottomPlayerBInput.Action1.IsPressed)
-            {
-                if (bottomPlayerAInput.Action1.IsPressed)
-                {
-                    if (!this.bottomActivationHighlight.enabled) this.bottomActivationHighlight.enabled = true;
-                    this.bottomActivationSlider.fillAmount = 0f;
-                }
-                if (bottomPlayerBInput.Action1.IsPressed)
-                {
-                    if (!this.bottomActivationHighlight2.enabled) this.bottomActivationHighlight2.enabled = true;
-                    this.bottomActivationSlider2.fillAmount = 0f;
-                }
-            }
-
-            if (!bottomPlayerAInput.Action1.IsPressed)
-            {
-                if (this.bottomActivationHighlight.enabled) this.bottomActivationHighlight.enabled = false;
-                this.bottomActivationSlider.fillAmount = 0f;
-            }
-            if (!bottomPlayerBInput.Action1.IsPressed)
-            {
-                if (this.bottomActivationHighlight2.enabled) this.bottomActivationHighlight2.enabled = false;
-                this.bottomActivationSlider2.fillAmount = 0f;
+                PowerUp.ActivatePowerUp(true, bottomType);
+                bottomType = powerUpType.empty;
+                this.bottomHasPowerup = false;
+                this.HideBottomPowerUpActivator();
             }
         }
     }
@@ -329,23 +273,21 @@ public class CarmonyGUI : MonoBehaviour {
     {
         powerupImageTop.enabled = false;
         this.topActivationButton.enabled = false;
-        this.topActivationHighlight.enabled = false;
-        this.topActivationSlider.fillAmount = 0f;
+        this.topActivationSlider.enabled = false;
 
         this.topActivationButton2.enabled = false;
-        this.topActivationHighlight2.enabled = false;
-        this.topActivationSlider2.fillAmount = 0f;
+        this.topActivationSlider2.enabled = false;
     }
 
     public void HideBottomPowerUpActivator()
     {
         powerupImageBottom.enabled = false;
         this.bottomActivationButton.enabled = false;
-        this.bottomActivationHighlight.enabled = false;
-        this.bottomActivationSlider.fillAmount = 0f;
+        //this.bottomActivationHighlight.enabled = false;
+        this.bottomActivationSlider.enabled = false;
         this.bottomActivationButton2.enabled = false;
-        this.bottomActivationHighlight2.enabled = false;
-        this.bottomActivationSlider2.fillAmount = 0f;
+        //this.bottomActivationHighlight2.enabled = false;
+        this.bottomActivationSlider2.enabled = false;
     }
 	
 
@@ -423,6 +365,8 @@ public class CarmonyGUI : MonoBehaviour {
             this.topType = type;
             this.topActivationButton.enabled = true;
             this.topActivationButton2.enabled = true;
+            this.topActivationSlider.enabled = true;
+            this.topActivationSlider2.enabled = true;
 
             powerupImageTop.enabled = true;
             powerupImageTop.sprite = getPowerupImage(type);
@@ -433,6 +377,8 @@ public class CarmonyGUI : MonoBehaviour {
             this.bottomType = type;
             this.bottomActivationButton.enabled = true;
             this.bottomActivationButton2.enabled = true;
+            this.bottomActivationSlider.enabled = true;
+            this.bottomActivationSlider2.enabled = true;
             powerupImageBottom.enabled = true;
             powerupImageBottom.sprite = getPowerupImage(type);
         }
