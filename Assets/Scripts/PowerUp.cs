@@ -20,6 +20,7 @@ public class PowerUp : MonoBehaviour
 
     private MeshRenderer m_meshRenderer;
     private BoxCollider m_boxCollider;
+    public GameObject m_partialSystem;
     public powerUpType type;
     public bool isRandom;
     // Use this for initialization
@@ -27,6 +28,12 @@ public class PowerUp : MonoBehaviour
     {
         m_meshRenderer = gameObject.GetComponent<MeshRenderer>();
         m_boxCollider = gameObject.GetComponent<BoxCollider>();
+        if (gameObject.GetComponentInChildren<ParticleSystem>())
+        {
+            m_partialSystem = gameObject.GetComponentInChildren<ParticleSystem>().gameObject;
+        }
+        if (m_partialSystem)
+            m_partialSystem.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -105,8 +112,13 @@ public class PowerUp : MonoBehaviour
     {
         m_meshRenderer.enabled = false;
         m_boxCollider.enabled = false;
+        m_partialSystem.gameObject.SetActive(true);
+
         type = powerUpType.random;
-        yield return new WaitForSeconds(4f);
+
+        yield return new WaitForSeconds(1f);
+        m_partialSystem.gameObject.SetActive(false);
+        yield return new WaitForSeconds(3f);
         m_meshRenderer.enabled = true;
         m_boxCollider.enabled = true;
     }

@@ -110,10 +110,12 @@ public class PowerupGenerator : MonoBehaviour {
         Vector3 newPos = new Vector3(128, 1, 1386);
         GameObject go2 = Instantiate(Box, newPos, Box.transform.rotation) as GameObject;
         go2.GetComponent<PowerUp>().type = powerUpType.swap;
+        go2.GetComponent<PowerUp>().isRandom = true;
 
         Vector3 newPos2 = new Vector3(125, 1, 1428);
         GameObject go3 = Instantiate(Box, newPos2, Box.transform.rotation) as GameObject;
         go3.GetComponent<PowerUp>().type = powerUpType.swap;
+        go3.GetComponent<PowerUp>().isRandom = true;
 
     }
 
