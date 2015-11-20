@@ -164,7 +164,7 @@ public class UserInteraction : MonoBehaviour {
             gameObject.transform.localScale = newSize;
 
         }
-
+        /*
         if ((playerBInput.DPad.Up.WasPressed || playerBInput.DPad.Down.WasPressed)){
 			Vector3 newSize = gameObject.transform.localScale;
             if (newSize.x == 1 && (playerBInput.DPad.Up.WasPressed))
@@ -181,7 +181,7 @@ public class UserInteraction : MonoBehaviour {
             }
 			shrinkingTimer = Time.time;
 		}
-
+        */
 		// Turn off boost
         if (isBoosting && Time.time - boostTimer > 5)
             isBoosting = false;

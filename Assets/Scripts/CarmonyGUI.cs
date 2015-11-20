@@ -88,6 +88,9 @@ public class CarmonyGUI : MonoBehaviour {
 
     public Text negativeTimeTop;
     public Text negativeTimeBottom;
+
+    public GameObject topPracticeHelper;
+    public GameObject bottomPracticeHelper;
     public void fadeOut()
     {
         Color newColor = fader.color;
@@ -299,6 +302,8 @@ public class CarmonyGUI : MonoBehaviour {
             PracticeMap.S.practiceText2.SetActive(false);
             PracticeMap.S.topPlate.SetActive(false);
             PracticeMap.S.bottomPlate.SetActive(false);
+            topPracticeHelper.SetActive(false);
+            bottomPracticeHelper.SetActive(false);
         }
         else
         {

@@ -20,6 +20,8 @@ public class PracticeMap : MonoBehaviour {
     public bool carTopActive;
     public bool carBottomActive;
 
+    bool shownHelpers;
+
     void Awake()
     {
         S = this;
@@ -29,9 +31,19 @@ public class PracticeMap : MonoBehaviour {
 	void Start () {
         gameObject.SetActive(false);
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    IEnumerator showHelpers()
+    {
+        shownHelpers = true;
+        CarmonyGUI.S.topPracticeHelper.SetActive(true);
+        CarmonyGUI.S.bottomPracticeHelper.SetActive(true);
+        yield return new WaitForSeconds(3);
+        CarmonyGUI.S.topPracticeHelper.SetActive(false);
+        CarmonyGUI.S.bottomPracticeHelper.SetActive(false);
+    }
+
+    // Update is called once per frame
+    void Update () {
         if (Main.S.carTop.GetComponent<CarUserControl>().first == 3 && Main.S.carTop.GetComponent<CarUserControl>().second == 3)
         {
             carTopActive = false;
@@ -50,6 +62,9 @@ public class PracticeMap : MonoBehaviour {
         }
         if (!PauseScreen.S.isActiveAndEnabled)
         {
+            if (!shownHelpers)
+                StartCoroutine("showHelpers");
+
             practiceText.SetActive(true);
             practiceText2.SetActive(true);
 
