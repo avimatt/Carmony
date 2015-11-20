@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using InControl;
+using UnityEngine.UI;
 
 public class InstructionScreen : MonoBehaviour {
 	
@@ -11,6 +12,13 @@ public class InstructionScreen : MonoBehaviour {
 	
 	private bool firstGroup;
 	private bool switchingGroups;
+
+    public Text loadingText;
+    public int loadIndex;
+    bool inLoading;
+    public Text continueText;
+    bool instructionsDone;
+    float startTime;
 	void Awake()
 	{
 		S = this;
@@ -23,30 +31,64 @@ public class InstructionScreen : MonoBehaviour {
 		switchingGroups = false;
 	}
 	
+    IEnumerator loadingDots()
+    {
+        inLoading = true;
+        while (gameObject.activeInHierarchy && !instructionsDone)
+        {
+            yield return new WaitForSeconds(.5f);
+            string newText = "Loading";
+            loadIndex++;
+            if (loadIndex == 4)
+                loadIndex = 0;
+            for(int i = 0; i < loadIndex; i++)
+            {
+                newText += ".";
+            }
+            loadingText.text = newText;
+            yield return 0;
+        }
+        loadingText.text = "";
+        inLoading = false;
+    }
+
 	// Update is called once per frame
 	void Update()
 	{
-		if (Time.realtimeSinceStartup- StartScreen.S.cooldown  > .2)
+        if (!inLoading && !instructionsDone)
+        {
+            StartCoroutine("loadingDots");
+            startTime = Time.time;
+        }
+        if (Time.time -startTime > 7 && firstGroup)
+        {
+            switchingGroups = true;
+            firstGroup = false;
+        }
+        else if (Time.time - startTime > 14)
+        {
+            continueText.text = "Press any button to begin";
+            instructionsDone = true;
+        }
+
+		for (int i = 0; i < InputManager.Devices.Count; i++)
 		{
-			for (int i = 0; i < InputManager.Devices.Count; i++)
+            var player = InputManager.Devices[i];
+
+            if (instructionsDone && player.AnyButton.WasPressed)
+            {
+                finishScreen();
+            }
+            // after both control groups have been seen
+            if (player.MenuWasPressed && !firstGroup && controlGroups[1].transform.localPosition[0] <= 0)
 			{
-				var player = InputManager.Devices[i];
-				// after both control groups have been seen
-				if (player.AnyButton && !firstGroup && controlGroups[1].transform.localPosition[0] <= 0)
-				{
-					Time.timeScale = 1;
-                    Main.S.practicing = true;
-					gameObject.SetActive(false);
-                    PracticeMap.S.gameObject.SetActive(true);
-                    CarmonyMenuSystem.S.gameObject.SetActive(false);
-					GameObject.Find("MainGameObject").GetComponent<AudioSource>().enabled = true;
-				} 
-				// after first control group shown
-				else if(player.AnyButton)
-				{
-					switchingGroups = true;
-					firstGroup = false;
-				}
+                finishScreen();
+			} 
+			// after first control group shown
+			else if(player.MenuWasPressed)
+			{
+				switchingGroups = true;
+				firstGroup = false;
 			}
 		}
 		
@@ -54,6 +96,16 @@ public class InstructionScreen : MonoBehaviour {
 			switchGroups ();
 		}
 	}
+
+    void finishScreen()
+    {
+        Time.timeScale = 1;
+        Main.S.practicing = true;
+        gameObject.SetActive(false);
+        PracticeMap.S.gameObject.SetActive(true);
+        CarmonyMenuSystem.S.gameObject.SetActive(false);
+        GameObject.Find("MainGameObject").GetComponent<AudioSource>().enabled = true;
+    }
 	
 	void switchGroups(){
 		if(controlGroups[1].transform.localPosition[0] > 0){
