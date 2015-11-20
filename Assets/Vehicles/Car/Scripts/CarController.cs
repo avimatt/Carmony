@@ -31,7 +31,7 @@ namespace UnityStandardAssets.Vehicles.Car
         [SerializeField] private float m_MaxHandbrakeTorque;
         [SerializeField] private float m_Downforce = 100f;
         [SerializeField] private SpeedType m_SpeedType;
-        [SerializeField] private float m_Topspeed = 200;
+        [SerializeField] private float m_Topspeed = 50;
         [SerializeField] private static int NoOfGears = 5;
         [SerializeField] private float m_RevRangeBoundary = 1f;
         [SerializeField] private float m_SlipLimit;
@@ -190,10 +190,7 @@ namespace UnityStandardAssets.Vehicles.Car
             m_WheelColliders[1].steerAngle = m_SteerAngle;
 
             SteerHelper();
-            if (gameObject.GetComponentInParent<UserInteraction>().isBoosting)
-            {
-                accel = accel * 1.5f;
-            }
+
             ApplyDrive(accel, footbrake);
             CapSpeed();
 
@@ -306,8 +303,10 @@ namespace UnityStandardAssets.Vehicles.Car
         // this is used to add more grip in relation to speed
         private void AddDownForce()
         {
+            //this can be used to make turning easier
+            float forceMultiplyer = 1;
             m_WheelColliders[0].attachedRigidbody.AddForce(-transform.up*m_Downforce*
-                                                         m_WheelColliders[0].attachedRigidbody.velocity.magnitude);
+                                                         m_WheelColliders[0].attachedRigidbody.velocity.magnitude*forceMultiplyer);
         }
 
 

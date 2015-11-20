@@ -118,6 +118,8 @@ public class PracticeMap : MonoBehaviour {
         practiceText2.SetActive(false);
         topPlate.SetActive(false);
         bottomPlate.SetActive(false);
+        CarmonyGUI.S.bottomPracticeHelper.SetActive(false);
+        CarmonyGUI.S.topPracticeHelper.SetActive(false);
         CarmonyGUI.S.HideActivationButton();
         CarmonyGUI.S.movingToPractice.SetActive(true);
         Destroy(gameObject);

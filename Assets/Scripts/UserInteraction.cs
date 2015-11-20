@@ -182,9 +182,6 @@ public class UserInteraction : MonoBehaviour {
 			shrinkingTimer = Time.time;
 		}
         */
-		// Turn off boost
-        if (isBoosting && Time.time - boostTimer > 5)
-            isBoosting = false;
         if (playerAInput.LeftBumper && playerBInput.LeftBumper && (playerAInput.LeftBumper.WasPressed || playerBInput.LeftBumper.WasPressed) &&  Main.S.practicing)
         {
             m_carUser.playerSwap();
