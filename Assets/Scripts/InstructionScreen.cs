@@ -19,6 +19,8 @@ public class InstructionScreen : MonoBehaviour {
     public Text continueText;
     bool instructionsDone;
     float startTime;
+    bool switchingGroupsBack;
+    bool manuallySwitched = true;
 	void Awake()
 	{
 		S = this;
@@ -29,6 +31,7 @@ public class InstructionScreen : MonoBehaviour {
 		gameObject.SetActive(false);
 		firstGroup = true;
 		switchingGroups = false;
+        manuallySwitched = false;
 	}
 	
     IEnumerator loadingDots()
@@ -48,7 +51,6 @@ public class InstructionScreen : MonoBehaviour {
             loadingText.text = newText;
             yield return 0;
         }
-        loadingText.text = "";
         inLoading = false;
     }
 
@@ -60,14 +62,15 @@ public class InstructionScreen : MonoBehaviour {
             StartCoroutine("loadingDots");
             startTime = Time.time;
         }
-        if (Time.time -startTime > 7 && firstGroup)
+        if (Time.time -startTime > 7 && firstGroup && !manuallySwitched)
         {
             switchingGroups = true;
             firstGroup = false;
         }
-        else if (Time.time - startTime > 14)
+        else if (Time.time - startTime > 14 || manuallySwitched)
         {
             continueText.text = "Press any button to begin";
+            loadingText.text = "";
             instructionsDone = true;
         }
 
@@ -90,11 +93,32 @@ public class InstructionScreen : MonoBehaviour {
 				switchingGroups = true;
 				firstGroup = false;
 			}
+            if (player.LeftStickX < 0)
+            {
+                if (!firstGroup)
+                {
+                    firstGroup = true;
+                    switchingGroupsBack = true;
+                    manuallySwitched = true;
+                }
+            }
+            else if (player.LeftStickX > 0)
+            {
+                if (firstGroup)
+                {
+                    firstGroup = false;
+                    switchingGroups = true;
+                    manuallySwitched = true;
+                }
+            }
 		}
 		
 		if (switchingGroups) {
 			switchGroups ();
-		}
+		}else if (switchingGroupsBack)
+        {
+            switchGroupsBack();
+        }
 	}
 
     void finishScreen()
@@ -119,5 +143,23 @@ public class InstructionScreen : MonoBehaviour {
 			switchingGroups = false;
 		}
 	}
+
+    void switchGroupsBack()
+    {
+        print("hello");
+        if (controlGroups[0].transform.localPosition[0] < 0)
+        {
+            Vector3 temp = controlGroups[0].transform.position;
+            temp[0] += 40;
+            controlGroups[0].transform.position = temp;
+            temp = controlGroups[1].transform.position;
+            temp[0] += 40;
+            controlGroups[1].transform.position = temp;
+        }
+        else
+        {
+            switchingGroupsBack = false;
+        }
+    }
 	
 }
