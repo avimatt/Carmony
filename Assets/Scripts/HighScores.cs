@@ -78,6 +78,11 @@ public class HighScores : MonoBehaviour {
         S = this;
     }
 
+    void OnEnable()
+    {
+        readFile();
+    }
+
 	// Use this for initialization
 	void Start () {
         readFile();
@@ -129,6 +134,7 @@ public class HighScores : MonoBehaviour {
 
     void readFile()
     {
+        scoreList.Clear();
         StreamReader theReader = new StreamReader(Main.S.Map.GetComponent<Map>().name + filename, Encoding.Default);
         using (theReader)
         {

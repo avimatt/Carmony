@@ -4,12 +4,19 @@ using InControl;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+
+public enum difficultyLevel
+{
+    easy,
+    medium,
+    hard
+}
 public class TitleScreen : MonoBehaviour {
 
     static public TitleScreen S;
     public int index;
     public List<Text> menuObjects;
-
+    public difficultyLevel mapDifficulty;
     void Awake()
     {
         S = this;
@@ -53,13 +60,57 @@ public class TitleScreen : MonoBehaviour {
                 {
                     case 0:
                         gameObject.SetActive(false);
+                        chooseMap();
                         StartScreen.S.gameObject.SetActive(true);
                         break;
                     case 1:
                         HighScores.S.gameObject.SetActive(true);
                         break;
+                    case 2:
+                        changeMapDifficulty(menuObjects[2]);
+                        break;
                 }
             }
+        }
+    }
+
+
+    void chooseMap()
+    {
+        switch (mapDifficulty)
+        {
+            case difficultyLevel.easy:
+                Main.S.Map = Main.S.MapList[1];
+                break;
+            case difficultyLevel.medium:
+                Main.S.Map = Main.S.MapList[0];
+                break;
+            case difficultyLevel.hard:
+                Main.S.Map = Main.S.MapList[3];
+                break;
+        }
+    }
+    void changeMapDifficulty(Text difficultyText)
+    {
+        switch (mapDifficulty)
+        {
+            case difficultyLevel.easy:
+                mapDifficulty = difficultyLevel.medium;
+                difficultyText.text = "Difficulty: Medium";
+                Main.S.Map = Main.S.MapList[1];
+                break;
+            case difficultyLevel.medium:
+                mapDifficulty = difficultyLevel.hard;
+                difficultyText.text = "Difficulty: Hard";
+                Main.S.Map = Main.S.MapList[0];
+
+                break;
+            case difficultyLevel.hard:
+                mapDifficulty = difficultyLevel.easy;
+                difficultyText.text = "Difficulty: Easy";
+                Main.S.Map = Main.S.MapList[3];
+
+                break;
         }
     }
     void moveDownMenu()

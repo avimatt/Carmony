@@ -266,6 +266,7 @@ namespace UnityStandardAssets.Vehicles.Car
                     return;
                 }
             }
+            //steering = steering / 2f;//this is to not spin on a dime
 #if !MOBILE_INPUT
             //float handbrake = CrossPlatformInputManager.GetAxis("Jump");
             m_Car.Move(steering, accel, footbrake, handbrake);
