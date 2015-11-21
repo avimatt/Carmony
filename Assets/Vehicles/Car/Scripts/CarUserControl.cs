@@ -16,6 +16,8 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private UserInteraction m_userInteract;
         private WheelCollider[] m_wheels;// the wheel colliders of the car
+        public ParticleSystem leftSteam;
+        public ParticleSystem rightSteem;
         public int first = 3; // first - player who turns right and accelerates
         public int second = 3; // second - player who turns left and brakes
        
@@ -246,6 +248,24 @@ namespace UnityStandardAssets.Vehicles.Car
                     JointSpring wheelSpring = m_wheels[i].suspensionSpring;
                     wheelSpring.damper = 3500;
                     m_wheels[i].suspensionSpring = wheelSpring;
+                }
+            }
+            if (leftSteam && rightSteem)
+            {
+                if (accel + footbrake > 0)
+                {
+                    leftSteam.startColor = new Color32(0, 255, 44, 255);
+                    rightSteem.startColor = new Color32(0, 255, 44, 255);
+                }
+                else if (accel + footbrake < 0)
+                {
+                    leftSteam.startColor = new Color32(255, 0, 0, 255);
+                    rightSteem.startColor = new Color32(255, 0, 0, 255);
+                }
+                else
+                {
+                    leftSteam.startColor = new Color32(255, 255, 255, 255);
+                    rightSteem.startColor = new Color32(255, 255, 255, 255);
                 }
             }
 
