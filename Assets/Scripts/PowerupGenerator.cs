@@ -40,11 +40,13 @@ public class PowerupGenerator : MonoBehaviour {
 		swapGeneration[4] = new Vector3(308,1,455);
 		swapGeneration[5] = new Vector3(381,1,334);
 
-        foreach (Vector3 newPos in Main.S.Map.GetComponent<Map>().randomPowerupLocations)
+        foreach (GameObject map in Main.S.MapList)
         {
-            randomGenerations.Add(newPos);
+            foreach (Vector3 newPos in map.GetComponent<Map>().randomPowerupLocations)
+            {
+                randomGenerations.Add(newPos);
+            }
         }
-
         //end init
         for (int i = 0; i < numPowerups; ++i){
 			//swap powerUps start

@@ -264,7 +264,7 @@ public class CarmonyGUI : MonoBehaviour {
             // If both pressing it, activate the powerup
             if (bottomPlayerAInput.Action1.IsPressed && bottomPlayerBInput.Action1.IsPressed)
             {
-                PowerUp.ActivatePowerUp(true, bottomType);
+                PowerUp.ActivatePowerUp(false, bottomType);
                 bottomType = powerUpType.empty;
                 this.bottomHasPowerup = false;
                 this.HideBottomPowerUpActivator();
