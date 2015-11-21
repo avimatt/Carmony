@@ -99,7 +99,7 @@ public class Main : MonoBehaviour
         interactTimer = Time.time;
 		topInCollisionZone = false;
 		bottomInCollisionZone = false;
-        //Map = MapList[0];
+        Map = MapList[1];
     }
 
     // Update is called once per frame

@@ -49,7 +49,11 @@ public class CarCollision : MonoBehaviour {
 
         }else if (coll.gameObject.layer == 0)
         {
-            print("hit car");
+            print("hit car " + coll.gameObject.name);
+        }
+        else
+        {
+            return;
         }
         StartCoroutine("vibrateOnCollision");
 

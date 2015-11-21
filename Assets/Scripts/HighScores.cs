@@ -80,7 +80,8 @@ public class HighScores : MonoBehaviour {
 
     void OnEnable()
     {
-        readFile();
+        if (Main.S)
+            readFile();
     }
 
 	// Use this for initialization
