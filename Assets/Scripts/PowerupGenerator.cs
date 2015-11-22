@@ -48,6 +48,7 @@ public class PowerupGenerator : MonoBehaviour {
             }
         }
         //end init
+        /*
         for (int i = 0; i < numPowerups; ++i){
 			//swap powerUps start
 			createSwap();
@@ -57,17 +58,20 @@ public class PowerupGenerator : MonoBehaviour {
 			createSpeed();
 			//speed powerUps end
 		}
+        */
         createRandom();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        /*
 		if(numInstantiatedSpeed < numPowerups){
 			createSpeed();
 		}
 		if(numInstantiatedSwap < numPowerups){
 			createSwap();
 		}
+        */
 	}
 	void createSwap(){
 		if(curSwapLocation == 4 || curSwapLocation == 1){
