@@ -11,6 +11,7 @@ public class Map : MonoBehaviour {
 
     public List<Vector3> randomPowerupLocations;
     public GameObject checkpointSystem;
+    public GameObject rocketStopSystem;
     public List<GameObject> fireworkList;
 
     public int numLaps;

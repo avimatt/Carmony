@@ -6,11 +6,18 @@ using UnityStandardAssets.Vehicles.Car;
 public class CarState : MonoBehaviour {
     // Array of checkpoints in the track
     public List<Transform> checkpoints;
+    
     public List<Transform> topResetLocation;
     public List<Transform> bottomResetLocation;
 
     public int currCheckpoint = 0;
     public int currLap = 0;
+
+    // Array of the RocketStops in the track
+    public List<Transform> rocketStops;
+    // currRocketStop is an index into the rocketStops array, indicating
+    // which one this car has just passed.
+    public int currRocketStop = 0;
 
     public bool perfectRace = true;
     public bool perfectLap = true;
@@ -33,9 +40,34 @@ public class CarState : MonoBehaviour {
 	void Update () {
         if (!set && Main.S.practicing)
         {
+            setRocketStops();
             setCheckpoints();
         }
 	}
+
+    public int getNextRocketStop()
+    {
+        if (currRocketStop + 1 < rocketStops.Count)
+            return currRocketStop + 1;
+        else
+            return 0;
+    }
+
+    public void incrRocketStop()
+    {
+        this.currRocketStop = getNextRocketStop();
+    }
+
+    void setRocketStops()
+    {
+        // Populate the array of rocketStops
+        foreach (Transform child in Main.S.Map.GetComponent<Map>().rocketStopSystem.transform)
+        {
+            rocketStops.Add(child);
+        }
+        // Set first rocketstop
+        this.currRocketStop = 0;
+    }
 
     void setCheckpoints()
     {

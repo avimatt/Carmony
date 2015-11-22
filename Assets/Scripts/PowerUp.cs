@@ -12,7 +12,8 @@ public enum powerUpType
     random,
     oil,
 	portal,
-    empty
+    empty,
+    rocket
 }
 
 public class PowerUp : MonoBehaviour
@@ -50,6 +51,16 @@ public class PowerUp : MonoBehaviour
 	// When Player has collided with the power up
     void OnTriggerEnter(Collider coll)
     {
+        // The rocket is an object going through the track, and may run into a powerup
+        // so we need to account for that and not take any actions if a powerup is hit
+        // by a rocket.
+        Transform rocketTrans = coll.transform.parent;
+        if (rocketTrans && rocketTrans.tag == "Rocket")
+        {
+            // if it is a rocket, don't do anything
+            return;
+        }
+
         // TODO: WHY THE FUCK do we use isTop in some places, and isBottom in others? We need to be consistent.
         bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
         if (!isBottomScreen)
@@ -166,7 +177,20 @@ public class PowerUp : MonoBehaviour
 			} else {
 				Main.S.carBottom.GetComponent<UserInteraction> ().moveToNextCheckpoint ();
 			}
-		}
+        }
+        else if (type == powerUpType.rocket)
+        {
+            // Spawn a rocket and set it's target;
+            if (topPlayer) {
+                int rocketstop = Main.S.carTop.GetComponent<CarState>().currRocketStop;
+                Vector3 carpos = Main.S.carTop.transform.position;
+                Main.S.carTop.GetComponent<UserInteraction>().spawnRocket(rocketstop, carpos, Main.S.carBottom);
+            } else {
+                int rocketstop = Main.S.carBottom.GetComponent<CarState>().currRocketStop;
+                Vector3 carpos = Main.S.carBottom.transform.position;
+                Main.S.carBottom.GetComponent<UserInteraction>().spawnRocket(rocketstop, carpos, Main.S.carTop);
+            }
+        }
         Logger.S.writeFile(topPlayer, "Activated Powerup " + type + " at: " + Main.S.getGameTime());
         if (topPlayer)
             Main.S.carTop.GetComponent<CarState>().powerupsActivated++;

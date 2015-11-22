@@ -31,6 +31,8 @@ public class UserInteraction : MonoBehaviour {
     public Camera backCamera;
     public Camera frontCamera;
 
+    public GameObject rocketPrefab;
+
     public bool quickStart;
 
     void Awake()
@@ -487,5 +489,12 @@ public class UserInteraction : MonoBehaviour {
         isShrinking = true;
         yield return new WaitForSeconds(5f);
         isNormalizingUp = true;
+    }
+
+    // Spawn a rocket with the passed in parameters
+    public void spawnRocket(int rocketStop, Vector3 startPos, GameObject target)
+    {
+        var rocketgo = Instantiate(rocketPrefab);
+        rocketgo.GetComponent<Rocket>().InitializeRocket(rocketStop, startPos, target);
     }
 }
