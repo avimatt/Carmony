@@ -35,6 +35,8 @@ public class UserInteraction : MonoBehaviour {
 
     public bool quickStart;
 
+    public ParticleSystem explosion;
+
     void Awake()
     {
         m_carUser = gameObject.GetComponentInParent<CarUserControl>();

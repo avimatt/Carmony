@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityStandardAssets.Vehicles.Car;
 
 public class Rocket : MonoBehaviour {
     public Rigidbody rocketRigid;
@@ -13,6 +14,9 @@ public class Rocket : MonoBehaviour {
     // currRocketStop is an index into the rocketStops array, indicating
     // which one the rocket has just passed.
     public int currRocketStop = 0;
+
+    //Is the bomb exploding. set when within proximity of target
+    bool isExploding;
 
 	// Use this for initialization
 	void Start () {
@@ -29,8 +33,30 @@ public class Rocket : MonoBehaviour {
         if (this.currRocketStop == targetCar.GetComponent<CarState>().currRocketStop)
         {
             this.SetRocketTrajectory(targetCar.transform);
+            if (Vector3.Distance(transform.position,targetCar.transform.position) < 3 && !isExploding)
+            {
+                print("starting coroutine");
+                StartCoroutine("blowBomb");
+            }
         }
+    }
 
+    IEnumerator blowBomb()
+    {
+        isExploding = true;
+        MeshRenderer[] meshes = gameObject.GetComponentsInChildren<MeshRenderer>();
+        for(int i = 0; i < meshes.Length; i++)
+        {
+            meshes[i].enabled = false;
+        }
+        print("hello");
+        targetCar.GetComponent<UserInteraction>().explosion.gameObject.SetActive(true);
+        targetCar.GetComponent<CarController>().zeroSpeed();
+
+        yield return new WaitForSeconds(2);
+        print("goodbye");
+        targetCar.GetComponent<UserInteraction>().explosion.gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     // Populate the rocketStops array

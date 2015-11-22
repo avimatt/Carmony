@@ -80,6 +80,7 @@ public class CarmonyGUI : MonoBehaviour {
     public Sprite speedSprite;
     public Sprite oilSprite;
 	public Sprite portalSprite;
+    public Sprite rocketSprite;
 
     public GameObject topPerfect;
     public GameObject bottomPerfect;
@@ -91,6 +92,12 @@ public class CarmonyGUI : MonoBehaviour {
 
     public GameObject topPracticeHelper;
     public GameObject bottomPracticeHelper;
+
+    public Image topSpeedBox;
+    public Image topSpeedSlider;
+
+    public Image bottomSpeedBox;
+    public Image bottomSpeedSlider;
     public void fadeOut()
     {
         Color newColor = fader.color;
@@ -130,6 +137,11 @@ public class CarmonyGUI : MonoBehaviour {
         bottomImageLeft.SetActive(false);
         topImageRight.SetActive(false);
         topImageLeft.SetActive(false);
+
+        topSpeedBox.enabled = false;
+        topSpeedSlider.enabled = false;
+        bottomSpeedBox.enabled = false;
+        bottomSpeedSlider.enabled = false;
 
         activatorGreen = new Color32(57, 204, 11,255);
         activatorRed = new Color32(255, 139, 139,255);
@@ -220,7 +232,10 @@ public class CarmonyGUI : MonoBehaviour {
         topLap.SetActive(true);
         bottomSpeed.SetActive(true);
         bottomLap.SetActive(true);
-        
+        topSpeedBox.enabled = true;
+        topSpeedSlider.enabled = true;
+        bottomSpeedBox.enabled = true;
+        bottomSpeedSlider.enabled = true;
     }
 
 
@@ -240,6 +255,13 @@ public class CarmonyGUI : MonoBehaviour {
         {
             bottomPlayerAInput = InputManager.Devices[m_carBottomUserControl.first];
             bottomPlayerBInput = InputManager.Devices[m_carBottomUserControl.second];
+        }
+
+        if (topSpeedSlider.enabled && bottomSpeedSlider.enabled)
+        {
+            topSpeedSlider.fillAmount = Main.S.carTop.GetComponent<CarController>().getSpeed() / 120;
+            bottomSpeedSlider.fillAmount = Main.S.carBottom.GetComponent<CarController>().getSpeed() / 120;
+
         }
 
         if (this.topHasPowerup && !Main.S.carTopDone)
@@ -318,6 +340,10 @@ public class CarmonyGUI : MonoBehaviour {
             bottomImageRight.SetActive(false);
             topImageLeft.SetActive(false);
             topImageRight.SetActive(false);
+            topSpeedBox.enabled = false;
+            topSpeedSlider.enabled = false;
+            bottomSpeedBox.enabled = false;
+            bottomSpeedSlider.enabled = false;
         }
     }
 
@@ -344,6 +370,10 @@ public class CarmonyGUI : MonoBehaviour {
             bottomImageRight.SetActive(true);
             topImageLeft.SetActive(true);
             topImageRight.SetActive(true);
+            topSpeedBox.enabled = true;
+            topSpeedSlider.enabled = true;
+            bottomSpeedBox.enabled = true;
+            bottomSpeedSlider.enabled = true;
         }
     }
 
@@ -402,6 +432,8 @@ public class CarmonyGUI : MonoBehaviour {
                 return oilSprite;
 			case powerUpType.portal:
 				return portalSprite;
+            case powerUpType.rocket:
+                return rocketSprite;
             default:
                 return speedSprite;
         }

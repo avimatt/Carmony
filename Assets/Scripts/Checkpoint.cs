@@ -59,6 +59,11 @@ public class Checkpoint : MonoBehaviour {
                             perfectMessage = "Perfect Lap";
                         }
                         player.currLap++;
+
+                        if (player.currLap == (Main.S.Map.GetComponent<Map>().numLaps))
+                        {
+                            StartCoroutine("printFinalLap", playerTrans.GetComponent<UserInteraction>().isCarBottom);
+                        }
 						// If finished last lap
                         if (player.currLap == (Main.S.Map.GetComponent<Map>().numLaps + 1))
                         {
@@ -96,6 +101,31 @@ public class Checkpoint : MonoBehaviour {
             // if not the player, don't continue
             return;
         }      
+    }
+
+    IEnumerator printFinalLap(bool isBottom)
+    {
+        if (isBottom)
+        {
+            CarmonyGUI.S.bottomSwapText.SetActive(true);
+            CarmonyGUI.S.bottomSwapText.GetComponent<Text>().text = "Final Lap";
+        }
+        else
+        {
+            CarmonyGUI.S.topSwapText.SetActive(true);
+            CarmonyGUI.S.topSwapText.GetComponent<Text>().text = "Final Lap";
+        }
+        yield return new WaitForSeconds(2);
+        if (isBottom)
+        {
+            CarmonyGUI.S.bottomSwapText.SetActive(false);
+            CarmonyGUI.S.bottomSwapText.GetComponent<Text>().text = "SWAP";
+        }
+        else
+        {
+            CarmonyGUI.S.topSwapText.SetActive(false);
+            CarmonyGUI.S.topSwapText.GetComponent<Text>().text = "SWAP";
+        }
     }
 
     IEnumerator printPerfectTop(string message)

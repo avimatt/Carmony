@@ -15,6 +15,11 @@ public class StartScreen : MonoBehaviour {
     public List<GameObject> buttonList; // Player 1,2,3,4 buttons on the screen
     public List<bool> playersSet; // Whether a given player has chosen a team
     public List<bool> buttonsSet; // Whether Player 1,2,3 or 4 (as determined from the button list) has been taken
+
+    public GameObject topCar;
+    public GameObject bottomCar;
+    public Text topNameText;
+    public Text bottomNameText;
     public float cooldown;
 
 	int countSet = 0; // # of players who have chosen a team 
@@ -40,7 +45,17 @@ public class StartScreen : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		// If all connected devices have chosen a team
+
+        topNameText.text = Main.S.carTop.GetComponent<CarState>().name;
+        bottomNameText.text = Main.S.carBottom.GetComponent<CarState>().name;
+
+        // If all connected devices have chosen a team
+        Vector3 topAngle = topCar.transform.rotation.eulerAngles;
+        Vector3 bottomAngle = bottomCar.transform.rotation.eulerAngles;
+        topAngle.y += 1;
+        bottomAngle.y += 1;
+        topCar.transform.rotation = Quaternion.Euler(topAngle);
+        bottomCar.transform.rotation = Quaternion.Euler(bottomAngle);
         if (countSet == InputManager.Devices.Count && Time.realtimeSinceStartup - cooldown > .25)
         {
 			// Check each device for input
@@ -97,24 +112,28 @@ public class StartScreen : MonoBehaviour {
         if (player.Action1.WasPressed)
         {
             buttonList[0].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
+            buttonList[0].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[0] = true;
             Main.S.carTop.GetComponent<CarUserControl>().first = playerIndex;
         }
         else if (player.Action2.WasPressed)
         {
             buttonList[1].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
+            buttonList[1].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[1] = true;
             Main.S.carTop.GetComponent<CarUserControl>().second = playerIndex;
         }
         else if (player.Action3.WasPressed)
         {
             buttonList[2].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
+            buttonList[2].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[2] = true;
             Main.S.carBottom.GetComponent<CarUserControl>().first = playerIndex;
         }
         else if (player.Action4.WasPressed)
         {
             buttonList[3].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
+            buttonList[3].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[3] = true;
             Main.S.carBottom.GetComponent<CarUserControl>().second = playerIndex;
         }

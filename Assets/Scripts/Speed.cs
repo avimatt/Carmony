@@ -22,6 +22,8 @@ public class Speed : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        m_text.text = m_car.getSpeed().ToString() + " MPH";
+        //comment in for normal text
+        // m_text.text = m_car.getSpeed().ToString() + " MPH";
+        m_text.text = m_car.getSpeed().ToString();
     }
 }

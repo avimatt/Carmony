@@ -18,6 +18,7 @@ namespace UnityStandardAssets.Vehicles.Car
         private WheelCollider[] m_wheels;// the wheel colliders of the car
         public ParticleSystem leftSteam;
         public ParticleSystem rightSteem;
+        public GameObject steeringWheel;
         public int first = 3; // first - player who turns right and accelerates
         public int second = 3; // second - player who turns left and brakes
        
@@ -141,6 +142,10 @@ namespace UnityStandardAssets.Vehicles.Car
             int temp = first;
             first = second;
             second = temp;
+
+            ParticleSystem tempPart = leftSteam;
+            leftSteam = rightSteem;
+            rightSteem = tempPart;
          
         }
 
@@ -151,6 +156,51 @@ namespace UnityStandardAssets.Vehicles.Car
             m_wheels = gameObject.GetComponentsInChildren<WheelCollider>();
             m_userInteract = gameObject.GetComponentInParent<UserInteraction>();
 
+        }
+
+        void doubleStream(float accel,float footbrake)
+        {
+            if (leftSteam && rightSteem)
+            {
+                if (accel + footbrake > 0)
+                {
+                    leftSteam.startColor = new Color32(0, 255, 44, 255);
+                    rightSteem.startColor = new Color32(0, 255, 44, 255);
+                }
+                else if (accel + footbrake < 0)
+                {
+                    leftSteam.startColor = new Color32(255, 0, 0, 255);
+                    rightSteem.startColor = new Color32(255, 0, 0, 255);
+                }
+                else
+                {
+                    leftSteam.startColor = new Color32(255, 255, 255, 255);
+                    rightSteem.startColor = new Color32(255, 255, 255, 255);
+                }
+            }
+        }
+
+        void singleStream(float accel,float footbrake)
+        {
+            if (leftSteam && rightSteem)
+            {
+                if (accel > 0)
+                {
+                    rightSteem.startColor = new Color32(0, 255, 44, 255);
+                }
+                else
+                {
+                    rightSteem.startColor = new Color32(255, 255, 255, 255);
+                }
+                if (footbrake < 0)
+                {
+                    leftSteam.startColor = new Color32(255, 0, 0, 255);
+                }
+                else
+                {
+                    leftSteam.startColor = new Color32(255, 255, 255, 255);
+                }
+            }
         }
 
         //Modify these values in order to tweak steering
@@ -187,6 +237,10 @@ namespace UnityStandardAssets.Vehicles.Car
                 accel = playerAInput.RightTrigger;
                 footbrake = -1f * playerAInput.LeftTrigger;
             }
+
+            //doubleStream(accel, footbrake);
+            singleStream(accel, footbrake);
+
             if (accel + footbrake > 0)
             {
                 accel = accel + footbrake;
@@ -250,24 +304,7 @@ namespace UnityStandardAssets.Vehicles.Car
                     m_wheels[i].suspensionSpring = wheelSpring;
                 }
             }
-            if (leftSteam && rightSteem)
-            {
-                if (accel + footbrake > 0)
-                {
-                    leftSteam.startColor = new Color32(0, 255, 44, 255);
-                    rightSteem.startColor = new Color32(0, 255, 44, 255);
-                }
-                else if (accel + footbrake < 0)
-                {
-                    leftSteam.startColor = new Color32(255, 0, 0, 255);
-                    rightSteem.startColor = new Color32(255, 0, 0, 255);
-                }
-                else
-                {
-                    leftSteam.startColor = new Color32(255, 255, 255, 255);
-                    rightSteem.startColor = new Color32(255, 255, 255, 255);
-                }
-            }
+
 
             // pass the input to the car!
             if (!isBottomCar)
@@ -286,6 +323,12 @@ namespace UnityStandardAssets.Vehicles.Car
                     return;
                 }
             }
+            float carY = transform.rotation.eulerAngles.y;
+            float degree =  180 -steering * 60;
+
+            Vector3 newRot = steeringWheel.transform.rotation.eulerAngles;
+            newRot.z = degree;
+            steeringWheel.transform.rotation = Quaternion.Euler(newRot);
             //steering = steering / 2f;//this is to not spin on a dime
 #if !MOBILE_INPUT
             //float handbrake = CrossPlatformInputManager.GetAxis("Jump");

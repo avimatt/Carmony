@@ -1,5 +1,2 @@
-1 Blob2 1 7
-2 CarTop242 1 9
-3 Blob1 1 10
-4 CarTop163 1 16
-5 CarBottom242 2 35
+1 Fred 2 0
+

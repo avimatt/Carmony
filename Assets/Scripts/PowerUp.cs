@@ -80,12 +80,14 @@ public class PowerUp : MonoBehaviour
             if (isBehind)
             {
                 int randInt = Random.Range(0, 10);
-                if (randInt < 5)
+                if (randInt < 3)
+                {
+                    type = powerUpType.rocket;
+                }
+                else if (randInt < 6)
                     type = powerUpType.swap;
 				else if(randInt < 8)
 					type = powerUpType.portal;
-                else if (randInt == 8)
-                    type = powerUpType.oil;
                 else
                     type = powerUpType.speed;
             }
@@ -104,6 +106,7 @@ public class PowerUp : MonoBehaviour
                 else
                     type = powerUpType.swap;
             }
+            print("printing:" + type);
         }
 
         if ((isBottomScreen && Main.S.carBottomDone) || (!isBottomScreen && Main.S.carTopDone))

@@ -65,7 +65,6 @@ public class HighScores : MonoBehaviour {
     static public HighScores S;
     private string filename = "highScores.txt";
     public List<scoreRow> scoreList = new List<scoreRow>();
-    public List<GameObject> rows;
     public List<Text> places;
     public List<Text> names;
     public List<Text> times;
@@ -90,10 +89,11 @@ public class HighScores : MonoBehaviour {
         gameObject.SetActive(false);
     }
 	
-	// Update is called once per frame
-	void Update () {
+    //Update Text in the GUI to show TopScores
+    public void updateText()
+    {
         int i = 0;
-	    for (; i < scoreList.Count; i++)
+        for (; i < scoreList.Count; i++)
         {
             places[i].text = scoreList[i].getPlace().ToString();
             names[i].text = scoreList[i].getName();
@@ -103,7 +103,8 @@ public class HighScores : MonoBehaviour {
                 places[i].color = blueColor;
                 names[i].color = blueColor;
                 times[i].color = blueColor;
-            }else if (scoreList[i].getName() == Main.S.carBottom.GetComponent<CarState>().name)
+            }
+            else if (scoreList[i].getName() == Main.S.carBottom.GetComponent<CarState>().name)
             {
                 places[i].color = yellowCollor;
                 names[i].color = yellowCollor;
@@ -116,20 +117,36 @@ public class HighScores : MonoBehaviour {
                 times[i].color = new Color32(255, 255, 255, 255);
             }
         }
-        for(;i < places.Count; i++)
+        for (; i < places.Count; i++)
         {
             places[i].text = "";
             names[i].text = "";
             times[i].text = "";
         }
+    }
+
+	// Update is called once per frame
+	void Update () {
+        updateText();
         foreach (InputDevice player in InputManager.Devices)
         {
             if (player.Action2.WasPressed && !Main.S.getRaceStarted())
             {
+                emptyTexts();
                 gameObject.SetActive(false);
             }else if (player.AnyButton.WasPressed && Main.S.getRaceStarted()){
                 Application.LoadLevel("NoahDevScene");
             }
+        }
+    }
+
+    void emptyTexts()
+    {
+        for (int i = 0; i < places.Count; i++)
+        {
+            places[i].text = "";
+            names[i].text = "";
+            times[i].text = "";
         }
     }
 
@@ -143,7 +160,7 @@ public class HighScores : MonoBehaviour {
             do
             {
                 line = theReader.ReadLine();
-                if (line != null)
+                if (line != null && line != "")
                 {
                     string[] entries = line.Split(' ');
                     scoreRow newRow = new scoreRow();
