@@ -183,6 +183,8 @@ public class PowerUp : MonoBehaviour
         }
         else if (type == powerUpType.rocket)
         {
+            AudioSource rocketSound = GameObject.Find("RocketSound").GetComponent<AudioSource>();
+            rocketSound.Play();
             // Spawn a rocket and set it's target;
             if (topPlayer) {
                 int rocketstop = Main.S.carTop.GetComponent<CarState>().currRocketStop;

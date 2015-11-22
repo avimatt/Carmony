@@ -23,10 +23,15 @@ public class Rocket : MonoBehaviour {
         this.setRocketStops();
         rocketRigid = GetComponent<Rigidbody>();
         this.SetRocketStopTrajectory(getNextRocketStop());
-	}
+
+    }
 
     void FixedUpdate()
     {
+        //set the angle of the rocket
+        float angle = Mathf.Atan2(rocketRigid.velocity.normalized.z, rocketRigid.velocity.normalized.x) * Mathf.Rad2Deg;
+        gameObject.transform.rotation = Quaternion.Euler(90,90 - angle,0);
+
         // If the rocket's current stop is equal to it's target's current stop
         // then that means the target is close enough, so set the trajectory towards
         // the target instead of another rocketstop
@@ -52,6 +57,9 @@ public class Rocket : MonoBehaviour {
         print("hello");
         targetCar.GetComponent<UserInteraction>().explosion.gameObject.SetActive(true);
         targetCar.GetComponent<CarController>().zeroSpeed();
+
+        AudioSource explosionSound = GameObject.Find("ExplosionSound").GetComponent<AudioSource>();
+        explosionSound.Play();
 
         yield return new WaitForSeconds(2);
         print("goodbye");
