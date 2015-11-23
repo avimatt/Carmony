@@ -83,7 +83,7 @@ public class InstructionScreen : MonoBehaviour {
                 finishScreen();
             }
             // after both control groups have been seen
-            if (player.MenuWasPressed && !firstGroup && controlGroups[1].transform.localPosition[0] <= 0)
+            if (player.MenuWasPressed )//&& !firstGroup && controlGroups[1].transform.localPosition[0] <= 0)
 			{
                 finishScreen();
 			} 
