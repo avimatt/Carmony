@@ -21,8 +21,8 @@ namespace UnityStandardAssets.Vehicles.Car
         public GameObject steeringWheel;
         public int first = 3; // first - player who turns right and accelerates
         public int second = 3; // second - player who turns left and brakes
-       
 
+        public GameObject monster;
 
         void Start()
         {
@@ -59,9 +59,30 @@ namespace UnityStandardAssets.Vehicles.Car
 
             }
             StartCoroutine("swapGrow");
+
+            StartCoroutine("turnMonster");
             //call co-routine
             StartCoroutine("pulseWait");
 
+        }
+
+        IEnumerator turnMonster()
+        {
+            float curTime = Time.time;
+            Vector3 origAngle = monster.transform.localEulerAngles;
+            while(Time.time - curTime < 2)
+            {
+                Vector3 newRot = monster.transform.rotation.eulerAngles;
+                newRot.y = newRot.y + 20;
+                monster.transform.rotation = Quaternion.Euler(newRot);
+                yield return 0;
+            }
+            //origAngle.x = 0;
+            origAngle.y += 180f;
+            //origAngle.z = 0;
+            //monster.transform.rotation = Quaternion.Euler(origAngle);
+            monster.transform.localRotation = Quaternion.Euler(origAngle);
+            print(Quaternion.Euler(origAngle));
         }
 
         IEnumerator swapGrow()
@@ -121,6 +142,7 @@ namespace UnityStandardAssets.Vehicles.Car
             // Turn off vibrate
             endVibration();
 
+            /*
 			// Remove SwapText and swap control images
             if (!isBottomCar)
             {
@@ -137,7 +159,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 CarmonyGUI.S.bottomImageLeft.GetComponent<Image>().sprite = CarmonyGUI.S.bottomImageRight.GetComponent<Image>().sprite;
                 CarmonyGUI.S.bottomImageRight.GetComponent<Image>().sprite = tempImage;
             }
-
+            */
             //swap controls
             int temp = first;
             first = second;

@@ -224,10 +224,12 @@ public class CarmonyGUI : MonoBehaviour {
         topMinimap.GetComponent<Image>().sprite = Main.S.Map.GetComponent<Map>().miniMapImage;
         bottomMinimap.GetComponent<Image>().sprite = Main.S.Map.GetComponent<Map>().miniMapImage;
         bottomMinimapDots.SetActive(true);
-        bottomImageLeft.SetActive(true);
-        bottomImageRight.SetActive(true);
-        topImageLeft.SetActive(true);
-        topImageRight.SetActive(true);
+
+//        bottomImageLeft.SetActive(true);
+//        bottomImageRight.SetActive(true);
+//        topImageLeft.SetActive(true);
+//        topImageRight.SetActive(true);
+
         topSpeed.SetActive(true);
         topLap.SetActive(true);
         bottomSpeed.SetActive(true);
@@ -270,7 +272,7 @@ public class CarmonyGUI : MonoBehaviour {
             this.topActivationSlider.color = topPlayerAInput.Action1.IsPressed ? this.activatorGreen : this.activatorRed;
             this.topActivationSlider2.color = topPlayerBInput.Action1.IsPressed ? this.activatorGreen : this.activatorRed;
             // If both pressing it, activate the powerup
-            if (topPlayerAInput.Action1.IsPressed && topPlayerBInput.Action1.IsPressed)
+            if (topPlayerAInput.Action1.IsPressed && topPlayerBInput.Action1.IsPressed && !PauseScreen.S.isActiveAndEnabled)
             {
                 PowerUp.ActivatePowerUp(true, topType);
                 topType = powerUpType.empty;
@@ -278,7 +280,7 @@ public class CarmonyGUI : MonoBehaviour {
                 this.HideTopPowerUpActivator();
             }
         }
-        if (this.bottomHasPowerup && !Main.S.carBottomDone)
+        if (this.bottomHasPowerup && !Main.S.carBottomDone && !PauseScreen.S.isActiveAndEnabled)
         {
             // If a player is pressing the A button, turn the indicator green.
             this.bottomActivationSlider.color = bottomPlayerAInput.Action1.IsPressed ? this.activatorGreen : this.activatorRed;
@@ -326,6 +328,8 @@ public class CarmonyGUI : MonoBehaviour {
             PracticeMap.S.bottomPlate.SetActive(false);
             topPracticeHelper.SetActive(false);
             bottomPracticeHelper.SetActive(false);
+            topGUI.SetActive(false);
+            bottomGUI.SetActive(false);
         }
         else
         {
@@ -336,10 +340,12 @@ public class CarmonyGUI : MonoBehaviour {
             bottomMinimap.SetActive(false);
             topMinimapDots.SetActive(false);
             bottomMinimapDots.SetActive(false);
-            bottomImageLeft.SetActive(false);
-            bottomImageRight.SetActive(false);
-            topImageLeft.SetActive(false);
-            topImageRight.SetActive(false);
+
+            //bottomImageLeft.SetActive(false);
+            //bottomImageRight.SetActive(false);
+            //topImageLeft.SetActive(false);
+            //topImageRight.SetActive(false);
+
             topSpeedBox.enabled = false;
             topSpeedSlider.enabled = false;
             bottomSpeedBox.enabled = false;
@@ -356,6 +362,8 @@ public class CarmonyGUI : MonoBehaviour {
             PracticeMap.S.practiceText2.SetActive(true);
             PracticeMap.S.topPlate.SetActive(true);
             PracticeMap.S.bottomPlate.SetActive(true);
+            topGUI.SetActive(true);
+            bottomGUI.SetActive(true);
         }
         else
         {
@@ -366,10 +374,12 @@ public class CarmonyGUI : MonoBehaviour {
             topMinimapDots.SetActive(true);
             bottomMinimapDots.SetActive(true);
             bottomMinimap.SetActive(true);
-            bottomImageLeft.SetActive(true);
-            bottomImageRight.SetActive(true);
-            topImageLeft.SetActive(true);
-            topImageRight.SetActive(true);
+
+            //bottomImageLeft.SetActive(true);
+            //bottomImageRight.SetActive(true);
+            //topImageLeft.SetActive(true);
+            //topImageRight.SetActive(true);
+
             topSpeedBox.enabled = true;
             topSpeedSlider.enabled = true;
             bottomSpeedBox.enabled = true;
