@@ -57,7 +57,7 @@ public class Rocket : MonoBehaviour {
         print("hello");
         targetCar.GetComponent<UserInteraction>().explosion.gameObject.SetActive(true);
         targetCar.GetComponent<CarController>().zeroSpeed();
-
+        targetCar.GetComponent<UserInteraction>().startBombRaiseCar();
         AudioSource explosionSound = GameObject.Find("ExplosionSound").GetComponent<AudioSource>();
         explosionSound.Play();
 

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 using InControl;
 using System.Collections;
-using XInputDotNetPure;
 
 namespace UnityStandardAssets.Vehicles.Car
 {
@@ -23,7 +22,6 @@ namespace UnityStandardAssets.Vehicles.Car
         public int second = 3; // second - player who turns left and brakes
 
         public GameObject monster;
-
         void Start()
         {
         }
@@ -43,7 +41,30 @@ namespace UnityStandardAssets.Vehicles.Car
             playerBInput.Vibrate(0f, 0f);
         }
 
-		// Show SwapText and start Co-Routine
+        public void vibrateA()
+        {
+            var playerAInput = InputManager.Devices[first];
+            playerAInput.Vibrate(1f, 1f);
+        }
+        public void vibrateB()
+        {
+            var playerBInput = InputManager.Devices[second];
+            playerBInput.Vibrate(1f, 1f);
+        }
+        public void stopVibrateA()
+        {
+            var playerAInput = InputManager.Devices[first];
+            playerAInput.Vibrate(0f, 0f);
+            
+        }
+
+        public void stopVibrateB()
+        {
+            var playerBInput = InputManager.Devices[second];
+            playerBInput.Vibrate(0f, 0f);
+        }
+
+        // Show SwapText and start Co-Routine
         public void playerSwap()
         {
             // Start pulse vibration
@@ -247,12 +268,18 @@ namespace UnityStandardAssets.Vehicles.Car
 
             float accel;
             float footbrake;
+            bool badA = false;
+            bool badB = false;
             // Player A controls accelerator and turning right
             if (Main.S.normalControls)
             {
                 accel = playerAInput.RightTrigger;
+                if (playerBInput.RightTrigger)
+                    badB = true;
                 // Player B controls footbrake, handbrake, and turning left
                 footbrake = -1f * playerBInput.LeftTrigger;
+                if (playerAInput.LeftTrigger)
+                    badA = true;
             }
             else
             {
@@ -281,7 +308,11 @@ namespace UnityStandardAssets.Vehicles.Car
             if (Main.S.normalControls)
             {
                 playerA_turnRight = Math.Max(0f, playerAInput.LeftStickX);
+                if (Math.Max(0f, playerBInput.LeftStickX) > 0)
+                    badB = true;
                 playerB_turnLeft = Math.Min(0f, playerBInput.LeftStickX);
+                if (Math.Min(0f, playerAInput.LeftStickX) < 0)
+                    badA = true;
             }
             else{
                 playerA_turnRight = Math.Max(0f, playerBInput.LeftStickX);
@@ -289,6 +320,7 @@ namespace UnityStandardAssets.Vehicles.Car
             }
             float steering = playerA_turnRight + playerB_turnLeft;
 			if (gameObject.transform.localScale.x < 1) {
+                print("correcting wheels");
 				steering *= Mathf.Pow(2.718f, m_Car.getSpeed()/-60);
                 m_Car.SlipLimit = .7f;
                 m_Car.SteerHelperProperty = 1f;
@@ -344,6 +376,22 @@ namespace UnityStandardAssets.Vehicles.Car
                     m_Car.Move(0f, 0f, 0f, 0f);
                     return;
                 }
+            }
+            if (badA)
+            {
+                vibrateA();
+            }
+            else
+            {
+                stopVibrateA();
+            }
+            if (badB)
+            {
+                vibrateB();
+            }
+            else
+            {
+                stopVibrateB();
             }
             float carY = transform.rotation.eulerAngles.y;
             float degree =  180 -steering * 60;

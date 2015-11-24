@@ -55,7 +55,7 @@ public class CarCollision : MonoBehaviour {
         {
             return;
         }
-        StartCoroutine("vibrateOnCollision");
+        //StartCoroutine("vibrateOnCollision");
 
     }
 

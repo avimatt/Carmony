@@ -184,6 +184,8 @@ public class CarmonyGUI : MonoBehaviour {
     //Co-routine to display GO when race starts then take display down
     IEnumerator startFlagText()
     {
+        topHasPowerup = false;
+        bottomHasPowerup = false;
         goText.SetActive(true);
         m_audiosource.enabled = true;
         //goText.GetComponent<Text>().color = new Color32(0, 0, 0, 255);

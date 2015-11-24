@@ -218,8 +218,8 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             float speed = m_Rigidbody.velocity.magnitude;
             Vector3 newVelocity = m_Rigidbody.velocity;
-            if (newVelocity.y > 0)
-                newVelocity.y = 0;
+            //if (newVelocity.y > 0)
+            //    newVelocity.y = 0;
             m_Rigidbody.velocity = newVelocity;
             switch (m_SpeedType)
             {

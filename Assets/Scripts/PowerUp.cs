@@ -84,9 +84,9 @@ public class PowerUp : MonoBehaviour
                 {
                     type = powerUpType.rocket;
                 }
-                else if (randInt < 6)
+                else if (randInt < 5)
                     type = powerUpType.swap;
-				else if(randInt < 8)
+				else if(randInt < 9)
 					type = powerUpType.portal;
                 else
                     type = powerUpType.speed;
@@ -95,11 +95,11 @@ public class PowerUp : MonoBehaviour
             {
                 int randInt = Random.Range(0, 10);
                 print(randInt);
-                if (randInt < 3)
+                if (randInt < 2)
                 {
                     type = powerUpType.speed;
                 }
-                else if (randInt < 7)
+                else if (randInt < 9)
                 {
                     type = powerUpType.oil;
                 }

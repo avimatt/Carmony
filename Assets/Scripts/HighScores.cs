@@ -152,6 +152,7 @@ public class HighScores : MonoBehaviour {
 
     void readFile()
     {
+        
         scoreList.Clear();
         StreamReader theReader = new StreamReader(Main.S.Map.GetComponent<Map>().name + filename, Encoding.Default);
         using (theReader)
@@ -171,10 +172,12 @@ public class HighScores : MonoBehaviour {
                 }
             } while (line != null);
         }
+        
     }
 
     void writeFile()
     {
+        
         StreamWriter sw;
         sw = File.CreateText(Main.S.Map.GetComponent<Map>().name + filename);
         print("count " + scoreList.Count + scoreList[0].getName());
@@ -183,6 +186,7 @@ public class HighScores : MonoBehaviour {
             sw.WriteLine(scoreList[i].getPlace().ToString()+ " " +  scoreList[i].getName()+ " " + scoreList[i].getMinutes().ToString() + " " +  scoreList[i].getSeconds().ToString());
         }
         sw.Close();
+        
     }
 
     public bool updateList(scoreRow newRow)

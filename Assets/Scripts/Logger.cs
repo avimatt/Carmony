@@ -20,16 +20,18 @@ public class Logger : MonoBehaviour {
     public void writeFile(bool isTop,string message)
     {
         if (noPrint) return;
+        
         if (isTop)
             swTop.WriteLine(message);
         else
             swBottom.WriteLine(message);
+        
     }
 
     public void printSummary(bool isTop)
     {
         if (noPrint) return;
-
+        
         if (isTop)
         {
             CarState carTop = Main.S.carTop.GetComponent<CarState>();
@@ -58,14 +60,17 @@ public class Logger : MonoBehaviour {
             writeFile(false, "Powerups Activated: " + carBottom.powerupsActivated);
             writeFile(false, "Resets: " + carBottom.resets);
         }
+        
     }
 
     void OnDestroy()
     {
+        
 		if (noPrint) return;
 
         swTop.Close();
         swBottom.Close();
+        
     }
 
 
@@ -73,6 +78,7 @@ public class Logger : MonoBehaviour {
     void Start () {
         if (noPrint) return;
 
+        
         int i = 1;
         while (File.Exists(fileNameTop))
         {
@@ -89,6 +95,7 @@ public class Logger : MonoBehaviour {
         }
         Main.S.carBottom.GetComponent<CarState>().name = "CarBottom" + (i-1).ToString();
         swBottom = File.CreateText(fileNameBottom);
+        
     }
 	
 	// Update is called once per frame

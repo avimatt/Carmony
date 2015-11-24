@@ -52,12 +52,23 @@ public class UserInteraction : MonoBehaviour {
         boostTimer = Time.time;
         quickStart = true;
 	}
-	
+
+    public void startBombRaiseCar()
+    {
+        Vector3 newVel = gameObject.GetComponent<Rigidbody>().velocity;
+        newVel.x = 0;
+        newVel.z = 0;
+        newVel.y = 10;
+        gameObject.GetComponent<Rigidbody>().velocity = newVel;
+    }
+
+
     public void placeOilSpill()
     {
         Vector3 newLocation = gameObject.GetComponentInChildren<Camera>().GetComponent<Transform>().position;
         newLocation.y = oilPrefab.transform.position.y;
         GameObject go = Instantiate(oilPrefab, newLocation, oilPrefab.transform.rotation) as GameObject;
+        go.GetComponent<OilSpill>().isFromTop = !isCarBottom;
     }
 
     // Update is called once per frame
@@ -167,6 +178,10 @@ public class UserInteraction : MonoBehaviour {
             }
             gameObject.transform.localScale = newSize;
 
+        }
+        if ((playerBInput.DPad.Up.WasPressed || playerBInput.DPad.Down.WasPressed))
+        {
+            startBombRaiseCar();
         }
         /*
         if ((playerBInput.DPad.Up.WasPressed || playerBInput.DPad.Down.WasPressed)){

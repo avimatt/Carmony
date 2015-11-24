@@ -6,6 +6,7 @@ public class OilSpill : MonoBehaviour {
     // Use this for initialization
 
     float startime;
+    public bool isFromTop;
 	void Start () {
         startime = Time.time;
         StartCoroutine("endOilSlickPhysical");
@@ -38,8 +39,16 @@ public class OilSpill : MonoBehaviour {
         {
             // Determine which car hit it
             bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
+            if (isBottomScreen && !isFromTop)
+            {
+                return;
+            }else if (!isBottomScreen && isFromTop)
+            {
+                return;
+            }
             // Generate random activation sequence
             // Show the player the sequence
+            print("fucking wheels");
             WheelCollider[] colliderArray = coll.GetComponentInParent<UserInteraction>().GetComponentsInChildren<WheelCollider>();
             for (int i = 0; i < colliderArray.Length; i++)
             {
