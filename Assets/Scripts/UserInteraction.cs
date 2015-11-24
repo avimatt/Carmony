@@ -66,7 +66,7 @@ public class UserInteraction : MonoBehaviour {
     public void placeOilSpill()
     {
         Vector3 newLocation = gameObject.GetComponentInChildren<Camera>().GetComponent<Transform>().position;
-        newLocation.y = oilPrefab.transform.position.y;
+        newLocation.y = gameObject.transform.position.y + .30f;//oilPrefab.transform.position.y;
         GameObject go = Instantiate(oilPrefab, newLocation, oilPrefab.transform.rotation) as GameObject;
         go.GetComponent<OilSpill>().isFromTop = !isCarBottom;
     }

@@ -21,6 +21,7 @@ namespace UnityStandardAssets.Vehicles.Car
         public int first = 3; // first - player who turns right and accelerates
         public int second = 3; // second - player who turns left and brakes
 
+        bool swapping;
         public GameObject monster;
         void Start()
         {
@@ -67,6 +68,10 @@ namespace UnityStandardAssets.Vehicles.Car
         // Show SwapText and start Co-Routine
         public void playerSwap()
         {
+            if (swapping)
+                return;
+            else
+                swapping = true;
             // Start pulse vibration
             startVibration();
 
@@ -89,6 +94,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
         IEnumerator turnMonster()
         {
+            
             float curTime = Time.time;
             Vector3 origAngle = monster.transform.localEulerAngles;
             while(Time.time - curTime < 2)
@@ -104,6 +110,9 @@ namespace UnityStandardAssets.Vehicles.Car
             //monster.transform.rotation = Quaternion.Euler(origAngle);
             monster.transform.localRotation = Quaternion.Euler(origAngle);
             print(Quaternion.Euler(origAngle));
+
+            swapping = false;
+
         }
 
         IEnumerator swapGrow()
@@ -189,6 +198,7 @@ namespace UnityStandardAssets.Vehicles.Car
             ParticleSystem tempPart = leftSteam;
             leftSteam = rightSteem;
             rightSteem = tempPart;
+
          
         }
 
@@ -377,21 +387,24 @@ namespace UnityStandardAssets.Vehicles.Car
                     return;
                 }
             }
-            if (badA)
+            if (first != second)
             {
-                vibrateA();
-            }
-            else
-            {
-                stopVibrateA();
-            }
-            if (badB)
-            {
-                vibrateB();
-            }
-            else
-            {
-                stopVibrateB();
+                if (badA)
+                {
+                    vibrateA();
+                }
+                else
+                {
+                    stopVibrateA();
+                }
+                if (badB)
+                {
+                    vibrateB();
+                }
+                else
+                {
+                    stopVibrateB();
+                }
             }
             float carY = transform.rotation.eulerAngles.y;
             float degree =  180 -steering * 60;
