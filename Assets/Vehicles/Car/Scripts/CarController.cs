@@ -32,7 +32,7 @@ namespace UnityStandardAssets.Vehicles.Car
         [SerializeField] private float m_Downforce = 100f;
         [SerializeField] private SpeedType m_SpeedType;
         [SerializeField] private float m_Topspeed = 200;
-        [SerializeField] private static int NoOfGears = 5;
+        [SerializeField] private static int NoOfGears = 1;
         [SerializeField] private float m_RevRangeBoundary = 1f;
         [SerializeField] private float m_SlipLimit;
         [SerializeField] private float m_BrakeTorque;
@@ -103,6 +103,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void GearChanging()
         {
+            
             float f = Mathf.Abs(CurrentSpeed/MaxSpeed);
             float upgearlimit = (1/(float) NoOfGears)*(m_GearNum + 1);
             float downgearlimit = (1/(float) NoOfGears)*m_GearNum;
@@ -116,6 +117,7 @@ namespace UnityStandardAssets.Vehicles.Car
             {
                 m_GearNum++;
             }
+            
         }
 
 
@@ -135,16 +137,20 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void CalculateGearFactor()
         {
+            
+            
             float f = (1/(float) NoOfGears);
             // gear factor is a normalised representation of the current speed within the current gear's range of speeds.
             // We smooth towards the 'target' gear factor, so that revs don't instantly snap up or down when changing gear.
             var targetGearFactor = Mathf.InverseLerp(f*m_GearNum, f*(m_GearNum + 1), Mathf.Abs(CurrentSpeed/MaxSpeed));
             m_GearFactor = Mathf.Lerp(m_GearFactor, targetGearFactor, Time.deltaTime*5f);
+            
         }
 
 
         private void CalculateRevs()
         {
+            
             // calculate engine revs (for display / sound)
             // (this is done in retrospect - revs are not used in force/power calculations)
             CalculateGearFactor();
@@ -152,6 +158,7 @@ namespace UnityStandardAssets.Vehicles.Car
             var revsRangeMin = ULerp(0f, m_RevRangeBoundary, CurveFactor(gearNumFactor));
             var revsRangeMax = ULerp(m_RevRangeBoundary, 1f, gearNumFactor);
             Revs = ULerp(revsRangeMin, revsRangeMax, m_GearFactor);
+            
         }
 
         public void zeroSpeed()
@@ -179,9 +186,13 @@ namespace UnityStandardAssets.Vehicles.Car
 
             //clamp input values
             steering = Mathf.Clamp(steering, -1, 1);
-            AccelInput = accel = Mathf.Clamp(accel, 0, 1);
-            BrakeInput = footbrake = -1*Mathf.Clamp(footbrake, -1, 0);
+            AccelInput = accel;// Mathf.Clamp(accel, 0, 2);
+            BrakeInput = footbrake = -2*Mathf.Clamp(footbrake, -1, 0);
             handbrake = Mathf.Clamp(handbrake, 0, 1);
+
+            //AccelInput = accel = Mathf.Clamp(accel, 0, 1);//OUT
+            //BrakeInput = footbrake = -1* Mathf.Clamp(footbrake, -1, 0);//OUT
+
 
             //Set the steer on the front wheels.
             //Assuming that wheels 0 and 1 are the front wheels.
@@ -204,8 +215,8 @@ namespace UnityStandardAssets.Vehicles.Car
             }
 
 
-            CalculateRevs();
-            GearChanging();
+            //CalculateRevs();
+            //GearChanging();
 
             AddDownForce();
             CheckForWheelSpin();
@@ -245,7 +256,18 @@ namespace UnityStandardAssets.Vehicles.Car
             switch (m_CarDriveType)
             {
                 case CarDriveType.FourWheelDrive:
-                    thrustTorque = accel * (m_CurrentTorque / 4f);
+                    float multiplyer = 1;
+                    if (getSpeed() < 50 && getSpeed() > 0)
+                    {
+                        multiplyer = 50 / getSpeed();
+                    }
+                    if (getSpeed() == 0)
+                    {
+                        multiplyer = 50;
+                    }
+                    multiplyer = 1f;//OUT
+                    thrustTorque = accel * (m_CurrentTorque / 4f) * multiplyer;
+                    
                     for (int i = 0; i < 4; i++)
                     {
                         m_WheelColliders[i].motorTorque = thrustTorque;
@@ -273,7 +295,9 @@ namespace UnityStandardAssets.Vehicles.Car
                 else if (footbrake > 0)
                 {
                     m_WheelColliders[i].brakeTorque = 0f;
-                    m_WheelColliders[i].motorTorque = -m_ReverseTorque*footbrake;
+                    m_WheelColliders[i].motorTorque = 2.5f*(-m_ReverseTorque*footbrake);
+                    m_WheelColliders[i].motorTorque = 1f * (-m_ReverseTorque * footbrake);//OUT
+
                 }
             }
         }
@@ -305,8 +329,13 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             //this can be used to make turning easier
             float forceMultiplyer = 1;
-            m_WheelColliders[0].attachedRigidbody.AddForce(-transform.up*m_Downforce*
-                                                         m_WheelColliders[0].attachedRigidbody.velocity.magnitude*forceMultiplyer);
+            if (getSpeed() < 50 && getSpeed() > 0)
+                forceMultiplyer = 1/(50 / getSpeed());
+
+            
+            //forceMultiplyer = 1;//OUT
+            m_WheelColliders[0].attachedRigidbody.AddForce(-transform.up * m_Downforce *
+                                                         m_WheelColliders[0].attachedRigidbody.velocity.magnitude *forceMultiplyer);
         }
 
 
@@ -326,7 +355,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 // is the tire slipping above the given threshhold
                 if (Mathf.Abs(wheelHit.forwardSlip) >= m_SlipLimit || Mathf.Abs(wheelHit.sidewaysSlip) >= m_SlipLimit)
                 {
-                    //m_WheelEffects[i].EmitTyreSmoke();
+                    m_WheelEffects[i].EmitTyreSmoke();
 
                     // avoiding all four tires screeching at the same time
                     // if they do it can lead to some strange audio artefacts
@@ -386,7 +415,8 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             if (forwardSlip >= m_SlipLimit && m_CurrentTorque >= 0)
             {
-                m_CurrentTorque -= 10 * m_TractionControl;
+                //this lets the speed not lag after commenting out
+                //m_CurrentTorque -= 10 * m_TractionControl;
             }
             else
             {

@@ -55,6 +55,10 @@ public class CarCollision : MonoBehaviour {
         {
             return;
         }
+        //Vector3 newVel = gameObject.GetComponentInParent<Rigidbody>().velocity.normalized;
+        //newVel.x = -newVel.x*5;
+        //newVel.z = -newVel.z*5;
+        //gameObject.GetComponent<Rigidbody>().velocity = newVel;
         //StartCoroutine("vibrateOnCollision");
 
     }

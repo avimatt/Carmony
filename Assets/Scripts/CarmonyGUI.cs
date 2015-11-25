@@ -263,8 +263,8 @@ public class CarmonyGUI : MonoBehaviour {
 
         if (topSpeedSlider.enabled && bottomSpeedSlider.enabled)
         {
-            topSpeedSlider.fillAmount = Main.S.carTop.GetComponent<CarController>().getSpeed() / 120;
-            bottomSpeedSlider.fillAmount = Main.S.carBottom.GetComponent<CarController>().getSpeed() / 120;
+            topSpeedSlider.fillAmount = Main.S.carTop.GetComponent<CarController>().getSpeed() / 100;
+            bottomSpeedSlider.fillAmount = Main.S.carBottom.GetComponent<CarController>().getSpeed() / 100;
 
         }
 
