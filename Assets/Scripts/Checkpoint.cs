@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityStandardAssets.Vehicles.Car;
 using UnityEngine.UI;
 
 public class Checkpoint : MonoBehaviour {
@@ -85,7 +84,7 @@ public class Checkpoint : MonoBehaviour {
                 }
                 if (perfectMessage != "")
                 {
-                    if (player.GetComponent<CarUserControl>().isBottomCar)
+                    if (player.GetComponent<ArcadeVehicle>().isBottomCar)
                     {
                         StartCoroutine("printPerfectBottom", perfectMessage);
 

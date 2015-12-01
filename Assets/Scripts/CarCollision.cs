@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityStandardAssets.Vehicles.Car;
 using InControl;
 
 public class CarCollision : MonoBehaviour {
 
     private CarState m_carstate;
-    private CarUserControl m_carUserControl;
+    //private CarUserControl m_carUserControl;
+	private ArcadeVehicle m_arcadeVehicle;
     private Transform m_transform;
     float lastCollisionVibrate;
     public AudioClip crashClip;
@@ -19,7 +19,7 @@ public class CarCollision : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        m_carUserControl = gameObject.GetComponentInParent<CarUserControl>();
+        m_arcadeVehicle = gameObject.GetComponentInParent<ArcadeVehicle>();
         m_carstate  = gameObject.GetComponentInParent<CarState>();
         m_transform  = gameObject.GetComponentInParent<Transform>();
 		m_topInCollisionZone = false;
@@ -40,7 +40,7 @@ public class CarCollision : MonoBehaviour {
             m_carstate.perfectLap = false;
             m_carstate.perfectCheckpoint = false;
 
-			if(!inCollisionZone(m_carUserControl.isBottomCar)){
+			if(!inCollisionZone(m_arcadeVehicle.isBottomCar)){
 				//printCollisionData();
 			
 				var collisionZone = Instantiate(collisionZonePrefab);
@@ -68,8 +68,8 @@ public class CarCollision : MonoBehaviour {
         if (Time.time - lastCollisionVibrate > 1)
         {
             lastCollisionVibrate = Time.time;
-            int first = m_carUserControl.first;
-            int second = m_carUserControl.second;
+			int first = m_arcadeVehicle.first;
+			int second = m_arcadeVehicle.second;
             var playerAInput = InputManager.Devices[first];
             var playerBInput = InputManager.Devices[second];
             playerAInput.Vibrate(1f, 1f);
@@ -86,7 +86,7 @@ public class CarCollision : MonoBehaviour {
 
     void printCollisionData()
     {
-        bool isBottomCar = m_carUserControl.isBottomCar;
+        bool isBottomCar = m_arcadeVehicle.isBottomCar;
         string carStr = isBottomCar ? "Bottom Car" : "Top Car";
         float xPos = m_transform.position.x;
         float zPos = m_transform.position.z;

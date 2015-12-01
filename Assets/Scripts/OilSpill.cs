@@ -22,8 +22,8 @@ public class OilSpill : MonoBehaviour {
     {
         if (Time.time - startime < .2)
             return;
-        print("triggerd");
-        //Check if it is a car that enters the checkpoint
+
+		//Check if it is a car that enters the checkpoint
         Transform playerTrans = null;
         Transform tmp = coll.transform.parent;
         if (tmp)
@@ -38,27 +38,19 @@ public class OilSpill : MonoBehaviour {
         if (playerTrans && playerTrans.tag == "Player")
         {
             // Determine which car hit it
-            bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
+			ArcadeVehicle vehicle = coll.GetComponentInParent<Transform>().GetComponentInParent<ArcadeVehicle>();
+            bool isBottomScreen = vehicle.isBottomCar;
             if (isBottomScreen && !isFromTop)
             {
                 return;
-            }else if (!isBottomScreen && isFromTop)
+            }
+			else if (!isBottomScreen && isFromTop)
             {
                 return;
             }
-            // Generate random activation sequence
-            // Show the player the sequence
-            print("fucking wheels");
-            WheelCollider[] colliderArray = coll.GetComponentInParent<UserInteraction>().GetComponentsInChildren<WheelCollider>();
-            for (int i = 0; i < colliderArray.Length; i++)
-            {
-                WheelFrictionCurve newCurve = colliderArray[i].sidewaysFriction;
-                newCurve.extremumSlip = 1;
-                newCurve.asymptoteSlip = 1;
-                newCurve.extremumValue = .2f;
-                colliderArray[i].sidewaysFriction = newCurve;
-            }
-            StartCoroutine("endOilSlickCause", colliderArray);
+            // create oil slick effect
+			vehicle.horizontalFriction = .01f;
+            StartCoroutine("endOilSlickCause", vehicle);
         }
 
     }
@@ -67,17 +59,12 @@ public class OilSpill : MonoBehaviour {
         yield return new WaitForSeconds(15);
         Destroy(gameObject);
     }
-    IEnumerator endOilSlickCause(WheelCollider[] colliderArray)
+
+    IEnumerator endOilSlickCause(ArcadeVehicle vehicle)
     {
         yield return new WaitForSeconds(5);
-        for (int i = 0; i < colliderArray.Length; i++)
-        {
-            print("undoing");
-            WheelFrictionCurve newCurve = colliderArray[i].sidewaysFriction;
-            newCurve.extremumSlip = .2f;
-            newCurve.asymptoteSlip = .5f;
-            newCurve.extremumValue = 1f;
-            colliderArray[i].sidewaysFriction = newCurve;
-        }
+        // undo oil slick effect
+		print ("undoing");
+		vehicle.horizontalFriction = .5f;
     }
 }

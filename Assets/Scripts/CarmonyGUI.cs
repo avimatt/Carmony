@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityStandardAssets.Vehicles.Car;
 
 using InControl;
 using System;
@@ -11,8 +10,12 @@ public class CarmonyGUI : MonoBehaviour {
 
     private AudioSource m_audiosource;
     private Text m_goText;
-    private CarUserControl m_carTopUserControl;
-    private CarUserControl m_carBottomUserControl;
+    //private CarUserControl m_carTopUserControl;
+    //private CarUserControl m_carBottomUserControl;
+
+	private ArcadeVehicle m_carTopArcadeVehicle;
+	private ArcadeVehicle m_carBottomArcadeVehicle;
+
     static public CarmonyGUI S;
     public GameObject topGUI;
     public GameObject bottomGUI;
@@ -118,8 +121,8 @@ public class CarmonyGUI : MonoBehaviour {
 
         S = this;
         m_audiosource = gameObject.GetComponent<AudioSource>();
-        m_carTopUserControl =  Main.S.carTop.GetComponent<CarUserControl>();
-        m_carBottomUserControl =  Main.S.carBottom.GetComponent<CarUserControl>();
+		m_carTopArcadeVehicle =  Main.S.carTop.GetComponent<ArcadeVehicle>();
+		m_carBottomArcadeVehicle =  Main.S.carBottom.GetComponent<ArcadeVehicle>();
         m_goText = goText.GetComponent<Text>();
     }
 
@@ -249,22 +252,22 @@ public class CarmonyGUI : MonoBehaviour {
             return;
         // Get references to the control objects for both teams
 
-        var topPlayerAInput = InputManager.Devices[m_carTopUserControl.first];
-        var topPlayerBInput = InputManager.Devices[m_carTopUserControl.second];
+		var topPlayerAInput = InputManager.Devices[m_carTopArcadeVehicle.first];
+		var topPlayerBInput = InputManager.Devices[m_carTopArcadeVehicle.second];
 
         var bottomPlayerAInput = InputManager.Devices[0];
         var bottomPlayerBInput = InputManager.Devices[0];
 
-        if (m_carBottomUserControl.first < InputManager.Devices.Count)
+		if (m_carBottomArcadeVehicle.first < InputManager.Devices.Count)
         {
-            bottomPlayerAInput = InputManager.Devices[m_carBottomUserControl.first];
-            bottomPlayerBInput = InputManager.Devices[m_carBottomUserControl.second];
+			bottomPlayerAInput = InputManager.Devices[m_carBottomArcadeVehicle.first];
+			bottomPlayerBInput = InputManager.Devices[m_carBottomArcadeVehicle.second];
         }
 
         if (topSpeedSlider.enabled && bottomSpeedSlider.enabled)
         {
-            topSpeedSlider.fillAmount = Main.S.carTop.GetComponent<CarController>().getSpeed() / 100;
-            bottomSpeedSlider.fillAmount = Main.S.carBottom.GetComponent<CarController>().getSpeed() / 100;
+            topSpeedSlider.fillAmount = Main.S.carTop.GetComponent<ArcadeVehicle>().getSpeed() / 100;
+            bottomSpeedSlider.fillAmount = Main.S.carBottom.GetComponent<ArcadeVehicle>().getSpeed() / 100;
 
         }
 

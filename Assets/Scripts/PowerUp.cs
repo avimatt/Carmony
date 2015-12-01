@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using InControl;
-using UnityStandardAssets.Vehicles.Car;
 
 public enum powerUpType
 {
@@ -19,12 +18,13 @@ public enum powerUpType
 public class PowerUp : MonoBehaviour
 {
 
-    private MeshRenderer m_meshRenderer;
-    private BoxCollider m_boxCollider;
-    public GameObject m_partialSystem;
+    private MeshRenderer 		m_meshRenderer;
+    private BoxCollider 		m_boxCollider;
+    public GameObject 			m_partialSystem;
 
-    public powerUpType type;
-    public bool isRandom;
+    public powerUpType 			type;
+    public bool 				isRandom;
+
     // Use this for initialization
     void Start()
     {
@@ -48,7 +48,9 @@ public class PowerUp : MonoBehaviour
         gameObject.transform.rotation = Quaternion.Euler(newRot);
     }
 
-	// When Player has collided with the power up
+	/// <summary>
+	/// When Player has collided with the power up
+	/// </summary>
     void OnTriggerEnter(Collider coll)
     {
         // The rocket is an object going through the track, and may run into a powerup
@@ -61,7 +63,6 @@ public class PowerUp : MonoBehaviour
             return;
         }
 
-        // TODO: WHY THE FUCK do we use isTop in some places, and isBottom in others? We need to be consistent.
         bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
         if (!isBottomScreen)
         {
@@ -124,6 +125,9 @@ public class PowerUp : MonoBehaviour
 
     }
 
+	/// <summary>
+	/// Coroutine to display powerup animation and respawn the powerup
+	/// </summary>
     IEnumerator destroyObject()
     {
         m_meshRenderer.enabled = false;
@@ -139,7 +143,11 @@ public class PowerUp : MonoBehaviour
         m_boxCollider.enabled = true;
     }
 
-	// Carry out the power ups action (To be called after the player has inputed the full sequence)
+	/// <summary>
+	/// Activates the power up. [To be called after players both hold "a"]
+	/// </summary>
+	/// <param name="topPlayer">If set to <c>true</c> top player.</param>
+	/// <param name="type">Type.</param>
 	public static void ActivatePowerUp(bool topPlayer, powerUpType type){
 
         if (type == powerUpType.speed) {
@@ -157,9 +165,9 @@ public class PowerUp : MonoBehaviour
             AudioSource swapSound = GameObject.Find("SwapSound").GetComponent<AudioSource>();
             swapSound.Play();
 			if (topPlayer) {
-				Main.S.carBottom.GetComponent<CarUserControl> ().playerSwap ();
+				Main.S.carBottom.GetComponent<ArcadeVehicle> ().playerSwap ();
 			} else {
-				Main.S.carTop.GetComponent<CarUserControl> ().playerSwap ();
+				Main.S.carTop.GetComponent<ArcadeVehicle> ().playerSwap ();
 			}
 			PowerupGenerator.S.numInstantiatedSwap--;
 		} else if (type == powerUpType.oil) {

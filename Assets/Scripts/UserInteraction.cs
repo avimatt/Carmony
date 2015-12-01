@@ -1,211 +1,83 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityStandardAssets.Vehicles.Car;
 using InControl;
 
 public class UserInteraction : MonoBehaviour {
 
-    private CarController m_car;
-    private CarUserControl m_carUser;
+	private ArcadeVehicle m_arcadeVehicle;
     private CarState m_carstate;
     private Transform m_transform;
-    public bool isCarBottom;
-    public bool isBoosting;
-    public float boostTimer;
-	public float shrinkingTimer;
-    public bool isShrinking;
-    public bool isNormalizingUp;
-    public bool isNormalizingDown;
-    public bool isGrowing;
 
-    public bool goingUp;
-    public bool goingToPoint;
-    public bool goingDown;
-    public Vector3 targetLocation;
-    public Quaternion targetRotation;
-    public float carrySpeed;
-    public float carryHeight;
-    public Quaternion initalRotation;
+	[Header("Set in Inspector")]
+	public float 			boostAccel;
+	public GameObject 		oilPrefab;
+	public Camera 			backCamera;
+	public Camera 			frontCamera;
+	public GameObject 		rocketPrefab;
+	public ParticleSystem 	explosion;
 
-    public GameObject oilPrefab;
-    public Camera backCamera;
-    public Camera frontCamera;
-
-    public GameObject rocketPrefab;
-
-    public bool quickStart;
-
-    public ParticleSystem explosion;
+	[Header("Calculated Dynamically")]
+	public float 			carrySpeed;
+	public float 			carryHeight;
+	public Vector3 			targetLocation;
+	public Quaternion 		targetRotation;
+	public Quaternion 		initalRotation;
+    
+	public bool 			isCarBottom;
+    public bool 			isShrinking;
+	public bool 			isGrowing;
+    public bool 			isNormalizingUp;
+    public bool 			isNormalizingDown;
+	public bool 			goingUp;
+	public bool 			goingToPoint;
+	public bool 			goingDown;
+	public bool 			quickStart;
 
     void Awake()
     {
-        m_carUser = gameObject.GetComponentInParent<CarUserControl>();
-        m_car = gameObject.GetComponentInParent<CarController>();
+        m_arcadeVehicle = gameObject.GetComponentInParent<ArcadeVehicle>();
         m_carstate = gameObject.GetComponentInParent<CarState>();
-        m_transform = gameObject.GetComponentInParent<Transform>();
-
-
+        m_transform = gameObject.GetComponentInParent<Transform>();		
     }
+
     // Use this for initialization
     void Start () {
-        isCarBottom = m_carUser.isBottomCar;
-        boostTimer = Time.time;
+		isCarBottom = m_arcadeVehicle.isBottomCar;
         quickStart = true;
 	}
-
-    public void startBombRaiseCar()
-    {
-        Vector3 newVel = gameObject.GetComponent<Rigidbody>().velocity;
-        newVel.x = 0;
-        newVel.z = 0;
-        newVel.y = 10;
-        gameObject.GetComponent<Rigidbody>().velocity = newVel;
-    }
-
-
-    public void placeOilSpill()
-    {
-        Vector3 newLocation = gameObject.GetComponentInChildren<Camera>().GetComponent<Transform>().position;
-        newLocation.y = gameObject.transform.position.y + .30f;//oilPrefab.transform.position.y;
-        GameObject go = Instantiate(oilPrefab, newLocation, oilPrefab.transform.rotation) as GameObject;
-        go.GetComponent<OilSpill>().isFromTop = !isCarBottom;
-    }
 
     // Update is called once per frame
     void Update () {
         // Check if car is done and if so ignore input
-		if (!isCarBottom)
-        {
-            if (Main.S.carTopDone)
-                return;
-        }
-        else
-        {
-            if (Main.S.carBottomDone)
-                return;
-        }
+		if (m_arcadeVehicle.SetNuetral ())
+			return;
+        
         // Prevent players from using reset right away
 		if (!Main.S.getRaceStarted() && !Main.S.practicing)
             return;
+
 		// If car has no controllers attached to it
-        if (m_carUser.first >= InputManager.Devices.Count)
+		if (m_arcadeVehicle.first >= InputManager.Devices.Count)
             return;
-
-
+		
 		// Get player controller object
-        var playerAInput = InputManager.Devices[m_carUser.first];
-        var playerBInput = InputManager.Devices[m_carUser.second];
+		InputDevice playerAInput = InputManager.Devices[m_arcadeVehicle.first];
+		InputDevice playerBInput = InputManager.Devices[m_arcadeVehicle.second];
 
-        if (playerAInput.RightStickY < 0 || playerBInput.RightStickY < 0)
-        {
-            backCamera.enabled = true;
-        }
-        else
-        {
-            backCamera.enabled = false;
-        }
-        if (playerAInput.RightStickButton.WasPressed || playerBInput.RightStickButton.WasPressed)
-        {
-            if (frontCamera.isActiveAndEnabled)
-            {
-                frontCamera.enabled = false;
-            }
-            else
-            {
-                frontCamera.enabled = true;
-            }
-        }
-        if (isShrinking)
-        {
-            Vector3 newSize = gameObject.transform.localScale;
-            newSize.x = newSize.x  - .05f;
-            newSize.y = newSize.y - .05f;
-            newSize.z = newSize.z  -.05f;
-            if(newSize.x <= .5)
-            {
-                newSize.x = .5f;
-                newSize.y = .5f;
-                newSize.z = .5f;
-                isShrinking = false;
-            }
-            gameObject.transform.localScale = newSize;
-            
-        }
-        if (isNormalizingUp)
-        {
-            Vector3 newSize = gameObject.transform.localScale;
-            newSize.x = newSize.x + .05f;
-            newSize.y = newSize.y + .05f;
-            newSize.z = newSize.z + .05f;
-            if (newSize.x >= 1)
-            {
-                newSize.x = 1f;
-                newSize.y = 1f;
-                newSize.z = 1f;
-                isNormalizingUp = false;
-            }
-            gameObject.transform.localScale = newSize;
+		// Check for input to change camera angles
+		CheckAdustCamera(playerAInput, playerBInput);
 
-        }
-        if (isGrowing)
-        {
-            Vector3 newSize = gameObject.transform.localScale;
-            newSize.x = newSize.x + .05f;
-            newSize.y = newSize.y + .05f;
-            newSize.z = newSize.z + .05f;
-            if (newSize.x >= 2)
-            {
-                newSize.x = 2f;
-                newSize.y = 2f;
-                newSize.z = 2f;
-                isGrowing = false;
-            }
-            gameObject.transform.localScale = newSize;
-
-        }
-        if (isNormalizingDown)
-        {
-            Vector3 newSize = gameObject.transform.localScale;
-            newSize.x = newSize.x - .05f;
-            newSize.y = newSize.y - .05f;
-            newSize.z = newSize.z - .05f;
-            if (newSize.x <= 1)
-            {
-                newSize.x = 1f;
-                newSize.y = 1f;
-                newSize.z = 1f;
-                isNormalizingDown = false;
-            }
-            gameObject.transform.localScale = newSize;
-
-        }
-        if ((playerBInput.DPad.Up.WasPressed || playerBInput.DPad.Down.WasPressed))
-        {
-            startBombRaiseCar();
-        }
-        /*
-        if ((playerBInput.DPad.Up.WasPressed || playerBInput.DPad.Down.WasPressed)){
-			Vector3 newSize = gameObject.transform.localScale;
-            if (newSize.x == 1 && (playerBInput.DPad.Up.WasPressed))
-            {
-                isGrowing = true;
-            } else if (newSize.x == 1 && (playerBInput.DPad.Down.WasPressed)) {
-                isShrinking = true;
-            }
-            else if (newSize.x == .5f && playerBInput.DPad.Up.WasPressed) {
-                isNormalizingUp = true;
-            } else if (newSize.x == 2f && playerBInput.DPad.Down.WasPressed)
-            {
-                isNormalizingDown = true;
-            }
-			shrinkingTimer = Time.time;
-		}
-        */
+		// Do the animations for shrinking and growing the car
+		HandleCarSizeChange ();
+       
+		// In the practice map check for player swapping
         if (playerAInput.LeftBumper && playerBInput.LeftBumper && (playerAInput.LeftBumper.WasPressed || playerBInput.LeftBumper.WasPressed) &&  Main.S.practicing)
         {
-            m_carUser.playerSwap();
+			m_arcadeVehicle.playerSwap();
         }
 
+		// Check for resseting input
+		// TODO: understand the resseting and jumping checkponts code
         bool resetting = false;
 		if ((playerAInput.RightBumper.WasPressed || playerBInput.RightBumper.WasPressed) && m_carstate.currLap != 0)
         {
@@ -213,14 +85,7 @@ public class UserInteraction : MonoBehaviour {
         }
         if (resetting)
         {
-            if (!isCarBottom)
-            {
-                m_carstate.resets++;
-            }
-            else
-            {
-                m_carstate.resets++;
-            }
+            m_carstate.resets++;
             Logger.S.writeFile(!isCarBottom, "Reset To Before " + m_carstate.currCheckpoint + " at: " + Main.S.getGameTime());
 
             startReset();
@@ -271,7 +136,7 @@ public class UserInteraction : MonoBehaviour {
         goingUp = true;
 
         //this is only lowering him to ~1-5 right now. could polish this.
-        m_car.zeroSpeed();
+        m_arcadeVehicle.zeroSpeed();
     }
 
     public void moveToNextCheckpoint()
@@ -299,7 +164,7 @@ public class UserInteraction : MonoBehaviour {
         goingUp = true;
 
         //this is only lowering him to ~1-5 right now. could polish this.
-        m_car.zeroSpeed();
+        m_arcadeVehicle.zeroSpeed();
     }
 
     public void moveToCheckpoint(int checkpointToGo)
@@ -320,8 +185,9 @@ public class UserInteraction : MonoBehaviour {
         goingUp = true;
 
         //this is only lowering him to ~1-5 right now. could polish this.
-        m_car.zeroSpeed();
+        m_arcadeVehicle.zeroSpeed();
     }
+
     void setTargetLocation(Transform target)
     {
         Vector3 newPos = new Vector3();
@@ -330,7 +196,6 @@ public class UserInteraction : MonoBehaviour {
         newPos.z = target.position.z;
         targetLocation = newPos;
     }
-
 
     //immediatly move the car to above the last checkpoint and immediatly rotate to correct direction
     public void hardReset()
@@ -364,11 +229,11 @@ public class UserInteraction : MonoBehaviour {
         m_transform.position = targetLocation;
         m_transform.rotation = newRotation;
         //this is only lowering him to ~1-5 right now. could polish this.
-        m_car.zeroSpeed();
+        m_arcadeVehicle.zeroSpeed();
     }
     
-    //called in update of carController
-    //moves the car, up,to the last checkpoint,then down while rotating to the correct direction
+    // called in update of arcadeVehicle
+    // moves the car, up,to the last checkpoint,then down while rotating to the correct direction
     public void moveToLocation()
     {
         if (goingUp)
@@ -376,7 +241,7 @@ public class UserInteraction : MonoBehaviour {
             if (Main.S.carsReady != 2 && quickStart)
                 CarmonyGUI.S.fadeOut();
             //Move up to y = 10;
-            m_car.zeroSpeed();
+            m_arcadeVehicle.zeroSpeed();
 
             Vector3 newPos2 = m_transform.position;
             newPos2.y += .2f;
@@ -414,7 +279,7 @@ public class UserInteraction : MonoBehaviour {
 
             Vector3 newPos = m_transform.position;
             //stop momentum and falling
-            m_car.zeroSpeed();
+            m_arcadeVehicle.zeroSpeed();
             newPos.y = carryHeight;
 
             //Chose X direction to go;
@@ -486,32 +351,148 @@ public class UserInteraction : MonoBehaviour {
             Vector3 Angles2 = targetRotation.eulerAngles;
             Angles2.y += 90;
             m_transform.rotation = Quaternion.Euler(0, Angles2.y, 0);
-            if (m_transform.position.y < .1)
+            if (m_transform.position.y < .8)
             {
                 goingDown = false;
                 carrySpeed = 0;
-                m_car.zeroSpeed();
+                m_arcadeVehicle.zeroSpeed();
                 Main.S.setCarReady();
             }
         }
     }
 
+	void CheckAdustCamera(InputDevice playerAInput, InputDevice playerBInput){
+		if (playerAInput.RightStickY < 0 || playerBInput.RightStickY < 0)
+		{
+			backCamera.enabled = true;
+		}
+		else
+		{
+			backCamera.enabled = false;
+		}
+		
+		if (playerAInput.RightStickButton.WasPressed || playerBInput.RightStickButton.WasPressed)
+		{
+			if (frontCamera.isActiveAndEnabled)
+			{
+				frontCamera.enabled = false;
+			}
+			else
+			{
+				frontCamera.enabled = true;
+			}
+		}
+	}
+	
+	/****************************************************
+	 * 				  POWER UP METHODS					*
+	 *****************************************************/
+
+	/**************** Oil Spill Methods ****************/
+
+	public void placeOilSpill()
+	{
+		Vector3 newLocation = gameObject.GetComponentInChildren<Camera>().GetComponent<Transform>().position;
+		newLocation.y = oilPrefab.transform.position.y;
+		GameObject go = Instantiate(oilPrefab, newLocation, oilPrefab.transform.rotation) as GameObject;
+		go.GetComponent<OilSpill>().isFromTop = !isCarBottom;
+	}
+	
+	/**************** Boost Methods ****************/
+
     public void startBoost()
     {
-        StartCoroutine("boostPowerup");
+        StartCoroutine("boostPowerup", m_arcadeVehicle);
     }
 
-    IEnumerator boostPowerup()
+	// Set flags for the update method to handle shrinking and growing
+    IEnumerator boostPowerup(ArcadeVehicle vehicle)
     {
         isShrinking = true;
+		m_arcadeVehicle.accel += boostAccel;
         yield return new WaitForSeconds(5f);
         isNormalizingUp = true;
-    }
+		m_arcadeVehicle.accel -= boostAccel;
+	}
 
-    // Spawn a rocket with the passed in parameters
-    public void spawnRocket(int rocketStop, Vector3 startPos, GameObject target)
-    {
-        var rocketgo = Instantiate(rocketPrefab);
-        rocketgo.GetComponent<Rocket>().InitializeRocket(rocketStop, startPos, target);
-    }
+	void HandleCarSizeChange(){
+		if (isShrinking)
+		{
+			Vector3 newSize = gameObject.transform.localScale;
+			newSize.x = newSize.x  - .1f;
+			newSize.y = newSize.y - .05f;
+			newSize.z = newSize.z  -.15f;
+			if(newSize.y <= .5)
+			{
+				newSize.x = 1f;
+				newSize.y = .5f;
+				newSize.z = 1.5f;
+				isShrinking = false;
+			}
+			gameObject.transform.localScale = newSize;	
+		}
+		if (isNormalizingUp)
+		{
+			Vector3 newSize = gameObject.transform.localScale;
+			newSize.x = newSize.x + .1f;
+			newSize.y = newSize.y + .05f;
+			newSize.z = newSize.z + .15f;
+			if (newSize.y >= 1)
+			{
+				newSize.x = 2f;
+				newSize.y = 1f;
+				newSize.z = 3f;
+				isNormalizingUp = false;
+			}
+			gameObject.transform.localScale = newSize;
+		}
+		if (isGrowing)
+		{
+			Vector3 newSize = gameObject.transform.localScale;
+			newSize.x = newSize.x + .1f;
+			newSize.y = newSize.y + .05f;
+			newSize.z = newSize.z + .15f;
+			if (newSize.y >= 2)
+			{
+				newSize.x = 4f;
+				newSize.y = 2f;
+				newSize.z = 6f;
+				isGrowing = false;
+			}
+			gameObject.transform.localScale = newSize;
+		}
+		if (isNormalizingDown)
+		{
+			Vector3 newSize = gameObject.transform.localScale;
+			newSize.x = newSize.x - .1f;
+			newSize.y = newSize.y - .05f;
+			newSize.z = newSize.z - .15f;
+			if (newSize.y <= 1)
+			{
+				newSize.x = 2f;
+				newSize.y = 1f;
+				newSize.z = 3f;
+				isNormalizingDown = false;
+			}
+			gameObject.transform.localScale = newSize;
+		}
+	}
+
+	/**************** Rocket Methods ****************/
+
+	// Spawn a rocket with the passed in parameters
+	public void spawnRocket(int rocketStop, Vector3 startPos, GameObject target)
+	{
+		var rocketgo = Instantiate(rocketPrefab);
+		rocketgo.GetComponent<Rocket>().InitializeRocket(rocketStop, startPos, target);
+	}
+
+	public void startBombRaiseCar()
+	{
+		Vector3 newVel = gameObject.GetComponent<Rigidbody>().velocity;
+		newVel.x = 0;
+		newVel.z = 0;
+		newVel.y = 10;
+		gameObject.GetComponent<Rigidbody>().velocity = newVel;
+	}
 }

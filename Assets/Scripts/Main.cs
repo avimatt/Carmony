@@ -2,7 +2,6 @@
 using System.Collections;
 using InControl;
 using System.Collections.Generic;
-using UnityStandardAssets.Vehicles.Car;
 using System;
 
 public class Main : MonoBehaviour
@@ -59,7 +58,7 @@ public class Main : MonoBehaviour
     //returns true if device is handling input for top car else it returns false
     public bool isFromTopCar(int player)
     {
-        if (player == Main.S.carTop.GetComponent<CarUserControl>().first || player == Main.S.carTop.GetComponent<CarUserControl>().second)
+        if (player == Main.S.carTop.GetComponent<ArcadeVehicle>().first || player == Main.S.carTop.GetComponent<ArcadeVehicle>().second)
             return true;
         return false;
     }

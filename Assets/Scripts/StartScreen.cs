@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 using System.Collections;
 using InControl;
-using UnityStandardAssets.Vehicles.Car;
 
 public class StartScreen : MonoBehaviour {
 
@@ -114,28 +113,28 @@ public class StartScreen : MonoBehaviour {
             buttonList[0].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonList[0].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[0] = true;
-            Main.S.carTop.GetComponent<CarUserControl>().first = playerIndex;
+            Main.S.carTop.GetComponent<ArcadeVehicle>().first = playerIndex;
         }
         else if (player.Action2.WasPressed)
         {
             buttonList[1].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonList[1].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[1] = true;
-            Main.S.carTop.GetComponent<CarUserControl>().second = playerIndex;
+            Main.S.carTop.GetComponent<ArcadeVehicle>().second = playerIndex;
         }
         else if (player.Action3.WasPressed)
         {
             buttonList[2].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonList[2].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[2] = true;
-            Main.S.carBottom.GetComponent<CarUserControl>().first = playerIndex;
+            Main.S.carBottom.GetComponent<ArcadeVehicle>().first = playerIndex;
         }
         else if (player.Action4.WasPressed)
         {
             buttonList[3].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonList[3].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[3] = true;
-            Main.S.carBottom.GetComponent<CarUserControl>().second = playerIndex;
+            Main.S.carBottom.GetComponent<ArcadeVehicle>().second = playerIndex;
         }
 
         countSet++;
@@ -149,19 +148,19 @@ public class StartScreen : MonoBehaviour {
                 {
                     if (i == 0 && buttonsSet[i + 1] == true)
                     {
-                        Main.S.carTop.GetComponent<CarUserControl>().first = Main.S.carTop.GetComponent<CarUserControl>().second;
+                        Main.S.carTop.GetComponent<ArcadeVehicle>().first = Main.S.carTop.GetComponent<ArcadeVehicle>().second;
                     }
                     else if (i == 1 && buttonsSet[i - 1] == true)
                     {
-                        Main.S.carTop.GetComponent<CarUserControl>().second = Main.S.carTop.GetComponent<CarUserControl>().first;
+                        Main.S.carTop.GetComponent<ArcadeVehicle>().second = Main.S.carTop.GetComponent<ArcadeVehicle>().first;
                     }
                     else if (i == 2 && buttonsSet[i + 1] == true)
                     {
-                        Main.S.carBottom.GetComponent<CarUserControl>().first = Main.S.carBottom.GetComponent<CarUserControl>().second;
+                        Main.S.carBottom.GetComponent<ArcadeVehicle>().first = Main.S.carBottom.GetComponent<ArcadeVehicle>().second;
                     }
                     else if (i == 3 && buttonsSet[i - 1] == true)
                     {
-                        Main.S.carBottom.GetComponent<CarUserControl>().second = Main.S.carBottom.GetComponent<CarUserControl>().first;
+                        Main.S.carBottom.GetComponent<ArcadeVehicle>().second = Main.S.carBottom.GetComponent<ArcadeVehicle>().first;
                     }
                 }
             }

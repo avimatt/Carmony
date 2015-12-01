@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using System.Collections;
 using InControl;
-using UnityStandardAssets.Vehicles.Car;
 
 public class PracticeMap : MonoBehaviour {
 
@@ -44,7 +43,7 @@ public class PracticeMap : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Main.S.carTop.GetComponent<CarUserControl>().first == 3 && Main.S.carTop.GetComponent<CarUserControl>().second == 3)
+        if (Main.S.carTop.GetComponent<ArcadeVehicle>().first == 3 && Main.S.carTop.GetComponent<ArcadeVehicle>().second == 3)
         {
             carTopActive = false;
         }
@@ -52,7 +51,7 @@ public class PracticeMap : MonoBehaviour {
         {
             carTopActive = true;
         }
-        if (Main.S.carBottom.GetComponent<CarUserControl>().first == 3 && Main.S.carBottom.GetComponent<CarUserControl>().second == 3)
+        if (Main.S.carBottom.GetComponent<ArcadeVehicle>().first == 3 && Main.S.carBottom.GetComponent<ArcadeVehicle>().second == 3)
         {
             carBottomActive = false;
         }
