@@ -11,6 +11,83 @@ public class Checkpoint : MonoBehaviour {
 	
 	}
 
+    public void hitCheckpoint(Transform playerTrans)
+    {
+        print("player hit checkpoint");
+        lastCheckpointTime = Time.time;
+        // other is player
+        // Get a reference to the CarState script
+        CarState player = playerTrans.GetComponent<CarState>();
+        UserInteraction user = playerTrans.GetComponent<UserInteraction>();
+        // Is this checkpoint the same as the next checkpoint of the player
+        if (transform == player.checkpoints[player.currCheckpoint].transform)
+        {
+            string perfectMessage = "";
+            if (player.perfectCheckpoint && player.currLap != 0)
+            {
+                print("perfect checkpoint");
+                player.numPerfectCheckpoints++;
+                Logger.S.writeFile(!playerTrans.GetComponent<UserInteraction>().isCarBottom, "Perfect Checkpoint " + player.currCheckpoint + " at: " + Main.S.getGameTime());
+                perfectMessage = "Perfect";
+            }
+            player.perfectCheckpoint = true;
+
+
+            // increment the checkpoint to the next one
+            // Don't go past the end of checkpoint array
+            if (player.currCheckpoint + 1 < player.checkpoints.Count)
+            {
+                // If they pass the starting line (first checkpoint), increment lap count
+                if (player.currCheckpoint == 0)
+                {
+                    if (player.perfectLap && player.currLap != 0)
+                    {
+                        print("perfect lap");
+                        perfectMessage = "Perfect Lap";
+                    }
+                    player.currLap++;
+
+                    if (player.currLap == (Main.S.Map.GetComponent<Map>().numLaps))
+                    {
+                        StartCoroutine("printFinalLap", playerTrans.GetComponent<UserInteraction>().isCarBottom);
+                    }
+                    // If finished last lap
+                    if (player.currLap == (Main.S.Map.GetComponent<Map>().numLaps + 1))
+                    {
+                        if (player.perfectRace)
+                        {
+                            print("perfect race");
+                            perfectMessage = "Perfect Race";
+                        }
+                        Logger.S.writeFile(!playerTrans.GetComponent<UserInteraction>().isCarBottom, "Finished Race at: " + Main.S.getGameTime());
+                        if (!user.portalTransport)
+                        {
+                            Main.S.endGame(!playerTrans.GetComponent<UserInteraction>().isCarBottom);
+                        }
+                    }
+                }
+                player.currCheckpoint++;
+            }
+            else
+            {
+                // Out of checkpoints, go back to the first
+                player.currCheckpoint = 0;
+            }
+            if (perfectMessage != "")
+            {
+                if (player.GetComponent<ArcadeVehicle>().isBottomCar)
+                {
+                    StartCoroutine("printPerfectBottom", perfectMessage);
+
+                }
+                else
+                {
+                    StartCoroutine("printPerfectTop", perfectMessage);
+                }
+            }
+        }
+    }
+
     void OnTriggerEnter(Collider other)
     {
         print("hit checkpoint");
@@ -26,76 +103,9 @@ public class Checkpoint : MonoBehaviour {
         }
 
         if (playerTrans && playerTrans.tag=="Player") {// && Time.time -lastCheckpointTime  > .5f) {
-            print("player hit checkpoint");
-            lastCheckpointTime = Time.time;
-            // other is player
-            // Get a reference to the CarState script
-            CarState player = playerTrans.GetComponent<CarState>();
-            // Is this checkpoint the same as the next checkpoint of the player
-            if (transform == player.checkpoints[player.currCheckpoint].transform)
-            {
-                string perfectMessage = "";
-                if (player.perfectCheckpoint && player.currLap != 0)
-                {
-                    print("perfect checkpoint");
-                    player.numPerfectCheckpoints++;
-                    Logger.S.writeFile(!playerTrans.GetComponent<UserInteraction>().isCarBottom, "Perfect Checkpoint " + player.currCheckpoint + " at: " + Main.S.getGameTime());
-                    perfectMessage = "Perfect";
-                }
-                player.perfectCheckpoint = true;
+            hitCheckpoint(playerTrans);
 
 
-                // increment the checkpoint to the next one
-                // Don't go past the end of checkpoint array
-                if (player.currCheckpoint + 1 < player.checkpoints.Count)
-                {
-                    // If they pass the starting line (first checkpoint), increment lap count
-                    if (player.currCheckpoint == 0)
-                    {
-                        if (player.perfectLap && player.currLap != 0)
-                        {
-                            print("perfect lap");
-                            perfectMessage = "Perfect Lap";
-                        }
-                        player.currLap++;
-
-                        if (player.currLap == (Main.S.Map.GetComponent<Map>().numLaps))
-                        {
-                            StartCoroutine("printFinalLap", playerTrans.GetComponent<UserInteraction>().isCarBottom);
-                        }
-						// If finished last lap
-                        if (player.currLap == (Main.S.Map.GetComponent<Map>().numLaps + 1))
-                        {
-                            if (player.perfectRace)
-                            {
-                                print("perfect race");
-                                perfectMessage = "Perfect Race";
-                            }
-                            Logger.S.writeFile(!playerTrans.GetComponent<UserInteraction>().isCarBottom, "Finished Race at: " + Main.S.getGameTime());
-                            Main.S.endGame(!playerTrans.GetComponent<UserInteraction>().isCarBottom);
-                        }
-                    }
-                    player.currCheckpoint++;
-                }
-                else
-                {
-                    // Out of checkpoints, go back to the first
-                    player.currCheckpoint = 0;
-                }
-                if (perfectMessage != "")
-                {
-                    if (player.GetComponent<ArcadeVehicle>().isBottomCar)
-                    {
-                        StartCoroutine("printPerfectBottom", perfectMessage);
-
-                    }
-                    else
-                    {
-                        StartCoroutine("printPerfectTop", perfectMessage);
-                    }
-                }
-            }
-            
         } else {
             // if not the player, don't continue
             return;

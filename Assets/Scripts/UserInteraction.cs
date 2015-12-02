@@ -33,6 +33,9 @@ public class UserInteraction : MonoBehaviour {
 	public bool 			goingDown;
 	public bool 			quickStart;
 
+
+    public bool             portalTransport;
+
     void Awake()
     {
         m_arcadeVehicle = gameObject.GetComponentInParent<ArcadeVehicle>();
@@ -141,6 +144,28 @@ public class UserInteraction : MonoBehaviour {
 
     public void moveToNextCheckpoint()
     {
+        portalTransport = true;
+        m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
+        print("check 1: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps);
+        if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
+        {
+            moveToCheckpoint(m_carstate.currCheckpoint);
+            return;
+        }
+        m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
+        print("check 2: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps);
+        if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
+        {
+            moveToCheckpoint(m_carstate.currCheckpoint);
+            return;
+        }
+        m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
+        print("check 3: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps);
+        if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
+        {
+            moveToCheckpoint(m_carstate.currCheckpoint);
+            return;
+        }
         moveToCheckpoint(m_carstate.currCheckpoint);
     }
 
@@ -356,6 +381,12 @@ public class UserInteraction : MonoBehaviour {
                 goingDown = false;
                 carrySpeed = 0;
                 m_arcadeVehicle.zeroSpeed();
+                portalTransport = false;
+                print("drop check: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps);
+                if (m_carstate.currCheckpoint == 1 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps + 1)
+                {
+                    Main.S.endGame(!isCarBottom);
+                }
                 Main.S.setCarReady();
             }
         }
@@ -478,6 +509,7 @@ public class UserInteraction : MonoBehaviour {
 			}
 			gameObject.transform.localScale = newSize;
 		}
+
 	}
 
 	/**************** Rocket Methods ****************/

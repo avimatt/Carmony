@@ -34,12 +34,12 @@ public class PowerupGenerator : MonoBehaviour {
 			instantiatedSwap[i] = false;
 			instantiatedSpeed[i] = false;
 		}
-		swapGeneration[0] = new Vector3(162,1,319);
-		swapGeneration[1] = new Vector3(121,1,241);
-		swapGeneration[2] = new Vector3(175,1,152);
-		swapGeneration[3] = new Vector3(308,1,394);
-		swapGeneration[4] = new Vector3(308,1,455);
-		swapGeneration[5] = new Vector3(381,1,334);
+		swapGeneration[0] = new Vector3(162,1.5f,319);
+		swapGeneration[1] = new Vector3(121, 1.5f, 241);
+		swapGeneration[2] = new Vector3(175, 1.5f, 152);
+		swapGeneration[3] = new Vector3(308, 1.5f, 394);
+		swapGeneration[4] = new Vector3(308, 1.5f, 455);
+		swapGeneration[5] = new Vector3(381, 1.5f, 334);
 
         foreach (GameObject map in Main.S.MapList)
         {
@@ -114,21 +114,21 @@ public class PowerupGenerator : MonoBehaviour {
             go.GetComponent<PowerUp>().isRandom = true;
             go.GetComponent<PowerUp>().type = powerUpType.random;
         }
-        Vector3 newPos = new Vector3(128, 1, 1386);
+        Vector3 newPos = new Vector3(128, 1.5f, 1386);
         GameObject go2 = Instantiate(Box, newPos, Box.transform.rotation) as GameObject;
         go2.GetComponent<PowerUp>().type = powerUpType.swap;
         go2.GetComponent<PowerUp>().isRandom = true;
 
-        Vector3 newPos2 = new Vector3(125, 1, 1428);
+        Vector3 newPos2 = new Vector3(125, 1.5f, 1428);
         GameObject go3 = Instantiate(Box, newPos2, Box.transform.rotation) as GameObject;
         go3.GetComponent<PowerUp>().type = powerUpType.swap;
         go3.GetComponent<PowerUp>().isRandom = true;
 
-        Vector3 newPos3 = new Vector3(70, 1, 1216);
+        Vector3 newPos3 = new Vector3(70, 1.5f, 1216);
         GameObject go4 = Instantiate(Box, newPos3, Box.transform.rotation) as GameObject;
         go4.GetComponent<PowerUp>().isRandom = true;
 
-        Vector3 newPos4 = new Vector3(338, 1, 1396);
+        Vector3 newPos4 = new Vector3(338, 1.5f, 1396);
         GameObject go5 = Instantiate(Box, newPos4, Box.transform.rotation) as GameObject;
         go5.GetComponent<PowerUp>().isRandom = true;
     }

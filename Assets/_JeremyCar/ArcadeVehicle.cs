@@ -146,9 +146,9 @@ public class ArcadeVehicle : MonoBehaviour {
             rigid.velocity = newVel;
             //accelPoint = transform.TransformPoint(centerOfMass);
         }
+        RotateSteeringWheel();
 
-
-		RotateFrontWheels ();
+        RotateFrontWheels ();
 	}
 
 	public bool Grounded {
