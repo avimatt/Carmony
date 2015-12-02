@@ -48,6 +48,14 @@ public class ArcadeVehicle : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
+        if (!Main.S.practicing && !Main.S.raceStarted && rigid.transform.position.y < .75f)
+        {
+            rigid.drag = 100;
+        }
+        else
+        {
+            rigid.drag = .5f;
+        }
 
 		m_userInteract.moveToLocation();
 
@@ -114,7 +122,13 @@ public class ArcadeVehicle : MonoBehaviour {
 			// Add horizontal resistance to mimic directional friction of tires
 			// This could use some work!
 			Vector3 vel = rigid.velocity;
-			Vector3 horizontalVel = transform.right * Vector3.Dot(transform.right, vel);
+            Vector3 newVel = vel;
+            if (vel.y > 0)
+                newVel.y /= 1.1f;
+            rigid.velocity = newVel;
+            vel = rigid.velocity;
+
+            Vector3 horizontalVel = transform.right * Vector3.Dot(transform.right, vel);
 			horizontalVel.y = 0; // nullify y effects of this
 
 			if (!skidding) {
@@ -125,8 +139,14 @@ public class ArcadeVehicle : MonoBehaviour {
 		} else {
 			rigid.drag = airDrag;
 			rigid.angularDrag = airAngularDrag;
-			//accelPoint = transform.TransformPoint(centerOfMass);
-		}
+            Vector3 newVel = rigid.velocity;
+
+            if (newVel.y > 0)
+                newVel.y /= 1.2f;
+            rigid.velocity = newVel;
+            //accelPoint = transform.TransformPoint(centerOfMass);
+        }
+
 
 		RotateFrontWheels ();
 	}
