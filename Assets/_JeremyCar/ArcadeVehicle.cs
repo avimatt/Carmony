@@ -68,6 +68,7 @@ public class ArcadeVehicle : MonoBehaviour {
 
 		iH = leftIn + rightIn;
 		iV = gasIn + brakeIn;
+        if (iV < 0) iV = iV / 4;
 
 		// Ignore input if done with race
 		if(SetNuetral()) return;
