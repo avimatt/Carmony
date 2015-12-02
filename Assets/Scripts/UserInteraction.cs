@@ -410,7 +410,9 @@ public class UserInteraction : MonoBehaviour {
     {
         isShrinking = true;
 		m_arcadeVehicle.accel += boostAccel;
+        m_arcadeVehicle.accelPointRel.z = 1;
         yield return new WaitForSeconds(5f);
+        m_arcadeVehicle.accelPointRel.z = 0;
         isNormalizingUp = true;
 		m_arcadeVehicle.accel -= boostAccel;
 	}
