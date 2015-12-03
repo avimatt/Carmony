@@ -11,7 +11,7 @@ public class CollisionZone : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		if (!enteredOnce) {
-			if (other.attachedRigidbody.gameObject.name == "CarTop") {
+			if (other.attachedRigidbody.gameObject.name == "VehicleTop") {
 				topInCollisionZone = true;
 				bottomCar = false;
 			} else {
@@ -27,7 +27,7 @@ public class CollisionZone : MonoBehaviour {
 	}
 	
 	void OnTriggerExit(Collider other) {
-		if((other.attachedRigidbody.gameObject.name == "CarTop" && !bottomCar) || (other.attachedRigidbody.gameObject.name == "CarBottom" && bottomCar)){
+		if((other.attachedRigidbody.gameObject.name == "VehicleTop" && !bottomCar) || (other.attachedRigidbody.gameObject.name == "VehicleBottom" && bottomCar)){
 
 			if(bottomCar){
 				bottomInCollisionZone = false;

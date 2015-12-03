@@ -93,6 +93,7 @@ public class UserInteraction : MonoBehaviour {
 	/// </summary>
     public void startReset()
     {
+
         carryHeight = 15;
 		Transform checkPoint;
         
@@ -130,6 +131,12 @@ public class UserInteraction : MonoBehaviour {
 		targetLocation = tempTargetLocation;
 		targetRotation = tempnTargetRotation;
         initalRotation = m_transform.rotation;
+
+		// If player went of the course in the practice map
+		if (Main.S.practicing) {
+			targetLocation = new Vector3(66f, 1,  1407f);
+			targetRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+		}
 
         // Move car to correct spot
         goingUp = true;
