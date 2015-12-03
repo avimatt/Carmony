@@ -178,14 +178,14 @@ public class CarmonyGUI : MonoBehaviour {
     }
 
     //makes coroutine callable by other classes
-    public void raiseStartFlagText()
+    public void raiseCountdown()
     {
-        StartCoroutine("startFlagText");
+        StartCoroutine("startCountdown");
     }
 
 
     //Co-routine to display GO when race starts then take display down
-    IEnumerator startFlagText()
+    IEnumerator startCountdown()
     {
         topHasPowerup = false;
         bottomHasPowerup = false;
@@ -279,7 +279,6 @@ public class CarmonyGUI : MonoBehaviour {
             // If both pressing it, activate the powerup
             if (topPlayerAInput.Action1.IsPressed && topPlayerBInput.Action1.IsPressed && !PauseScreen.S.isActiveAndEnabled)
             {
-                print("activating upp powerup");
                 PowerUp.ActivatePowerUp(true, topType);
                 topType = powerUpType.empty;
                 this.topHasPowerup = false;
@@ -294,7 +293,6 @@ public class CarmonyGUI : MonoBehaviour {
             // If both pressing it, activate the powerup
             if (bottomPlayerAInput.Action1.IsPressed && bottomPlayerBInput.Action1.IsPressed)
             {
-                print("activating lower powerup");
                 PowerUp.ActivatePowerUp(false, bottomType);
                 bottomType = powerUpType.empty;
                 this.bottomHasPowerup = false;

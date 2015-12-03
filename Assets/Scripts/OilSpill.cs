@@ -56,7 +56,7 @@ public class OilSpill : MonoBehaviour {
     }
     IEnumerator endOilSlickPhysical()
     {
-        yield return new WaitForSeconds(15);
+        yield return new WaitForSeconds(75);
         Destroy(gameObject);
     }
 

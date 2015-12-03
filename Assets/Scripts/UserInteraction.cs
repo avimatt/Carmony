@@ -32,9 +32,7 @@ public class UserInteraction : MonoBehaviour {
 	public bool 			goingToPoint;
 	public bool 			goingDown;
 	public bool 			quickStart;
-
-
-    public bool             portalTransport;
+	public bool             portalTransport;
 
     void Awake()
     {
@@ -81,12 +79,7 @@ public class UserInteraction : MonoBehaviour {
 
 		// Check for resseting input
 		// TODO: understand the resseting and jumping checkponts code
-        bool resetting = false;
 		if ((playerAInput.RightBumper.WasPressed || playerBInput.RightBumper.WasPressed) && m_carstate.currLap != 0)
-        {
-            resetting = true;
-        }
-        if (resetting)
         {
             m_carstate.resets++;
             Logger.S.writeFile(!isCarBottom, "Reset To Before " + m_carstate.currCheckpoint + " at: " + Main.S.getGameTime());
@@ -95,44 +88,47 @@ public class UserInteraction : MonoBehaviour {
         }
     }
 
+	/// <summary>
+	/// Set target to the previous checkpoint
+	/// </summary>
     public void startReset()
     {
         carryHeight = 15;
-        Vector3 newPos = new Vector3();
-        Transform checkPoint;
-        Quaternion newRotation;
-        // Find the location and rotation of the prev checkpoint
+		Transform checkPoint;
+        
+		Vector3 tempTargetLocation = new Vector3();
+        Quaternion tempnTargetRotation;
+        
+		// Find the location and rotation of the prev checkpoint
         int index = 0;
         if (m_carstate.currCheckpoint != 0)
         {
             index = m_carstate.currCheckpoint - 1;
             checkPoint = m_carstate.checkpoints[m_carstate.currCheckpoint - 1];
-            newRotation = m_carstate.checkpoints[m_carstate.currCheckpoint - 1].rotation;
         }
         else
         {
             index = m_carstate.checkpoints.Count - 1;
             checkPoint = m_carstate.checkpoints[m_carstate.checkpoints.Count - 1];
-            newRotation = m_carstate.checkpoints[m_carstate.checkpoints.Count - 1].rotation;
         }
 
-        newPos.x = checkPoint.position.x;
-        newPos.y = checkPoint.position.y;
-        newPos.z = checkPoint.position.z;
-
+		// Get the temp location and rotation
+		tempnTargetRotation = checkPoint.rotation;
+		tempTargetLocation.y = checkPoint.position.y;
         if (isCarBottom)
         {
-            newPos.x = m_carstate.bottomResetLocation[index].position.x;
-            newPos.z = m_carstate.bottomResetLocation[index].position.z;
+			tempTargetLocation.x = m_carstate.bottomResetLocation[index].position.x;
+			tempTargetLocation.z = m_carstate.bottomResetLocation[index].position.z;
         }
         else
         {
-            newPos.x = m_carstate.topResetLocation[index].position.x;
-            newPos.z = m_carstate.topResetLocation[index].position.z;
+			tempTargetLocation.x = m_carstate.topResetLocation[index].position.x;
+			tempTargetLocation.z = m_carstate.topResetLocation[index].position.z;
         }
 
-        targetLocation = newPos;
-        targetRotation = newRotation;
+		// Set the target location and roation to the temp
+		targetLocation = tempTargetLocation;
+		targetRotation = tempnTargetRotation;
         initalRotation = m_transform.rotation;
 
         // Move car to correct spot
@@ -142,25 +138,26 @@ public class UserInteraction : MonoBehaviour {
         m_arcadeVehicle.zeroSpeed();
     }
 
+	/// <summary>
+	/// Move x checkpoints ahead corresponding to distance of portal.
+	/// </summary>
     public void moveToNextCheckpoint()
     {
         portalTransport = true;
+		// Advance checkoint, check to see if you are at the finish line and repeat if not...
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
-        print("check 1: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps);
         if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
         {
             moveToCheckpoint(m_carstate.currCheckpoint);
             return;
         }
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
-        print("check 2: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps);
         if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
         {
             moveToCheckpoint(m_carstate.currCheckpoint);
             return;
         }
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
-        print("check 3: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps);
         if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
         {
             moveToCheckpoint(m_carstate.currCheckpoint);
@@ -169,6 +166,9 @@ public class UserInteraction : MonoBehaviour {
         moveToCheckpoint(m_carstate.currCheckpoint);
     }
 
+	/// <summary>
+	/// Set target to the start line for the beginning of the game.
+	/// </summary>
     public void moveToStart()
     {
         carryHeight = 30;
@@ -192,13 +192,17 @@ public class UserInteraction : MonoBehaviour {
         m_arcadeVehicle.zeroSpeed();
     }
 
+	/// <summary>
+	/// Set target to the specified checkpoint.
+	/// </summary>
+	/// <param name="checkpointToGo">Checkpoint to go t0.</param>
     public void moveToCheckpoint(int checkpointToGo)
     {
         carryHeight = 10;
         Transform checkPoint;
         Quaternion newRotation;
-        // Find the location and rotation of the prev checkpoint
 
+        // Find the location and rotation of the prev checkpoint
         checkPoint = m_carstate.checkpoints[checkpointToGo];
         newRotation = m_carstate.checkpoints[checkpointToGo].rotation;
 
@@ -213,6 +217,10 @@ public class UserInteraction : MonoBehaviour {
         m_arcadeVehicle.zeroSpeed();
     }
 
+	/// <summary>
+	/// Sets the target location.
+	/// </summary>
+	/// <param name="target">Target.</param>
     void setTargetLocation(Transform target)
     {
         Vector3 newPos = new Vector3();
@@ -222,11 +230,14 @@ public class UserInteraction : MonoBehaviour {
         targetLocation = newPos;
     }
 
-    //immediatly move the car to above the last checkpoint and immediatly rotate to correct direction
+	/// <summary>
+	/// Immediatly move the car to above the last checkpoint and immediatly rotate to correct direction
+	/// </summary>
     public void hardReset()
     {
         Transform checkPoint;
         Quaternion newRotation;
+
         // Find the location and rotation of the prev checkpoint
         if (m_carstate.currCheckpoint != 0)
         {
@@ -238,8 +249,7 @@ public class UserInteraction : MonoBehaviour {
             checkPoint = m_carstate.checkpoints[m_carstate.checkpoints.Count - 1];
             newRotation = m_carstate.checkpoints[m_carstate.checkpoints.Count - 1].rotation;
         }
-
-
+		
         setTargetLocation(checkPoint);
 
         targetRotation = newRotation;
@@ -257,22 +267,30 @@ public class UserInteraction : MonoBehaviour {
         m_arcadeVehicle.zeroSpeed();
     }
     
-    // called in update of arcadeVehicle
-    // moves the car, up,to the last checkpoint,then down while rotating to the correct direction
+	/// <summary>
+	/// Moves the car up to the last checkpoint,then down while rotating to the correct direction
+	/// </summary>
+	/// <remarks>
+	/// Called in update of arcadeVehicle
+	/// </remarks>
     public void moveToLocation()
     {
+		// Move up to carry height
         if (goingUp)
         {
+			// Fade out and don't lift up if coming from the practice screen
             if (Main.S.carsReady != 2 && quickStart)
                 CarmonyGUI.S.fadeOut();
-            //Move up to y = 10;
-            m_arcadeVehicle.zeroSpeed();
+
+			m_arcadeVehicle.zeroSpeed();
 
             Vector3 newPos2 = m_transform.position;
             newPos2.y += .2f;
 
+			// Prevent it from rotating due to "Physics"
             m_transform.rotation = initalRotation;
 
+			// When it gets to the desired height
             if (newPos2.y >= carryHeight)
             {
                 goingUp = false;
@@ -281,14 +299,15 @@ public class UserInteraction : MonoBehaviour {
                 if (carrySpeed == 0)
                     carrySpeed = (float)Vector3.Distance(m_transform.position,targetLocation)/75;
             }
-            m_transform.position = newPos2;
 
+			// Set new rotation and position
             Vector3 newRotation = m_transform.rotation.eulerAngles;
-            m_transform.rotation = Quaternion.Euler(0, newRotation.y, 0); ;
+            m_transform.rotation = Quaternion.Euler(0, newRotation.y, 0); 
             m_transform.position = newPos2;
         }
         else if (goingToPoint)
         {
+			// If coming from practice map go straight to point
             if (Main.S.carsReady != 2 && quickStart)
             {
                 Vector3 newLoc = targetLocation;
@@ -302,11 +321,12 @@ public class UserInteraction : MonoBehaviour {
             }
 
 
-            Vector3 newPos = m_transform.position;
             //stop momentum and falling
             m_arcadeVehicle.zeroSpeed();
-            newPos.y = carryHeight;
 
+			// Find new Position
+			Vector3 newPos = m_transform.position;
+			newPos.y = carryHeight;
             //Chose X direction to go;
             if ((newPos.x - targetLocation.x) > 2 * carrySpeed)
             {
@@ -327,19 +347,17 @@ public class UserInteraction : MonoBehaviour {
                 newPos.z += carrySpeed;
             }
 
+			// Find new aangle
             Vector3 Angles = m_transform.rotation.eulerAngles;
             bool rotationDone = false;
             //Chose whether to rotate or not
             float rotateQuantity = 2;
             float initialAngle = initalRotation.eulerAngles.y % 360;
             float targetAngle = (targetRotation.eulerAngles.y + 90) % 360;
-            if (targetAngle < 180 && initialAngle < targetAngle+180 && initialAngle > targetAngle)
-            {
-
-                rotateQuantity = -rotateQuantity;
-            }else if (targetAngle > 180 && (initialAngle > targetAngle || initialAngle < targetAngle - 180))
-            {
-                rotateQuantity = -rotateQuantity;
+			if (targetAngle < 180 && initialAngle < targetAngle+180 && initialAngle > targetAngle || 
+			    (targetAngle > 180 && (initialAngle > targetAngle || initialAngle < targetAngle - 180))){
+                
+				rotateQuantity = -rotateQuantity;
             }
             if (Mathf.Abs(m_transform.rotation.eulerAngles.y % 360 - (targetRotation.eulerAngles.y + 90) % 360) > 3)
             {
@@ -354,9 +372,9 @@ public class UserInteraction : MonoBehaviour {
                 Angles2.y += 90;
 
                 m_transform.rotation = Quaternion.Euler(0, Angles2.y, 0);
-
             }
 
+			// If the car is at the correct rotation and position we finish moving to point and start going down
             if ((Mathf.Abs(newPos.x - targetLocation.x) <= 2*carrySpeed  && Mathf.Abs(newPos.z - targetLocation.z) <= carrySpeed*2) && rotationDone)
             {
                 newPos.x = targetLocation.x;
@@ -369,6 +387,7 @@ public class UserInteraction : MonoBehaviour {
         }
         else if (goingDown)
         {
+			// If coming from the practice fade back in
             if (Main.S.carsReady != 2 && quickStart)
                 CarmonyGUI.S.fadeIn();
 
@@ -376,13 +395,15 @@ public class UserInteraction : MonoBehaviour {
             Vector3 Angles2 = targetRotation.eulerAngles;
             Angles2.y += 90;
             m_transform.rotation = Quaternion.Euler(0, Angles2.y, 0);
+			// If we are on the "ground" stop moving
             if (m_transform.position.y < .8)
             {
                 goingDown = false;
                 carrySpeed = 0;
                 m_arcadeVehicle.zeroSpeed();
                 portalTransport = false;
-                print("drop check: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps);
+
+				// If you portaled to or past the finish line
                 if (m_carstate.currCheckpoint == 1 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps + 1)
                 {
                     Main.S.endGame(!isCarBottom);
@@ -436,7 +457,11 @@ public class UserInteraction : MonoBehaviour {
         StartCoroutine("boostPowerup", m_arcadeVehicle);
     }
 
-	// Set flags for the update method to handle shrinking and growing
+	/// <summary>
+	/// Set flags for the update method to handle shrinking and growing
+	/// </summary>
+	/// <returns>The powerup.</returns>
+	/// <param name="vehicle">Vehicle to boost.</param>
     IEnumerator boostPowerup(ArcadeVehicle vehicle)
     {
         isShrinking = true;
@@ -448,6 +473,9 @@ public class UserInteraction : MonoBehaviour {
 		m_arcadeVehicle.accel -= boostAccel;
 	}
 
+	/// <summary>
+	/// Handles the car size change.
+	/// </summary>
 	void HandleCarSizeChange(){
 		if (isShrinking)
 		{
@@ -509,18 +537,25 @@ public class UserInteraction : MonoBehaviour {
 			}
 			gameObject.transform.localScale = newSize;
 		}
-
 	}
 
 	/**************** Rocket Methods ****************/
 
-	// Spawn a rocket with the passed in parameters
+	/// <summary>
+	/// Spawns the rocket.
+	/// </summary>
+	/// <param name="rocketStop">Rocket stop.</param>
+	/// <param name="startPos">Start position.</param>
+	/// <param name="target">Target.</param>
 	public void spawnRocket(int rocketStop, Vector3 startPos, GameObject target)
 	{
 		var rocketgo = Instantiate(rocketPrefab);
 		rocketgo.GetComponent<Rocket>().InitializeRocket(rocketStop, startPos, target);
 	}
 
+	/// <summary>
+	/// Starts the explosion effect and raise the car.
+	/// </summary>
 	public void startBombRaiseCar()
 	{
 		Vector3 newVel = gameObject.GetComponent<Rigidbody>().velocity;

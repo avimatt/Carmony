@@ -48,6 +48,7 @@ public class ArcadeVehicle : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
+		// Make sure you are not moving at the start of the race
         if (!Main.S.practicing && !Main.S.raceStarted && rigid.transform.position.y < .75f)
         {
             rigid.drag = 100;

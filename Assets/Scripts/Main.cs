@@ -8,31 +8,74 @@ public class Main : MonoBehaviour
 {
     static public Main S;
 
-    public float interactTimer;
 
+	[Header("Set in Inspector")]
     public GameObject carTop;
     public GameObject carBottom;
+	
+	public GameObject Map;
+	public List<GameObject> MapList;
 
-    public bool carTopDone;
-    public bool carBottomDone;
+	public bool normalControls;
 
+	[Header("Calculated Dynamically")]
+	public int carsReady = 0;
+	public float interactTimer;
+	public float startTime;
+
+	public bool practicing;
+	public bool raceStarted;
+	public bool carTopDone;
+	public bool carBottomDone;
 	public bool paused;
-
-    public bool raceStarted;
-    public bool practicing;
-
-    public GameObject Map;
-
-    public List<GameObject> MapList;
-
-    public int carsReady = 0;
-
-    public float startTime;
 
 	public bool topInCollisionZone;
 	public bool bottomInCollisionZone;
 
-    public bool normalControls;
+
+	void Awake()
+	{
+		S = this;
+	}
+	
+	// Use this for initialization
+	void Start()
+	{
+		S = this;
+		interactTimer = Time.time;
+		topInCollisionZone = false;
+		bottomInCollisionZone = false;
+		Map = MapList[0];
+	}
+	
+	// Update is called once per frame
+	void Update()
+	{
+		CarState.isCarBehind(true);
+		
+		if (canInteract() && !HighScores.S.isActiveAndEnabled)
+		{
+			if (getStartPressed() && (practicing || raceStarted))
+			{
+				// If both teams have finished and start has been hit restart the game
+				if (carTopDone && carBottomDone)
+				{
+					if (HighScores.S.recordBeaten)
+					{
+						print("turning on highscores");
+						HighScores.S.gameObject.SetActive(true);
+					}
+					else
+					{
+						Application.LoadLevel("NoahDevScene");
+					}
+				}
+				Main.S.paused = true;
+				PauseScreen.S.gameObject.SetActive(true);
+			}
+		}
+	}
+	
     public void setCarReady()
     {
         if (carsReady < 2)
@@ -40,7 +83,7 @@ public class Main : MonoBehaviour
         if (carsReady == 2 && !raceStarted)
         {
             CarmonyGUI.S.movingToPractice.SetActive(false);
-            CarmonyGUI.S.raiseStartFlagText();
+            CarmonyGUI.S.raiseCountdown();
         }
     }
 
@@ -48,6 +91,7 @@ public class Main : MonoBehaviour
     {
         return raceStarted;
     }
+
     public void setRaceStarted()
     {
         startTime = Time.time;
@@ -85,50 +129,7 @@ public class Main : MonoBehaviour
             return true;
         }
     }
-
-    void Awake()
-    {
-        S = this;
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-        S = this;
-        interactTimer = Time.time;
-		topInCollisionZone = false;
-		bottomInCollisionZone = false;
-        Map = MapList[0];
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        CarState.isCarBehind(true);
-
-        if (canInteract() && !HighScores.S.isActiveAndEnabled)
-        {
-            if (getStartPressed() && (practicing || raceStarted))
-            {
-           		// If both teams have finished and start has been hit restart the game
-                if (carTopDone && carBottomDone)
-                {
-                    if (HighScores.S.recordBeaten)
-                    {
-                        print("turning on highscores");
-                        HighScores.S.gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        Application.LoadLevel("NoahDevScene");
-                    }
-                }
-                Main.S.paused = true;
-                PauseScreen.S.gameObject.SetActive(true);
-            }
-        }
-    }
-
+	
 	// Return whether any player has pressed start
     public bool getStartPressed()
     {
