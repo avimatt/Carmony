@@ -91,6 +91,12 @@ public class ArcadeVehicle : MonoBehaviour {
 		grounded = Grounded;
 		skidding = Skidding;
 
+        var velocity = rigid.velocity;
+        var localVel = transform.InverseTransformDirection(velocity);
+        if (localVel.z < 0)
+        {
+            iH = -iH;
+        }
 		// Steering
 		if (grounded) {
 			rigid.AddTorque (0, iH * turningTorque, 0);
