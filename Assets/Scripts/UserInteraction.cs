@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+
+using UnityEngine.UI;
 using System.Collections;
 using InControl;
 
@@ -409,7 +411,16 @@ public class UserInteraction : MonoBehaviour {
                 carrySpeed = 0;
                 m_arcadeVehicle.zeroSpeed();
                 portalTransport = false;
-
+                if (!isCarBottom)
+                {
+                    CarmonyGUI.S.topSwapText.GetComponent<Text>().text = "SWAP";
+                    CarmonyGUI.S.topSwapText.SetActive(false);
+                }
+                else
+                {
+                    CarmonyGUI.S.bottomSwapText.GetComponent<Text>().text = "SWAP";
+                    CarmonyGUI.S.bottomSwapText.SetActive(false);
+                }
 				// If you portaled to or past the finish line
                 if (m_carstate.currCheckpoint == 1 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps + 1)
                 {
