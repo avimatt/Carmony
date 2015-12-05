@@ -579,7 +579,11 @@ public class UserInteraction : MonoBehaviour {
 		Vector3 newVel = gameObject.GetComponent<Rigidbody>().velocity;
 		newVel.x = 0;
 		newVel.z = 0;
-		newVel.y = 10;
+		newVel.y = 500;
+        if (isCarBottom && Main.S.carBottomDone)
+            newVel.y = 50;
+        else if (!isCarBottom && Main.S.carTopDone)
+            newVel.y = 50;
 		gameObject.GetComponent<Rigidbody>().velocity = newVel;
 	}
 }

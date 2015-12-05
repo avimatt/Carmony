@@ -15,6 +15,9 @@ public class ResetToMap : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider coll){
+        //This threw an exception...
+        if (!coll.GetComponentInParent<Transform>() || !coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>())
+            return;
 		bool isBottomScreen = coll.GetComponentInParent<Transform>().GetComponentInParent<UserInteraction>().isCarBottom;
 		if (!isBottomScreen)
 		{

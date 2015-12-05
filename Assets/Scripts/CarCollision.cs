@@ -55,6 +55,7 @@ public class CarCollision : MonoBehaviour {
         {
             return;
         }
+        playOnCollision();
         //Vector3 newVel = gameObject.GetComponentInParent<Rigidbody>().velocity.normalized;
         //newVel.x = -newVel.x*5;
         //newVel.z = -newVel.z*5;
@@ -62,7 +63,15 @@ public class CarCollision : MonoBehaviour {
         //StartCoroutine("vibrateOnCollision");
 
     }
-
+    void playOnCollision()
+    {
+        if (Time.time - lastCollisionVibrate > 1)
+        {
+            lastCollisionVibrate = Time.time;
+            collisonAudioSource.clip = crashClip;
+            collisonAudioSource.Play();
+        }
+    }
     IEnumerator vibrateOnCollision()
     {
         if (Time.time - lastCollisionVibrate > 1)
