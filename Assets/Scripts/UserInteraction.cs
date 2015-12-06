@@ -153,6 +153,7 @@ public class UserInteraction : MonoBehaviour {
     public void moveToNextCheckpoint()
     {
         portalTransport = true;
+        carrySpeed = 6f;
 		// Advance checkoint, check to see if you are at the finish line and repeat if not...
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
         if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
@@ -306,7 +307,9 @@ public class UserInteraction : MonoBehaviour {
                 goingToPoint = true;
                 newPos2.y = carryHeight;
                 if (carrySpeed == 0)
-                    carrySpeed = (float)Vector3.Distance(m_transform.position,targetLocation)/75;
+                {
+                    carrySpeed = (float)Vector3.Distance(m_transform.position, targetLocation) / 75;
+                }
             }
 
 			// Set new rotation and position

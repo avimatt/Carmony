@@ -64,7 +64,6 @@ public class OilSpill : MonoBehaviour {
     {
         yield return new WaitForSeconds(5);
         // undo oil slick effect
-		print ("undoing");
 		vehicle.horizontalFriction = .5f;
     }
 }

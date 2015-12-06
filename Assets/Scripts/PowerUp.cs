@@ -95,19 +95,18 @@ public class PowerUp : MonoBehaviour
             else
             {
                 int randInt = Random.Range(0, 10);
-                print(randInt);
-                if (randInt < 2)
+
+                if (randInt < 4)
                 {
                     type = powerUpType.speed;
                 }
-                else if (randInt < 9)
+                else if (randInt < 10)
                 {
                     type = powerUpType.oil;
                 }
                 else
                     type = powerUpType.swap;
             }
-            print("printing:" + type);
         }
 
         if ((isBottomScreen && Main.S.carBottomDone) || (!isBottomScreen && Main.S.carTopDone))

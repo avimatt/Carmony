@@ -146,7 +146,6 @@ public class InstructionScreen : MonoBehaviour {
 
     void switchGroupsBack()
     {
-        print("hello");
         if (controlGroups[0].transform.localPosition[0] < 0)
         {
             Vector3 temp = controlGroups[0].transform.position;

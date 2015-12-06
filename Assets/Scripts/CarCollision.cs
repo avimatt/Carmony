@@ -41,15 +41,14 @@ public class CarCollision : MonoBehaviour {
             m_carstate.perfectCheckpoint = false;
 
 			if(!inCollisionZone(m_arcadeVehicle.isBottomCar)){
-				//printCollisionData();
-			
+		
 				var collisionZone = Instantiate(collisionZonePrefab);
 				collisionZone.transform.position = gameObject.transform.position;
 			}
 
         }else if (coll.gameObject.layer == 0)
         {
-            print("hit car " + coll.gameObject.name);
+            //do nothing
         }
         else
         {
@@ -103,7 +102,6 @@ public class CarCollision : MonoBehaviour {
         string carStr = isBottomCar ? "Bottom Car" : "Top Car";
         float xPos = m_transform.position.x;
         float zPos = m_transform.position.z;
-        print(carStr + " hit at x=" + xPos + ",z=" + zPos + "   At " + Main.S.getGameTime());
         if (!isBottomCar)
             Logger.S.writeFile(true,carStr + " hit at x=" + xPos + ",z=" + zPos + "   At " + Main.S.getGameTime());
         else

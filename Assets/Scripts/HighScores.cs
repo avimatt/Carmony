@@ -134,7 +134,7 @@ public class HighScores : MonoBehaviour {
             {
                 emptyTexts();
                 gameObject.SetActive(false);
-            }else if (player.AnyButton.WasPressed && Main.S.getRaceStarted()){
+            }else if ((player.AnyButton.WasPressed || player.MenuWasPressed) && Main.S.getRaceStarted()){
                 Application.LoadLevel("NoahDevScene");
             }
         }
@@ -180,7 +180,6 @@ public class HighScores : MonoBehaviour {
         
         StreamWriter sw;
         sw = File.CreateText(Main.S.Map.GetComponent<Map>().name + filename);
-        print("count " + scoreList.Count + scoreList[0].getName());
         for(int i = 0; i < scoreList.Count; i++)
         {
             sw.WriteLine(scoreList[i].getPlace().ToString()+ " " +  scoreList[i].getName()+ " " + scoreList[i].getMinutes().ToString() + " " +  scoreList[i].getSeconds().ToString());
@@ -249,10 +248,8 @@ public class HighScores : MonoBehaviour {
         {
             if (scoreList.Count > places.Count)
             {
-                print(places.Count + " " +  (scoreList.Count - places.Count));
                 scoreList.RemoveRange(places.Count, scoreList.Count - places.Count );
             }
-            print("re writing file " + scoreList.Count);
             recordBeaten = true;
             writeFile();
             return true;

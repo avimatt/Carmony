@@ -18,7 +18,6 @@ public class CollisionZone : MonoBehaviour {
 				bottomCar = true;
 				bottomInCollisionZone = true;
 			}
-			print ("here first");
 
 			timeEntered = Time.time;
 			gameTimeEntered = Main.S.getGameTime();
@@ -34,7 +33,6 @@ public class CollisionZone : MonoBehaviour {
 			} else {
 				topInCollisionZone = false;
 			}
-			print ("Was in zone for: " + TimeSpan.FromSeconds(Time.time - timeEntered).ToString());
 			printCollisionData();
 			Destroy(gameObject);
 		}

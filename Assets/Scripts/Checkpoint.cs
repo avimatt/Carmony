@@ -13,7 +13,6 @@ public class Checkpoint : MonoBehaviour {
 
     public void hitCheckpoint(Transform playerTrans)
     {
-        print("player hit checkpoint");
         lastCheckpointTime = Time.time;
         // other is player
         // Get a reference to the CarState script
@@ -25,7 +24,6 @@ public class Checkpoint : MonoBehaviour {
             string perfectMessage = "";
             if (player.perfectCheckpoint && player.currLap != 0 && player.currCheckpoint % 3 == 0)
             {
-                print("perfect checkpoint");
                 player.numPerfectCheckpoints++;
                 Logger.S.writeFile(!playerTrans.GetComponent<UserInteraction>().isCarBottom, "Perfect Checkpoint " + player.currCheckpoint + " at: " + Main.S.getGameTime());
                 perfectMessage = "Perfect";
@@ -44,7 +42,6 @@ public class Checkpoint : MonoBehaviour {
                 {
                     if (player.perfectLap && player.currLap != 0)
                     {
-                        print("perfect lap");
                         perfectMessage = "Perfect Lap";
                     }
                     player.currLap++;
@@ -58,7 +55,6 @@ public class Checkpoint : MonoBehaviour {
                     {
                         if (player.perfectRace)
                         {
-                            print("perfect race");
                             perfectMessage = "Perfect Race";
                         }
                         Logger.S.writeFile(!playerTrans.GetComponent<UserInteraction>().isCarBottom, "Finished Race at: " + Main.S.getGameTime());
@@ -92,7 +88,6 @@ public class Checkpoint : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        print("hit checkpoint");
         //Check if it is a car that enters the checkpoint
         Transform playerTrans = null;
         Transform tmp = other.transform.parent;

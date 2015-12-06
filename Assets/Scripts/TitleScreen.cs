@@ -55,7 +55,6 @@ public class TitleScreen : MonoBehaviour {
         {
             if (player.Action1.WasPressed)
             {
-                print("index: " + index);
                 switch (index)
                 {
                     case 0:
@@ -118,7 +117,6 @@ public class TitleScreen : MonoBehaviour {
         index++;
         if (index >= menuObjects.Count)
             index = menuObjects.Count - 1;
-        print("new index: " + index);
     }
 
     void moveUpMenu()
@@ -126,7 +124,6 @@ public class TitleScreen : MonoBehaviour {
         index--;
         if (index < 0)
             index = 0;
-        print("new index: " + index);
 
     }
 }

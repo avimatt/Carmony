@@ -62,7 +62,6 @@ public class Main : MonoBehaviour
 				{
 					if (HighScores.S.recordBeaten)
 					{
-						print("turning on highscores");
 						HighScores.S.gameObject.SetActive(true);
 					}
 					else
@@ -176,7 +175,6 @@ public class Main : MonoBehaviour
             final += ":";
         }
         final += newSec;
-        print("final");
         return final;
     }
 

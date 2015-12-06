@@ -408,7 +408,6 @@ public class ArcadeVehicle : MonoBehaviour {
 		}
 		origAngle.y += 180f;
 		monster.transform.localRotation = Quaternion.Euler(origAngle);
-		print(Quaternion.Euler(origAngle));
 
 		swapping = false;
 	}

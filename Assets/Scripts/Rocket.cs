@@ -39,7 +39,6 @@ public class Rocket : MonoBehaviour {
             this.SetRocketTrajectory(targetCar.transform);
             if (Vector3.Distance(transform.position,targetCar.transform.position) < 3 && !isExploding)
             {
-                print("starting coroutine");
                 StartCoroutine("blowBomb");
             }
         }
@@ -53,7 +52,6 @@ public class Rocket : MonoBehaviour {
         {
             meshes[i].enabled = false;
         }
-        print("hello");
         targetCar.GetComponent<UserInteraction>().explosion.gameObject.SetActive(true);
         targetCar.GetComponent<ArcadeVehicle>().zeroSpeed();
         targetCar.GetComponent<UserInteraction>().startBombRaiseCar();
@@ -61,7 +59,6 @@ public class Rocket : MonoBehaviour {
         explosionSound.Play();
 
         yield return new WaitForSeconds(2);
-        print("goodbye");
         targetCar.GetComponent<UserInteraction>().explosion.gameObject.SetActive(false);
         Destroy(gameObject);
     }

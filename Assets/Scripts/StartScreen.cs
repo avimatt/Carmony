@@ -92,14 +92,12 @@ public class StartScreen : MonoBehaviour {
 
     IEnumerator vibrateControllerStop(InputDevice player)
     {
-        print("hello1");
         float pauseEndTime = Time.realtimeSinceStartup + .2f;
         while (Time.realtimeSinceStartup < pauseEndTime)
         {
             yield return 0;
         }
         player.Vibrate(0, 0);
-        print("hello2");
     }
 
 
