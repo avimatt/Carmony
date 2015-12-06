@@ -23,15 +23,17 @@ public class Checkpoint : MonoBehaviour {
         if (transform == player.checkpoints[player.currCheckpoint].transform)
         {
             string perfectMessage = "";
-            if (player.perfectCheckpoint && player.currLap != 0)
+            if (player.perfectCheckpoint && player.currLap != 0 && player.currCheckpoint % 3 == 0)
             {
                 print("perfect checkpoint");
                 player.numPerfectCheckpoints++;
                 Logger.S.writeFile(!playerTrans.GetComponent<UserInteraction>().isCarBottom, "Perfect Checkpoint " + player.currCheckpoint + " at: " + Main.S.getGameTime());
                 perfectMessage = "Perfect";
             }
-            player.perfectCheckpoint = true;
-
+            if (player.currCheckpoint % 3 == 0)
+            {
+                player.perfectCheckpoint = true;
+            }
 
             // increment the checkpoint to the next one
             // Don't go past the end of checkpoint array

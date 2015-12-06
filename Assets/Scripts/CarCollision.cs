@@ -55,6 +55,10 @@ public class CarCollision : MonoBehaviour {
         {
             return;
         }
+        if (gameObject.GetComponentInParent<UserInteraction>().goingDown || gameObject.GetComponentInParent<UserInteraction>().goingUp || gameObject.GetComponentInParent<UserInteraction>().goingToPoint)
+        {
+            return;
+        }
         playOnCollision();
         //Vector3 newVel = gameObject.GetComponentInParent<Rigidbody>().velocity.normalized;
         //newVel.x = -newVel.x*5;
