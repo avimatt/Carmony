@@ -12,10 +12,11 @@ public class RocketStop : MonoBehaviour {
             // It's a rocket
             // Get a reference to the Rocket script
             Rocket rocket = rocketTrans.GetComponent<Rocket>();
-            // increment the rocketstop to the next one, don't go past the end of th rocketStops array
-            rocket.incrRocketStop();
             // get the rocket moving to the next checkpoint
             rocket.SetRocketStopTrajectory(rocket.getNextRocketStop());
+            // increment the rocketstop to the next one, don't go past the end of th rocketStops array
+            rocket.incrRocketStop();
+
         }
         
         // If not a rocket, see if it's a car
