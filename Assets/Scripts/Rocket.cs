@@ -17,16 +17,16 @@ public class Rocket : MonoBehaviour {
     //Is the bomb exploding. set when within proximity of target
     bool isExploding;
 
+    bool instantiated = false;
 	// Use this for initialization
 	void Start () {
-        this.setRocketStops();
-        rocketRigid = GetComponent<Rigidbody>();
-        this.SetRocketStopTrajectory(getNextRocketStop());
 
+        
     }
 
     void FixedUpdate()
     {
+        if (!instantiated) return;
         //set the angle of the rocket
         float angle = Mathf.Atan2(rocketRigid.velocity.normalized.z, rocketRigid.velocity.normalized.x) * Mathf.Rad2Deg;
         gameObject.transform.rotation = Quaternion.Euler(90,90 - angle,0);
@@ -73,10 +73,11 @@ public class Rocket : MonoBehaviour {
         foreach (Transform child in Main.S.Map.GetComponent<Map>().rocketStopSystem.transform)
         {
             rocketStops.Add(child);
+            print(child.name);
         }
         print(rocketStops.Count);
         // Set first rocketstop to the first one for now
-        this.currRocketStop = 0;
+        //this.currRocketStop = 0;
     }
 
     // Gets the next index into the RocketStops array, and wraps around
@@ -103,6 +104,13 @@ public class Rocket : MonoBehaviour {
         startPos.y = 2.0f; // ensure we start at this height
         this.transform.position = startPos;
         this.targetCar = target;
+
+        this.setRocketStops();
+        rocketRigid = GetComponent<Rigidbody>();
+        this.SetRocketStopTrajectory(rocketStopIndex);
+        instantiated = true;
+        this.currRocketStop = rocketStopIndex;
+        print("initial stop1: " + rocketStopIndex);
     }
 
     // Set the rocket's trajectory to the target rocketstop

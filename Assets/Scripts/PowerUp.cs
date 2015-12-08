@@ -194,11 +194,13 @@ public class PowerUp : MonoBehaviour
             rocketSound.Play();
             // Spawn a rocket and set it's target;
             if (topPlayer) {
-                int rocketstop = Main.S.carTop.GetComponent<CarState>().currRocketStop;
+                int rocketstop = Main.S.carTop.GetComponent<CarState>().currCheckpoint;
+                print("what the rocketStop should be: " + rocketstop);
+                print("what the rocketStop should not be: " + rocketstop);
                 Vector3 carpos = Main.S.carTop.transform.position;
                 Main.S.carTop.GetComponent<UserInteraction>().spawnRocket(rocketstop, carpos, Main.S.carBottom);
             } else {
-                int rocketstop = Main.S.carBottom.GetComponent<CarState>().currRocketStop;
+                int rocketstop = Main.S.carBottom.GetComponent<CarState>().currCheckpoint;
                 Vector3 carpos = Main.S.carBottom.transform.position;
                 Main.S.carBottom.GetComponent<UserInteraction>().spawnRocket(rocketstop, carpos, Main.S.carTop);
             }
