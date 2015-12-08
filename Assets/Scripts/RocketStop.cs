@@ -33,9 +33,9 @@ public class RocketStop : MonoBehaviour {
             {
                 // Confirmed that it is a car at this point
                 // Get a ref to the CarState script
-                CarState player = playerTrans.GetComponent<CarState>();
+                //CarState player = playerTrans.GetComponent<CarState>();
                 // increment the rocketstop to the next one
-                player.incrRocketStop();
+                //player.incrRocketStop();
             }
             else
             {

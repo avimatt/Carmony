@@ -39,34 +39,9 @@ public class CarState : MonoBehaviour {
 	void Update () {
         if (!set && Main.S.practicing)
         {
-            setRocketStops();
             setCheckpoints();
         }
 	}
-
-    public int getNextRocketStop()
-    {
-        if (currRocketStop + 1 < rocketStops.Count)
-            return currRocketStop + 1;
-        else
-            return 0;
-    }
-
-    public void incrRocketStop()
-    {
-        this.currRocketStop = getNextRocketStop();
-    }
-
-    void setRocketStops()
-    {
-        // Populate the array of rocketStops
-        foreach (Transform child in Main.S.Map.GetComponent<Map>().rocketStopSystem.transform)
-        {
-            rocketStops.Add(child);
-        }
-        // Set first rocketstop
-        this.currRocketStop = 0;
-    }
 
     void setCheckpoints()
     {

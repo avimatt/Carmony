@@ -34,7 +34,10 @@ public class Rocket : MonoBehaviour {
         // If the rocket's current stop is equal to it's target's current stop
         // then that means the target is close enough, so set the trajectory towards
         // the target instead of another rocketstop
-        if (this.currRocketStop == targetCar.GetComponent<CarState>().currRocketStop)
+        int targetCheck = targetCar.GetComponent<CarState>().currCheckpoint - 1;
+        if (targetCheck < 0)
+            targetCheck = 0;
+        if (this.currRocketStop == targetCheck)
         {
             this.SetRocketTrajectory(targetCar.transform);
             if (Vector3.Distance(transform.position,targetCar.transform.position) < 3 && !isExploding)
@@ -71,6 +74,7 @@ public class Rocket : MonoBehaviour {
         {
             rocketStops.Add(child);
         }
+        print(rocketStops.Count);
         // Set first rocketstop to the first one for now
         this.currRocketStop = 0;
     }
