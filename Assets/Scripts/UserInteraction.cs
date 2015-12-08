@@ -153,8 +153,14 @@ public class UserInteraction : MonoBehaviour {
     public void moveToNextCheckpoint()
     {
         portalTransport = true;
-        carrySpeed = 6f;
+        carrySpeed = 4f;
 		// Advance checkoint, check to see if you are at the finish line and repeat if not...
+        m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
+        if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
+        {
+            moveToCheckpoint(m_carstate.currCheckpoint);
+            return;
+        }
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
         if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
         {
@@ -582,7 +588,7 @@ public class UserInteraction : MonoBehaviour {
 		Vector3 newVel = gameObject.GetComponent<Rigidbody>().velocity;
 		newVel.x = 0;
 		newVel.z = 0;
-		newVel.y = 500;
+		newVel.y = 400;
         if (isCarBottom && Main.S.carBottomDone)
             newVel.y = 50;
         else if (!isCarBottom && Main.S.carTopDone)
