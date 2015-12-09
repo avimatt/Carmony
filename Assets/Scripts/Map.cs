@@ -20,6 +20,9 @@ public class Map : MonoBehaviour {
     public int x;
     public int z;
 
+    public float mapYAirModifier;
+    public float mapYGroundModifier;
+
 	// Use this for initialization
 	void Start () {
 	

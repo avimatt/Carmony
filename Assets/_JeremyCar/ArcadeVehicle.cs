@@ -131,7 +131,7 @@ public class ArcadeVehicle : MonoBehaviour {
 			Vector3 vel = rigid.velocity;
             Vector3 newVel = vel;
             if (vel.y > 0)
-                newVel.y /= 1.1f;
+                newVel.y /= Main.S.Map.GetComponent<Map>().mapYGroundModifier;
             rigid.velocity = newVel;
             vel = rigid.velocity;
 
@@ -149,7 +149,7 @@ public class ArcadeVehicle : MonoBehaviour {
             Vector3 newVel = rigid.velocity;
 
             if (newVel.y > 0)
-                newVel.y /= 1.2f;
+                newVel.y /= Main.S.Map.GetComponent<Map>().mapYAirModifier;
             rigid.velocity = newVel;
             //accelPoint = transform.TransformPoint(centerOfMass);
         }
