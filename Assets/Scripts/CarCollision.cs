@@ -59,6 +59,7 @@ public class CarCollision : MonoBehaviour {
             return;
         }
         playOnCollision();
+        applyForceBack(coll);
         //Vector3 newVel = gameObject.GetComponentInParent<Rigidbody>().velocity.normalized;
         //newVel.x = -newVel.x*5;
         //newVel.z = -newVel.z*5;
@@ -66,6 +67,16 @@ public class CarCollision : MonoBehaviour {
         //StartCoroutine("vibrateOnCollision");
 
     }
+
+    void applyForceBack(Collision coll)
+    {
+        ContactPoint[] points = coll.contacts;
+        Vector3 normal = points[0].normal;
+        normal.Scale(new Vector3(1000 + 30*m_arcadeVehicle.getSpeed(), 10,1000 +  30*m_arcadeVehicle.getSpeed()));
+        print(normal);
+        gameObject.GetComponent<Rigidbody>().AddForceAtPosition(normal, points[0].point);
+    }
+
     void playOnCollision()
     {
         if (Time.time - lastCollisionVibrate > 1)
