@@ -62,7 +62,7 @@ public class YesNoMenu : MonoBehaviour {
         {
             if (i == index)
             {
-                menuObjects[i].GetComponent<Text>().color = new Color32(0, 255, 0, 255);
+                menuObjects[i].GetComponent<Text>().color = new Color32(20, 184, 0, 255);
             }
             else
             {

@@ -72,7 +72,14 @@ public class CarCollision : MonoBehaviour {
     {
         ContactPoint[] points = coll.contacts;
         Vector3 normal = points[0].normal;
-        normal.Scale(new Vector3(1000 + 30*m_arcadeVehicle.getSpeed(), 10,1000 +  30*m_arcadeVehicle.getSpeed()));
+        if (coll.gameObject.tag == "Player")
+        {
+            normal.Scale(new Vector3(10, 10,10));
+        }
+        else
+        {
+            normal.Scale(new Vector3(1000 + 30 * m_arcadeVehicle.getSpeed(), - 10 * m_arcadeVehicle.getSpeed(), 1000 + 30 * m_arcadeVehicle.getSpeed()));
+        }
         print(normal);
         gameObject.GetComponent<Rigidbody>().AddForceAtPosition(normal, points[0].point);
     }
