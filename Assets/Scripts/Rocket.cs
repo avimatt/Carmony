@@ -131,7 +131,9 @@ public class Rocket : MonoBehaviour {
         Vector3 targetPos = target.position;
         // Set the target's y position (height) to be the same as the rocket (we don't want
         // the rocket to change height as it moves)
-        targetPos.y = rocketPos.y;
+        //targetPos.y = rocketPos.y;
+        //we do want it to change height
+        targetPos.y = targetPos.y + 2 ;
 
         var heading = targetPos - rocketPos;
         var distance = heading.magnitude;

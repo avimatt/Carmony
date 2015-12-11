@@ -35,7 +35,7 @@ public class UserInteraction : MonoBehaviour {
 	public bool 			goingDown;
 	public bool 			quickStart;
 	public bool             portalTransport;
-
+    public float            bombTimer;
     void Awake()
     {
         m_arcadeVehicle = gameObject.GetComponentInParent<ArcadeVehicle>();
@@ -471,8 +471,11 @@ public class UserInteraction : MonoBehaviour {
 
 	public void placeOilSpill()
 	{
+        if (gameObject.GetComponent<ArcadeVehicle>().grounded == false)
+            return;
 		Vector3 newLocation = gameObject.GetComponentInChildren<Camera>().GetComponent<Transform>().position;
-		newLocation.y = oilPrefab.transform.position.y;
+        newLocation.y = gameObject.transform.position.y - .5f;//oilPrefab.transform.position.y;
+
 		GameObject go = Instantiate(oilPrefab, newLocation, oilPrefab.transform.rotation) as GameObject;
 		go.GetComponent<OilSpill>().isFromTop = !isCarBottom;
 	}
@@ -585,7 +588,19 @@ public class UserInteraction : MonoBehaviour {
 	/// </summary>
 	public void startBombRaiseCar()
 	{
-		Vector3 newVel = gameObject.GetComponent<Rigidbody>().velocity;
+        bombTimer = Time.time;
+        if (isCarBottom)
+        {
+            Main.S.Map.GetComponent<Map>().bottomMapYAirModifier = 1.2f;
+            print("hello");
+        }
+        else
+        {
+            Main.S.Map.GetComponent<Map>().topMapYAirModifier = 1.2f;
+            print("hello");
+        }
+
+        Vector3 newVel = gameObject.GetComponent<Rigidbody>().velocity;
 		newVel.x = 0;
 		newVel.z = 0;
 		newVel.y = 400;
@@ -593,6 +608,7 @@ public class UserInteraction : MonoBehaviour {
             newVel.y = 50;
         else if (!isCarBottom && Main.S.carTopDone)
             newVel.y = 50;
+
 		gameObject.GetComponent<Rigidbody>().velocity = newVel;
 	}
 }

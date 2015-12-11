@@ -23,13 +23,24 @@ public class Map : MonoBehaviour {
     public float mapYAirModifier;
     public float mapYGroundModifier;
 
-	// Use this for initialization
-	void Start () {
-	
+    public float topMapYAirModifier;
+    public float bottomMapYAirModifier;
+
+    // Use this for initialization
+    void Start () {
+        topMapYAirModifier = mapYAirModifier;
+        bottomMapYAirModifier = mapYAirModifier;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+	    if (Main.S.carTop.GetComponent<ArcadeVehicle>().grounded && Time.time - Main.S.carTop.GetComponent<UserInteraction>().bombTimer > .5f)
+        {
+            topMapYAirModifier = mapYAirModifier;
+        }
+        if (Main.S.carBottom.GetComponent<ArcadeVehicle>().grounded && Time.time - Main.S.carBottom.GetComponent<UserInteraction>().bombTimer > .5f)
+        {
+            bottomMapYAirModifier = mapYAirModifier;
+        }
+    }
 }

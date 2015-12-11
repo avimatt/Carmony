@@ -58,6 +58,8 @@ public class ArcadeVehicle : MonoBehaviour {
             rigid.drag = .5f;
         }
 
+
+
 		m_userInteract.moveToLocation();
 
 		// Avoid errors when not all controllers are connected
@@ -149,7 +151,13 @@ public class ArcadeVehicle : MonoBehaviour {
             Vector3 newVel = rigid.velocity;
 
             if (newVel.y > 0)
-                newVel.y /= Main.S.Map.GetComponent<Map>().mapYAirModifier;
+            {
+                if (isBottomCar)
+                    newVel.y /= Main.S.Map.GetComponent<Map>().bottomMapYAirModifier;
+                else
+                    newVel.y /= Main.S.Map.GetComponent<Map>().topMapYAirModifier;
+
+            }
             rigid.velocity = newVel;
             //accelPoint = transform.TransformPoint(centerOfMass);
         }
