@@ -37,6 +37,10 @@ public class CarCameraFollow1 : MonoBehaviour
         cameraSets.rotation = Quaternion.Lerp(cameraSets.rotation, carObject.transform.rotation, rotSmooth * Time.deltaTime);
 
         float yPosition = Mathf.Lerp(transform.position.y, targetPosition.position.y, moveSmoothness * Time.deltaTime);
+        if (yPosition < m_car.transform.position.y)
+        {
+            yPosition = m_car.transform.position.y;
+        }
         float xdiff;
         float zdiff;
 
