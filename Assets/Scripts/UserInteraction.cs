@@ -581,7 +581,7 @@ public class UserInteraction : MonoBehaviour {
         if (gameObject.GetComponent<ArcadeVehicle>().grounded == false)
             return;
 		Vector3 newLocation = gameObject.GetComponentInChildren<Camera>().GetComponent<Transform>().position;
-        newLocation.y = gameObject.transform.position.y - .5f;//oilPrefab.transform.position.y;
+        newLocation.y = gameObject.transform.position.y - .5f*transform.localScale.y;//oilPrefab.transform.position.y;
 
 		GameObject go = Instantiate(oilPrefab, newLocation, oilPrefab.transform.rotation) as GameObject;
 		go.GetComponent<OilSpill>().isFromTop = !isCarBottom;
