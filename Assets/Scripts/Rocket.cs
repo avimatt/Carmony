@@ -38,10 +38,8 @@ public class Rocket : MonoBehaviour {
         //if (targetCheck < 0)
         //    targetCheck = 0;
         int targetCheck = targetCar.GetComponent<CarState>().currCheckpoint;
-        print("equate: " + currRocketStop + "   |   " + targetCheck);
         if (this.currRocketStop == targetCheck)
         {
-            print("setting hit trajectory");
             this.SetRocketTrajectory(targetCar.transform);
             if (Vector3.Distance(transform.position,targetCar.transform.position) < 3 && !isExploding)
             {
@@ -93,7 +91,6 @@ public class Rocket : MonoBehaviour {
     // Set the currRocketStop to the next stop
     public void incrRocketStop()
     {
-        print("hit rocket Stop: " + currRocketStop);
         this.currRocketStop = getNextRocketStop();
     }
 
@@ -112,13 +109,11 @@ public class Rocket : MonoBehaviour {
         this.SetRocketStopTrajectory(rocketStopIndex);
         instantiated = true;
         this.currRocketStop = rocketStopIndex;
-        print("initial stop1: " + rocketStopIndex);
     }
 
     // Set the rocket's trajectory to the target rocketstop
     public void SetRocketStopTrajectory(int targetStop)
     {
-        print("setting miss trajectory");
         SetRocketTrajectory(rocketStops[targetStop]);
     }
 

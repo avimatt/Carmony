@@ -226,7 +226,6 @@ public class UserInteraction : MonoBehaviour {
 
         Vector3 direction = gameObject.transform.forward;
         float speed = m_arcadeVehicle.getSpeed() / 3;
-        print(direction);
         float startTime = Time.time;
 
         //hide player (doing it this way in case i want to fade him.
@@ -699,12 +698,10 @@ public class UserInteraction : MonoBehaviour {
         if (isCarBottom)
         {
             Main.S.Map.GetComponent<Map>().bottomMapYAirModifier = 1.2f;
-            print("hello");
         }
         else
         {
             Main.S.Map.GetComponent<Map>().topMapYAirModifier = 1.2f;
-            print("hello");
         }
 
         Vector3 newVel = gameObject.GetComponent<Rigidbody>().velocity;
