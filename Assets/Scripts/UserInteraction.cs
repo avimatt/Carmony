@@ -15,7 +15,9 @@ public class UserInteraction : MonoBehaviour {
 	public GameObject 		oilPrefab;
 	public Camera 			backCamera;
 	public Camera 			frontCamera;
+    public Camera mainCamera;
 	public GameObject 		rocketPrefab;
+    public GameObject portalPrefab;
 	public ParticleSystem 	explosion;
 
 	[Header("Calculated Dynamically")]
@@ -152,39 +154,144 @@ public class UserInteraction : MonoBehaviour {
 	/// </summary>
     public void moveToNextCheckpoint()
     {
-        portalTransport = true;
+        //portalTransport = true;
         carrySpeed = 4f;
 		// Advance checkoint, check to see if you are at the finish line and repeat if not...
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
         if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
         {
-            moveToCheckpoint(m_carstate.currCheckpoint);
+            portalToCheckpoint(m_carstate.currCheckpoint);
             return;
         }
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
         if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
         {
-            moveToCheckpoint(m_carstate.currCheckpoint);
+            portalToCheckpoint(m_carstate.currCheckpoint);
             return;
         }
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
         if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
         {
-            moveToCheckpoint(m_carstate.currCheckpoint);
+            portalToCheckpoint(m_carstate.currCheckpoint);
             return;
         }
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
         if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
         {
-            moveToCheckpoint(m_carstate.currCheckpoint);
+            portalToCheckpoint(m_carstate.currCheckpoint);
             return;
         }
-        moveToCheckpoint(m_carstate.currCheckpoint);
+        //moveToCheckpoint(m_carstate.currCheckpoint);
+        portalToCheckpoint(m_carstate.currCheckpoint);
     }
 
-	/// <summary>
-	/// Set target to the start line for the beginning of the game.
-	/// </summary>
+    public void portalToCheckpoint(int checkpointToGo)
+    {
+        //carryHeight = 5;
+        Transform checkPoint;
+        Quaternion newRotation;
+
+        // Find the location and rotation of the prev checkpoint
+        checkPoint = m_carstate.checkpoints[checkpointToGo];
+        newRotation = m_carstate.checkpoints[checkpointToGo].rotation;
+
+        setTargetLocation(checkPoint);
+        targetRotation = newRotation;
+        initalRotation = m_transform.rotation;
+
+        // Move car to correct spot
+        //goingUp = true;
+
+        //this is only lowering him to ~1-5 right now. could polish this.
+        //m_arcadeVehicle.zeroSpeed();
+
+
+
+        StartCoroutine("doPortal");
+            
+            //(new Vector3(100, 100, 100));
+    }
+
+    IEnumerator doPortal()
+    {
+        targetLocation.y += 4;
+        transform.position = targetLocation;
+        targetLocation.y -= 3;
+
+        Vector3 newAngle = targetRotation.eulerAngles;
+        newAngle.y += 90f;
+        transform.rotation = Quaternion.Euler(newAngle);
+
+
+
+        Vector3 direction = gameObject.transform.forward;
+        float speed = m_arcadeVehicle.getSpeed() / 3;
+        print(direction);
+        float startTime = Time.time;
+
+        //hide player (doing it this way in case i want to fade him.
+        MeshRenderer[] meshes = transform.GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mesh in meshes)
+        {
+            Color32 newColor = mesh.material.color;
+            newColor.a = 0;
+            mesh.material.color = newColor;
+        }
+        SkinnedMeshRenderer[] meshes2 = transform.GetComponentsInChildren<SkinnedMeshRenderer>();
+        foreach (SkinnedMeshRenderer mesh in meshes2)
+        {
+            Color32 newColor = mesh.material.color;
+            newColor.a = 0;
+            mesh.material.color = newColor;
+        }
+
+        m_arcadeVehicle.leftSteam.gameObject.SetActive(false);
+        m_arcadeVehicle.rightSteem.gameObject.SetActive(false);
+
+        //create portal
+        GameObject portalObj = (GameObject)Instantiate(portalPrefab, targetLocation, targetRotation);
+
+        mainCamera.fieldOfView = 100;
+
+        /////////////////////////////////wait for user to be ready
+        while (Time.time - startTime < 2 || mainCamera.fieldOfView != 60)
+        {
+            mainCamera.fieldOfView -= .5f;
+            if (mainCamera.fieldOfView < 60)
+                mainCamera.fieldOfView = 60;
+            transform.rotation = Quaternion.Euler(newAngle);
+            m_arcadeVehicle.zeroSpeed();
+            yield return 0;
+        }
+
+
+
+        //show player
+        foreach(MeshRenderer mesh in meshes)
+        {
+            Color32 newColor = mesh.material.color;
+            newColor.a = 255;
+            mesh.material.color = newColor;
+        }
+        foreach (SkinnedMeshRenderer mesh in meshes2)
+        {
+            Color32 newColor = mesh.material.color;
+            newColor.a = 255;
+            mesh.material.color = newColor;
+        }
+        m_arcadeVehicle.leftSteam.gameObject.SetActive(true);
+        m_arcadeVehicle.rightSteem.gameObject.SetActive(true);
+
+
+        //add velocity
+        m_arcadeVehicle.GetComponent<Rigidbody>().velocity = new Vector3(speed * direction.x, speed * direction.y, speed * direction.z);
+        yield return new WaitForSeconds(10);
+        Destroy(portalObj);
+    }
+
+    /// <summary>
+    /// Set target to the start line for the beginning of the game.
+    /// </summary>
     public void moveToStart()
     {
         carryHeight = 30;
