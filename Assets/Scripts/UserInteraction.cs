@@ -78,7 +78,8 @@ public class UserInteraction : MonoBehaviour {
 		// In the practice map check for player swapping
         if (playerAInput.LeftBumper && playerBInput.LeftBumper && (playerAInput.LeftBumper.WasPressed || playerBInput.LeftBumper.WasPressed) &&  Main.S.practicing)
         {
-			m_arcadeVehicle.playerSwap();
+            //if in practice allow swapping
+			//m_arcadeVehicle.playerSwap();
         }
 
 		// Check for resseting input
@@ -158,29 +159,34 @@ public class UserInteraction : MonoBehaviour {
         carrySpeed = 4f;
 		// Advance checkoint, check to see if you are at the finish line and repeat if not...
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
-        if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
+        print("check1: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " +  Main.S.Map.GetComponent<Map>().numLaps + 1);
+        if (m_carstate.currCheckpoint == 1 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps + 1)
         {
-            portalToCheckpoint(m_carstate.currCheckpoint);
+            portalToCheckpoint(m_carstate.currCheckpoint-1);
             return;
         }
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
-        if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
+        print("check2: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps + 1);
+        if (m_carstate.currCheckpoint == 1 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps + 1)
         {
-            portalToCheckpoint(m_carstate.currCheckpoint);
+            portalToCheckpoint(m_carstate.currCheckpoint-1);
             return;
         }
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
-        if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
+        print("check3: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps + 1);
+        if (m_carstate.currCheckpoint == 1 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps + 1)
         {
-            portalToCheckpoint(m_carstate.currCheckpoint);
+            portalToCheckpoint(m_carstate.currCheckpoint-1);
             return;
         }
         m_carstate.checkpoints[m_carstate.currCheckpoint].GetComponent<Checkpoint>().hitCheckpoint(transform);
-        if (m_carstate.currCheckpoint == 0 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps)
+        print("check4: " + m_carstate.currCheckpoint + " " + m_carstate.currLap + " " + Main.S.Map.GetComponent<Map>().numLaps + 1);
+        if (m_carstate.currCheckpoint == 1 && m_carstate.currLap == Main.S.Map.GetComponent<Map>().numLaps + 1)
         {
-            portalToCheckpoint(m_carstate.currCheckpoint);
+            portalToCheckpoint(m_carstate.currCheckpoint-1);
             return;
         }
+        print("failed to hit others");
         //moveToCheckpoint(m_carstate.currCheckpoint);
         portalToCheckpoint(m_carstate.currCheckpoint);
     }

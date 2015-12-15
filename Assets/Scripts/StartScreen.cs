@@ -81,7 +81,7 @@ public class StartScreen : MonoBehaviour {
                     continue;
                 var player = InputManager.Devices[i];
 				// If player clicked button and spot not taken
-                if ((player.Action1.WasPressed && !buttonsSet[0]) || (player.Action2.WasPressed && !buttonsSet[1]) || (player.Action3.WasPressed && !buttonsSet[2]) || (player.Action4.WasPressed && !buttonsSet[3]))
+                if ((player.Action2.WasPressed && !buttonsSet[0]) || (player.Action1.WasPressed && !buttonsSet[1]) || (player.Action4.WasPressed && !buttonsSet[2]) || (player.Action3.WasPressed && !buttonsSet[3]))
                 {
                     playersSet[i] = true;
                     buttonClicked(player,i);
@@ -106,28 +106,28 @@ public class StartScreen : MonoBehaviour {
     {
         player.Vibrate(.2f, .2f);
         StartCoroutine("vibrateControllerStop", player);
-        if (player.Action1.WasPressed)
+        if (player.Action2.WasPressed)
         {
             buttonList[0].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonList[0].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[0] = true;
             Main.S.carTop.GetComponent<ArcadeVehicle>().first = playerIndex;
         }
-        else if (player.Action2.WasPressed)
+        else if (player.Action1.WasPressed)
         {
             buttonList[1].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonList[1].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[1] = true;
             Main.S.carTop.GetComponent<ArcadeVehicle>().second = playerIndex;
         }
-        else if (player.Action3.WasPressed)
+        else if (player.Action4.WasPressed)
         {
             buttonList[2].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonList[2].GetComponentInChildren<Text>().enabled = false;
             buttonsSet[2] = true;
             Main.S.carBottom.GetComponent<ArcadeVehicle>().first = playerIndex;
         }
-        else if (player.Action4.WasPressed)
+        else if (player.Action3.WasPressed)
         {
             buttonList[3].GetComponent<Image>().color = new Color32(50, 50, 50, 255);
             buttonList[3].GetComponentInChildren<Text>().enabled = false;

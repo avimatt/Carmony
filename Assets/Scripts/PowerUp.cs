@@ -104,8 +104,14 @@ public class PowerUp : MonoBehaviour
                 {
                     type = powerUpType.oil;
                 }
-                else
+                else if (Main.S.raceStarted)
+                {
                     type = powerUpType.swap;
+                }
+                else
+                {
+                    type = powerUpType.speed;
+                }
             }
         }
 

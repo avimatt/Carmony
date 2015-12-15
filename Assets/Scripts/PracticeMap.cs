@@ -61,8 +61,9 @@ public class PracticeMap : MonoBehaviour {
         }
         if (!PauseScreen.S.isActiveAndEnabled)
         {
-            if (!shownHelpers)
-                StartCoroutine("showHelpers");
+            //show swap helper in practice
+            //if (!shownHelpers)
+            //    StartCoroutine("showHelpers");
 
             practiceText.SetActive(true);
             practiceText2.SetActive(true);

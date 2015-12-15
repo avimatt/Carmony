@@ -99,12 +99,6 @@ public class TitleScreen : MonoBehaviour {
                 Main.S.Map = Main.S.MapList[0];
                 break;
             case difficultyLevel.medium:
-                mapDifficulty = difficultyLevel.hard;
-                difficultyText.text = "Track: Hard";
-                Main.S.Map = Main.S.MapList[3];
-
-                break;
-            case difficultyLevel.hard:
                 mapDifficulty = difficultyLevel.easy;
                 difficultyText.text = "Track: Easy";
                 Main.S.Map = Main.S.MapList[1];
