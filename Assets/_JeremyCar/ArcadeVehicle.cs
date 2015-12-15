@@ -232,10 +232,12 @@ public class ArcadeVehicle : MonoBehaviour {
 		if (!isBottomCar)
 		{
 			CarmonyGUI.S.topSwapText.SetActive(true);
+			CarmonyGUI.S.swappingTop = true;
 		}
 		else
 		{
 			CarmonyGUI.S.bottomSwapText.SetActive(true);
+			CarmonyGUI.S.swappingBottom = true;
 		}
 
 		//call co-routine

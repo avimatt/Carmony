@@ -38,8 +38,12 @@ public class CarmonyGUI : MonoBehaviour {
 
     public GameObject topImageLeft;
     public GameObject topImageRight;
+
     public GameObject bottomImageLeft;
     public GameObject bottomImageRight;
+
+	public bool swappingTop;
+	public bool swappingBottom;
 
     public Sprite abutton;
     public Sprite bbutton;
@@ -230,10 +234,10 @@ public class CarmonyGUI : MonoBehaviour {
         bottomMinimap.GetComponent<Image>().sprite = Main.S.Map.GetComponent<Map>().miniMapImage;
         bottomMinimapDots.SetActive(true);
 
-//        bottomImageLeft.SetActive(true);
-//        bottomImageRight.SetActive(true);
-//        topImageLeft.SetActive(true);
-//        topImageRight.SetActive(true);
+        bottomImageLeft.SetActive(true);
+        bottomImageRight.SetActive(true);
+        topImageLeft.SetActive(true);
+        topImageRight.SetActive(true);
 
         topSpeed.SetActive(true);
         topLap.SetActive(true);
@@ -251,6 +255,8 @@ public class CarmonyGUI : MonoBehaviour {
         if (!Main.S.practicing && !Main.S.raceStarted)
             return;
         // Get references to the control objects for both teams
+
+		swapControlImages ();
 
 		var topPlayerAInput = InputManager.Devices[m_carTopArcadeVehicle.first];
 		var topPlayerBInput = InputManager.Devices[m_carTopArcadeVehicle.second];
@@ -301,6 +307,101 @@ public class CarmonyGUI : MonoBehaviour {
         }
     }
 
+
+	bool goingUp = true;
+	public void swapControlImages(){
+		GameObject leftImage;
+		GameObject rightImage;
+		if (swappingTop) {
+			leftImage = topImageLeft;
+			rightImage = topImageRight;
+			Vector3 leftPos = leftImage.transform.localPosition;
+			Vector3 rightPos = rightImage.transform.localPosition;
+
+			if(leftPos.x < 241f){
+				leftPos.x += 9.5f;
+				rightPos.x -= 9.5f;
+				leftImage.transform.localPosition = leftPos;
+				rightImage.transform.localPosition = rightPos;
+			} else {
+				leftPos.x = 241.4f;
+				rightPos.x = -327.4f;
+				leftImage.transform.localPosition = leftPos;
+				rightImage.transform.localPosition = rightPos;
+			}
+
+			if (leftPos.y < 155 && goingUp) {
+				leftPos.y += 5f;
+				rightPos.y += 5f;
+				leftImage.transform.localPosition = leftPos;
+				rightImage.transform.localPosition = rightPos;
+				if(leftPos.y == 155) goingUp = false;
+			} else if (leftPos.y > 0 && !goingUp) {
+				goingUp = false;
+				leftPos.y -= 5f;
+				rightPos.y -= 5f;
+				leftImage.transform.localPosition = leftPos;
+				rightImage.transform.localPosition = rightPos;
+			} else if (leftPos.y <= 0 && !goingUp) {
+				leftPos.y = 0f;
+				rightPos.y = 0f;
+				leftImage.transform.localPosition = leftPos;
+				rightImage.transform.localPosition = rightPos;
+				goingUp = true;
+				swappingTop = false;
+
+				topImageLeft = rightImage;
+				topImageRight = leftImage;
+			}
+
+		} else if (swappingBottom) {
+			leftImage = bottomImageLeft;
+			rightImage = bottomImageRight;
+			Vector3 leftPos = leftImage.transform.localPosition;
+			Vector3 rightPos = rightImage.transform.localPosition;
+			
+			if(leftPos.x < 241){
+				leftPos.x += 9.5f;
+				rightPos.x -= 9.5f;
+				leftImage.transform.localPosition = leftPos;
+				rightImage.transform.localPosition = rightPos;
+			} else {
+				leftPos.x = 241f;
+				rightPos.x = -327.4f;
+				leftImage.transform.localPosition = leftPos;
+				rightImage.transform.localPosition = rightPos;
+			}
+			
+			if (leftPos.y <= -234 && goingUp) {
+				leftPos.y += 5f;
+				rightPos.y += 5f;
+				leftImage.transform.localPosition = leftPos;
+				rightImage.transform.localPosition = rightPos;
+				if(leftPos.y == -239) goingUp = false;
+			} else if (leftPos.y > -384 && !goingUp) {
+				goingUp = false;
+				leftPos.y -= 5f;
+				rightPos.y -= 5f;
+				leftImage.transform.localPosition = leftPos;
+				rightImage.transform.localPosition = rightPos;
+			} else if (leftPos.y <= -384 && !goingUp) {
+				leftPos.y = -384f;
+				rightPos.y = -384f;
+				leftImage.transform.localPosition = leftPos;
+				rightImage.transform.localPosition = rightPos;
+				goingUp = true;
+				swappingBottom = false;
+				
+				bottomImageLeft = rightImage;
+				bottomImageRight = leftImage;
+			}
+		} else {
+			return;
+		}
+	
+
+	}
+
     public void HideTopPowerUpActivator()
     {
         powerupImageTop.enabled = false;
@@ -346,10 +447,10 @@ public class CarmonyGUI : MonoBehaviour {
             topMinimapDots.SetActive(false);
             bottomMinimapDots.SetActive(false);
 
-            //bottomImageLeft.SetActive(false);
-            //bottomImageRight.SetActive(false);
-            //topImageLeft.SetActive(false);
-            //topImageRight.SetActive(false);
+            bottomImageLeft.SetActive(false);
+            bottomImageRight.SetActive(false);
+            topImageLeft.SetActive(false);
+            topImageRight.SetActive(false);
 
             topSpeedBox.enabled = false;
             topSpeedSlider.enabled = false;
@@ -380,10 +481,10 @@ public class CarmonyGUI : MonoBehaviour {
             bottomMinimapDots.SetActive(true);
             bottomMinimap.SetActive(true);
 
-            //bottomImageLeft.SetActive(true);
-            //bottomImageRight.SetActive(true);
-            //topImageLeft.SetActive(true);
-            //topImageRight.SetActive(true);
+            bottomImageLeft.SetActive(true);
+            bottomImageRight.SetActive(true);
+            topImageLeft.SetActive(true);
+            topImageRight.SetActive(true);
 
             topSpeedBox.enabled = true;
             topSpeedSlider.enabled = true;

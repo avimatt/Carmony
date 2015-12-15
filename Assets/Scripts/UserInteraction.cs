@@ -253,7 +253,7 @@ public class UserInteraction : MonoBehaviour {
         mainCamera.fieldOfView = 100;
 
         /////////////////////////////////wait for user to be ready
-        while (Time.time - startTime < 2 || mainCamera.fieldOfView != 60)
+        while (Time.time - startTime < 1.5f || mainCamera.fieldOfView != 60)
         {
             mainCamera.fieldOfView -= .5f;
             if (mainCamera.fieldOfView < 60)
@@ -284,7 +284,7 @@ public class UserInteraction : MonoBehaviour {
 
         //add velocity
         m_arcadeVehicle.GetComponent<Rigidbody>().velocity = new Vector3(speed * direction.x, speed * direction.y, speed * direction.z);
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(3.5f);
         Destroy(portalObj);
     }
 
