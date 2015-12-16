@@ -57,6 +57,7 @@ public class InstructionScreen : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
+        /*
         if (!inLoading && !instructionsDone)
         {
             StartCoroutine("loadingDots");
@@ -73,26 +74,22 @@ public class InstructionScreen : MonoBehaviour {
             loadingText.text = "";
             instructionsDone = true;
         }
-
+        */
 		for (int i = 0; i < InputManager.Devices.Count; i++)
 		{
             var player = InputManager.Devices[i];
 
             if (instructionsDone && player.AnyButton.WasPressed)
             {
-                finishScreen();
+                //finishScreen();
             }
             // after both control groups have been seen
             if (player.MenuWasPressed )//&& !firstGroup && controlGroups[1].transform.localPosition[0] <= 0)
 			{
                 finishScreen();
 			} 
-			// after first control group shown
-			else if(player.MenuWasPressed)
-			{
-				switchingGroups = true;
-				firstGroup = false;
-			}
+
+            /*
             if (player.LeftStickX < 0)
             {
                 if (!firstGroup)
@@ -111,14 +108,16 @@ public class InstructionScreen : MonoBehaviour {
                     manuallySwitched = true;
                 }
             }
+            */
 		}
-		
+		/*
 		if (switchingGroups) {
 			switchGroups ();
 		}else if (switchingGroupsBack)
         {
             switchGroupsBack();
         }
+        */
 	}
 
     void finishScreen()

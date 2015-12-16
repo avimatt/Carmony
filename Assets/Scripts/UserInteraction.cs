@@ -261,7 +261,7 @@ public class UserInteraction : MonoBehaviour {
         /////////////////////////////////wait for user to be ready
         while (Time.time - startTime < 1.5f || mainCamera.fieldOfView != 60)
         {
-            mainCamera.fieldOfView -= .5f;
+            mainCamera.fieldOfView -= 1f;
             if (mainCamera.fieldOfView < 60)
                 mainCamera.fieldOfView = 60;
             transform.rotation = Quaternion.Euler(newAngle);

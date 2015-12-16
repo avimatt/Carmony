@@ -50,8 +50,19 @@ public class Checkpoint : MonoBehaviour {
                     {
                         StartCoroutine("printFinalLap", playerTrans.GetComponent<UserInteraction>().isCarBottom);
                         AudioSource finalLapSound = GameObject.Find("FinalLapSound").GetComponent<AudioSource>();
+
                         if (!finalLapSound.isPlaying)
                             finalLapSound.Play();
+
+                        if (!Main.S.onLastLap)
+                        {
+                            Main.S.GetComponent<AudioSource>().Stop();
+                            Main.S.GetComponent<AudioSource>().clip = Main.S.fasterAudio;
+                            Main.S.GetComponent<AudioSource>().Play();
+                            print("here");
+                        }
+                        Main.S.onLastLap = true;
+
                     }
                     // If finished last lap
                     if (player.currLap == (Main.S.Map.GetComponent<Map>().numLaps + 1))

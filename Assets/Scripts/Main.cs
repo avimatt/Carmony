@@ -32,6 +32,8 @@ public class Main : MonoBehaviour
 	public bool topInCollisionZone;
 	public bool bottomInCollisionZone;
 
+    public AudioClip fasterAudio;
+    public bool onLastLap;
 
 	void Awake()
 	{
@@ -196,6 +198,10 @@ public class Main : MonoBehaviour
             CarmonyGUI.S.topImageRight.SetActive(false);
             carTop.GetComponent<CarState>().totalTime = getGameTime();
             CarmonyGUI.S.HideTopPowerUpActivator();
+            CarmonyGUI.S.topSpeedBox.gameObject.SetActive(false);
+            CarmonyGUI.S.topSpeedSlider.gameObject.SetActive(false);
+            CarmonyGUI.S.topSpeed.SetActive(false);
+            CarmonyGUI.S.topLap.SetActive(false);
         }
         else
         {
@@ -207,6 +213,10 @@ public class Main : MonoBehaviour
             carBottom.GetComponent<CarState>().totalTime = getGameTime();
             carBottomDone = true;
             CarmonyGUI.S.HideBottomPowerUpActivator();
+            CarmonyGUI.S.bottomSpeedBox.gameObject.SetActive(false);
+            CarmonyGUI.S.bottomSpeedSlider.gameObject.SetActive(false);
+            CarmonyGUI.S.bottomSpeed.SetActive(false);
+            CarmonyGUI.S.bottomLap.SetActive(false);
         }
         Logger.S.printSummary(isTop);
         CarmonyGUI.S.endGame(isTop);
