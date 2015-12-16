@@ -78,7 +78,12 @@ public class CarCollision : MonoBehaviour {
         }
         else
         {
-            normal.Scale(new Vector3(1000 + 30 * m_arcadeVehicle.getSpeed(), - 10 * m_arcadeVehicle.getSpeed(), 1000 + 30 * m_arcadeVehicle.getSpeed()));
+            Vector3 vel = coll.relativeVelocity;
+            print("Vel: " + vel);
+            //normal.Scale(new Vector3(1000 + 30 * m_arcadeVehicle.getSpeed(), - 10 * m_arcadeVehicle.getSpeed(), 1000 + 30 * m_arcadeVehicle.getSpeed()));
+
+            normal.Scale(new Vector3(1000 + 30 * m_arcadeVehicle.GetComponent<Rigidbody>().velocity.x* 2.23693629f, -10 * m_arcadeVehicle.GetComponent<Rigidbody>().velocity.y * 2.23693629f, 1000 + 30 * m_arcadeVehicle.GetComponent<Rigidbody>().velocity.z * 2.23693629f));
+            //normal.Scale(new Vector3(1000 + 30*vel.x*3,-10*vel.y,100+30*vel.z*3));
         }
         gameObject.GetComponent<Rigidbody>().AddForceAtPosition(normal, points[0].point);
     }

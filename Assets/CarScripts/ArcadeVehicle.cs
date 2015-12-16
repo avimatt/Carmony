@@ -99,6 +99,12 @@ public class ArcadeVehicle : MonoBehaviour {
         {
             iH = -iH;
         }
+        if (getSpeed() < 5)
+        {
+            iH = iH / (1/(getSpeed()/5f));
+            if (getSpeed() == 0)
+                iH = 0;
+        }
 		// Steering
 		if (grounded) {
 			rigid.AddTorque (0, iH * turningTorque, 0);
