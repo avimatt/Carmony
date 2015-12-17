@@ -318,14 +318,14 @@ public class CarmonyGUI : MonoBehaviour {
 			Vector3 leftPos = leftImage.transform.localPosition;
 			Vector3 rightPos = rightImage.transform.localPosition;
 
-			if(leftPos.x < 241f){
-				leftPos.x += 9.5f;
-				rightPos.x -= 9.5f;
+			if(leftPos.x < 356.5f){
+				leftPos.x += 11.7f;
+				rightPos.x -= 11.7f;
 				leftImage.transform.localPosition = leftPos;
 				rightImage.transform.localPosition = rightPos;
 			} else {
-				leftPos.x = 241.4f;
-				rightPos.x = -327.4f;
+				leftPos.x = 356.5f;
+				rightPos.x = -340.5f;
 				leftImage.transform.localPosition = leftPos;
 				rightImage.transform.localPosition = rightPos;
 			}
@@ -360,33 +360,33 @@ public class CarmonyGUI : MonoBehaviour {
 			Vector3 leftPos = leftImage.transform.localPosition;
 			Vector3 rightPos = rightImage.transform.localPosition;
 			
-			if(leftPos.x < 241){
-				leftPos.x += 9.5f;
-				rightPos.x -= 9.5f;
+			if(leftPos.x < 356.5){
+				leftPos.x += 11.7f;
+				rightPos.x -= 11.7f;
 				leftImage.transform.localPosition = leftPos;
 				rightImage.transform.localPosition = rightPos;
 			} else {
-				leftPos.x = 241f;
-				rightPos.x = -327.4f;
+				leftPos.x = 356.5f;
+				rightPos.x = -340.5f;
 				leftImage.transform.localPosition = leftPos;
 				rightImage.transform.localPosition = rightPos;
 			}
 			
-			if (leftPos.y <= -234 && goingUp) {
+			if (leftPos.y <= -203 && goingUp) {
 				leftPos.y += 5f;
 				rightPos.y += 5f;
 				leftImage.transform.localPosition = leftPos;
 				rightImage.transform.localPosition = rightPos;
-				if(leftPos.y == -239) goingUp = false;
-			} else if (leftPos.y > -384 && !goingUp) {
+				if(leftPos.y == -203) goingUp = false;
+			} else if (leftPos.y > -353 && !goingUp) {
 				goingUp = false;
 				leftPos.y -= 5f;
 				rightPos.y -= 5f;
 				leftImage.transform.localPosition = leftPos;
 				rightImage.transform.localPosition = rightPos;
-			} else if (leftPos.y <= -384 && !goingUp) {
-				leftPos.y = -384f;
-				rightPos.y = -384f;
+			} else if (leftPos.y <= -353 && !goingUp) {
+				leftPos.y = -353f;
+				rightPos.y = -353f;
 				leftImage.transform.localPosition = leftPos;
 				rightImage.transform.localPosition = rightPos;
 				goingUp = true;
