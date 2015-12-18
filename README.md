@@ -8,5 +8,5 @@
 - A piece of Nature by Evgenia
 
 <b>Other:</b>
-- Original music composed by Allie K. and Andrew Long (from MusPerf300)
+- Original music composed by Allie Kudlinski and Andrew Long (from MusPerf300)
 - Sound effects are from FreeSound.org and Allie K.
